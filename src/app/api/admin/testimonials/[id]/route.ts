@@ -5,16 +5,16 @@ import { getCurrentUser } from "@/lib/auth/session";
 // GET a specific testimonial by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     // Check authentication
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    const { id } = params;
     const testimonial = await prisma.testimonial.findUnique({
       where: { id }
     });
@@ -33,16 +33,16 @@ export async function GET(
 // PUT update a testimonial by ID
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     // Check authentication
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    const { id } = params;
     const data = await request.json();
     
     // Validate required fields
@@ -86,16 +86,15 @@ export async function PUT(
 // DELETE a testimonial by ID
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     // Check authentication
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    
-    const { id } = params;
     
     // Check if testimonial exists
     const existingTestimonial = await prisma.testimonial.findUnique({

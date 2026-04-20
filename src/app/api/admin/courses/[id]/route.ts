@@ -23,16 +23,16 @@ function normalizeSameOriginAssetUrl(input: unknown, origin: string): string | n
 // GET a specific course by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     // Check authentication
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    const { id } = params;
     const course = await prisma.course.findUnique({
       where: { id }
     });
@@ -51,16 +51,16 @@ export async function GET(
 // PUT update a course by ID
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     // Check authentication
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    const { id } = params;
     const data = await request.json();
     const origin = request.nextUrl.origin;
     
@@ -181,16 +181,15 @@ export async function PUT(
 // DELETE a course by ID
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     // Check authentication
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    
-    const { id } = params;
     
     // Check if course exists
     const existingCourse = await prisma.course.findUnique({

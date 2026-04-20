@@ -5,11 +5,12 @@ export const revalidate = 0;
 // GET a single blog post by slug
 export async function GET(
   request: NextRequest,
-  { params }: { params: { slug: string } }
+  context: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const { slug } = await context.params;
     const blogPost = await prisma.blogPost.findFirst({
-      where: { slug: params.slug }
+      where: { slug }
     });
     
     if (!blogPost) {

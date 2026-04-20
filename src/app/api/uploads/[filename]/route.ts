@@ -14,10 +14,11 @@ function contentTypeFor(filename: string): string {
 
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { filename: string } }
+  context: { params: Promise<{ filename: string }> }
 ) {
   try {
-    const safeName = basename(params.filename);
+    const { filename } = await context.params;
+    const safeName = basename(filename);
     const filePath = join(process.cwd(), "public", "uploads", safeName);
     const data = await readFile(filePath);
 

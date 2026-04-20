@@ -22,16 +22,16 @@ function normalizeSameOriginAssetUrl(input: unknown, origin: string): string | n
 // GET a specific blog post by ID
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     // Check authentication
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    const { id } = params;
     const blogPost = await prisma.blogPost.findUnique({
       where: { id }
     });
@@ -50,16 +50,16 @@ export async function GET(
 // PUT update a blog post by ID
 export async function PUT(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     // Check authentication
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
-    const { id } = params;
     const data = await request.json();
     const origin = request.nextUrl.origin;
     
@@ -120,16 +120,15 @@ export async function PUT(
 // DELETE a blog post by ID
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await context.params;
     // Check authentication
     const user = await getCurrentUser();
     if (!user) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
-    
-    const { id } = params;
     
     // Check if blog post exists
     const existingPost = await prisma.blogPost.findUnique({
