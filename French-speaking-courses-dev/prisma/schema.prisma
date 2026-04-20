@@ -1,0 +1,154 @@
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../node_modules/.prisma/client"
+  previewFeatures = ["multiSchema"]
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = "postgresql://postgres.tngxhsrytkeatuefwpgp:FKRd-3QC8!Evda-@aws-0-ap-south-1.pooler.supabase.com:6543/postgres?pgbouncer=true"
+  directUrl = "postgresql://postgres.tngxhsrytkeatuefwpgp:FKRd-3QC8!Evda-@aws-0-ap-south-1.pooler.supabase.com:5432/postgres"
+  schemas   = ["public"]
+}
+
+model Admin {
+  id        String   @id @default(cuid())
+  username  String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("public")
+}
+
+model Course {
+  id                    String    @id @default(cuid())
+  title                 String
+  description           String
+  level                 String
+  duration              String
+  price                 String
+  originalPrice         String?
+  rating                Float?
+  students              Int       @default(0)
+  image                 String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  slug                  String    @unique
+  access                String?
+  benefits              Json?
+  certificate           Boolean   @default(false)
+  companies             String[]  @default([])
+  faq                   Json?
+  features              Json?
+  instructor            String?
+  instructorBio         String?
+  instructorExperience  String?
+  instructorImage       String?
+  instructorSpecialties String[]  @default([])
+  language              String?
+  lessons               Int?
+  longDescription       String
+  modules               Json?
+  outcomes              String[]  @default([])
+  projects              Json?
+  testimonials          Json?
+  tools                 String[]  @default([])
+  offerEndDate          DateTime?
+  promotionBannerText   String?
+  startDate             DateTime?
+  batches               Json?
+  requirements          Json?
+  metaTitle             String?
+  metaDescription       String?
+  ctaText               String?
+  timings               Json?
+  batchScheduleSection  Json?
+  benefitsSection       Json?
+  comparisonSection     Json?
+  ctaSections           Json?
+  curriculumSection     Json?
+  faqSection            Json?
+  feesSection           Json?
+  heroBannerSection     Json?
+  overviewSection       Json?
+  projectsSection       Json?
+  reviewsSection        Json?
+  skillsToolsSection    Json?
+  whyEnrollSection      Json?
+  brochureUrl           String?
+  registrationOpen      Boolean   @default(true)
+
+  @@schema("public")
+}
+
+model BlogPost {
+  id        String      @id @default(cuid())
+  title     String
+  content   String
+  slug      String      @unique
+  image     String?
+  author    String      @default("French Skill Academy")
+  excerpt   String?
+  category  BlogCategory @default(LEARNING)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  @@schema("public")
+}
+
+enum BlogCategory {
+  CULTURE
+  LEARNING
+  GRAMMAR
+  VOCABULARY
+  TRAVEL
+
+  @@schema("public")
+}
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String?
+  message   String
+  rating    Int
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@schema("public")
+}
+
+model Query {
+  id          String      @id @default(cuid())
+  name        String
+  email       String
+  message     String
+  phone       String?
+  type        QueryType   @default(CONTACT)
+  courseId    String?
+  courseTitle String?
+  status      QueryStatus @default(NEW)
+  notes       String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  @@schema("public")
+}
+
+enum QueryType {
+  CONTACT
+  COURSE_INQUIRY
+  NEWSLETTER
+
+  @@schema("public")
+}
+
+enum QueryStatus {
+  NEW
+  IN_PROGRESS
+  RESOLVED
+
+  @@schema("public")
+}

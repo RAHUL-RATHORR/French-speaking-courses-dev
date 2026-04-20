@@ -1,0 +1,23 @@
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://www.frenchskill.com/sitemap.xml
+
+# Block admin areas
+Disallow: /admin/
+Disallow: /_next/
+Disallow: /static/
+
+# Optional: block API if not needed for SEO
+Disallow: /api/
+
+# Allow specific public assets
+Allow: /*.css$
+Allow: /*.js$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.jpeg$
+Allow: /*.gif$
+Allow: /*.svg$
+Allow: /*.pdf$

@@ -1,0 +1,13 @@
+export { default as HeroBanner } from './HeroBanner';
+export { default as Overview } from './Overview';
+export { default as WhyEnroll } from './WhyEnroll';
+export { default as Benefits } from './Benefits';
+export { default as Curriculum } from './Curriculum';
+export { default as Fees } from './Fees';
+export { default as SkillsTools } from './SkillsTools';
+export { default as Projects } from './Projects';
+export { default as Reviews } from './Reviews';
+export { default as FAQ } from './FAQ';
+export { default as Comparison } from './Comparison';
+export { default as BatchSchedule } from './BatchSchedule';
+export { default as CTA } from './CTA';

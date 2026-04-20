@@ -1,0 +1,18 @@
+import type { NextConfig } from "next";
+
+const nextConfig: NextConfig = {
+  images: {
+    domains: ['images.unsplash.com','picsum.photos',"i.pravatar.cc","fastly.picsum.photos","www.frenchskill.com","frenchskill.com","localhost"],
+  },
+    typescript: {
+    ignoreBuildErrors: true,
+  },
+  crossOrigin: "anonymous",
+  async redirects() {
+    return [
+      
+    ];
+  },
+};
+
+export default nextConfig;

@@ -1,0 +1,205 @@
+@import "tailwindcss";
+
+:root {
+  --french-blue: #002654;
+  --french-white: #ffffff;
+  --french-red: #ce1126;
+  --accent-blue: #0066cc;
+  --light-blue: #f0f6ff;
+  --dark-blue: #001433;
+}
+
+body {
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+}
+
+/* French Flag Gradients */
+.french-gradient {
+  background: linear-gradient(135deg, #002654 0%, #ffffff 50%, #ce1126 100%);
+}
+
+.french-gradient-horizontal {
+  background: linear-gradient(90deg, #002654 33%, #ffffff 33% 66%, #ce1126 66%);
+}
+
+.hero-gradient {
+  background: linear-gradient(135deg, #002654 0%, #0066cc 100%);
+}
+
+.hero-gradient-enhanced {
+  background: linear-gradient(
+    135deg,
+    #001433 0%,
+    #002654 25%,
+    #0066cc 75%,
+    #ce1126 100%
+  );
+}
+
+.red-accent-gradient {
+  background: linear-gradient(135deg, #ce1126 0%, #ff4757 100%);
+}
+
+.blue-accent-gradient {
+  background: linear-gradient(135deg, #0066cc 0%, #3742fa 100%);
+}
+
+/* Card Animations */
+.course-card-hover {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.course-card-hover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, #002654, #ffffff, #ce1126);
+  transition: left 0.5s ease;
+}
+
+.course-card-hover:hover::before {
+  left: 0;
+}
+
+.course-card-hover:hover {
+  transform: translateY(-8px);
+  box-shadow:
+    0 25px 50px -12px rgba(0, 38, 84, 0.25),
+    0 0 0 1px rgba(0, 38, 84, 0.05);
+}
+
+/* Button Styles */
+.btn-french-primary {
+  background: linear-gradient(135deg, #002654 0%, #0066cc 100%);
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-french-primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #ce1126 0%, #ff4757 100%);
+  transition: left 0.3s ease;
+  z-index: 0;
+}
+
+.btn-french-primary:hover::before {
+  left: 0;
+}
+
+.btn-french-primary > * {
+  position: relative;
+  z-index: 1;
+}
+
+.btn-french-secondary {
+  background: transparent;
+  color: #002654;
+  border: 2px solid #002654;
+  transition: all 0.3s ease;
+}
+
+.btn-french-secondary:hover {
+  background: #002654;
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* Section Dividers */
+.section-divider {
+  height: 4px;
+  background: linear-gradient(90deg, #002654 33%, #ffffff 33% 66%, #ce1126 66%);
+  margin: 2rem 0;
+}
+
+/* French Flag Animation */
+@keyframes french-wave {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-2px);
+  }
+  75% {
+    transform: translateX(2px);
+  }
+}
+
+.french-flag-animation {
+  animation: french-wave 3s ease-in-out infinite;
+}
+
+/* Text Styles */
+.text-french-blue {
+  color: var(--french-blue);
+}
+
+.text-french-red {
+  color: var(--french-red);
+}
+
+.text-accent-blue {
+  color: var(--accent-blue);
+}
+
+/* Fix for blog content headings only - more specific selector */
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  font-size: revert;
+  font-weight: revert;
+  margin-top: 1.5em;
+  margin-bottom: 0.75em;
+}
+
+.prose h1 {
+  font-size: 2.25em;
+}
+.prose h2 {
+  font-size: 1.875em;
+  color: var(--french-blue);
+}
+.prose h3 {
+  font-size: 1.5em;
+  color: #374151;
+}
+.prose h4 {
+  font-size: 1.25em;
+  color: #4b5563;
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: inline-block;
+  padding-left: 100%;
+  animation: marquee 30s linear infinite;
+}
+
+.pause-on-hover:hover {
+  animation-play-state: paused;
+}
