@@ -1,14 +1,12 @@
 generator client {
-  provider        = "prisma-client-js"
-  output          = "../node_modules/.prisma/client"
-  previewFeatures = ["multiSchema"]
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
 }
 
 datasource db {
   provider  = "postgresql"
   url       = env("DATABASE_URL")
   directUrl = env("DIRECT_URL")
-  schemas   = ["public"]
 }
 
 model Admin {
@@ -17,8 +15,6 @@ model Admin {
   password  String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@schema("public")
 }
 
 model Course {
@@ -78,8 +74,6 @@ model Course {
   whyEnrollSection      Json?
   brochureUrl           String?
   registrationOpen      Boolean   @default(true)
-
-  @@schema("public")
 }
 
 model BlogPost {
@@ -93,8 +87,6 @@ model BlogPost {
   category  BlogCategory @default(LEARNING)
   createdAt DateTime    @default(now())
   updatedAt DateTime    @updatedAt
-
-  @@schema("public")
 }
 
 enum BlogCategory {
@@ -103,8 +95,6 @@ enum BlogCategory {
   GRAMMAR
   VOCABULARY
   TRAVEL
-
-  @@schema("public")
 }
 
 model Testimonial {
@@ -116,8 +106,6 @@ model Testimonial {
   avatar    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  @@schema("public")
 }
 
 model Query {
@@ -133,22 +121,16 @@ model Query {
   notes       String?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
-
-  @@schema("public")
 }
 
 enum QueryType {
   CONTACT
   COURSE_INQUIRY
   NEWSLETTER
-
-  @@schema("public")
 }
 
 enum QueryStatus {
   NEW
   IN_PROGRESS
   RESOLVED
-
-  @@schema("public")
 }
