@@ -66,8 +66,17 @@ export function middleware(request: NextRequest) {
   return response;
 }
 
-// Apply CORS only to API routes by default
+// Standard Next.js matcher recommended for stability
 export const config = {
-  // Apply CORS on API and host canonicalization on all paths
-  matcher: ["/api/:path*", "/((?!_next|.*\\.(?:ico|png|jpg|jpeg|svg|gif|webp|pdf)$).*)"],
+  matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (handled separately or allowed)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     * - images/assets (public folder files)
+     */
+    "/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|pdf)$).*)",
+  ],
 };
