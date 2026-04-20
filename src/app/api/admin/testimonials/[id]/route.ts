@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 import { getCurrentUser } from "@/lib/auth/session";
 
+export const dynamic = "force-dynamic";
+
 // GET a specific testimonial by ID
 export async function GET(
   request: NextRequest,

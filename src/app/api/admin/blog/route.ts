@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
+export const dynamic = "force-dynamic";
 import { getCurrentUser } from "@/lib/auth/session";
 import { revalidatePath } from "next/cache";
 

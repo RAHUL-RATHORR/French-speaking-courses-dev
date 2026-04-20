@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db/prisma';
+export const dynamic = "force-dynamic";
 import { generateXMLSitemap, entriesToSitemapUrls, getSitemapCacheHeaders, getBaseUrl } from '@/lib/sitemap-utils';
 
 export async function GET() {

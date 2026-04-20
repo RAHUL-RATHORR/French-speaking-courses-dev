@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/db/prisma';
+export const dynamic = "force-dynamic";
 import { blogPosts as staticBlogPosts } from '@/lib/blog-data';
 import { generateXMLSitemap, entriesToSitemapUrls, getSitemapCacheHeaders, getBaseUrl } from '@/lib/sitemap-utils';
 
