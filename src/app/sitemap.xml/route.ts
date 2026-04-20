@@ -84,11 +84,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "weekly",
       priority: 0.8,
     },
+    {
+      url: `${baseUrl}/support`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.5,
+    },
   ];
 
-  // Dynamic course pages
+  // Dynamic course pages - Standardized to /course/[slug]
   const coursePages: MetadataRoute.Sitemap = courses.map((course) => ({
-    url: `${baseUrl}/courses/${course.slug}`,
+    url: `${baseUrl}/course/${course.slug}`,
     lastModified: course.updatedAt || new Date(),
     changeFrequency: "monthly",
     priority: 0.8,
@@ -101,6 +107,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     changeFrequency: "weekly",
     priority: 0.7,
   }));
+
   // Combine all pages
   return [...mainPages, ...coursePages, ...blogPostPages];
 }
@@ -116,18 +123,10 @@ export async function GET(): Promise<Response> {
       .replace(/>/g, "&gt;")
       .replace(/"/g, "&quot;")
       .replace(/'/g, "&apos;");
-  const baseUrl = getBaseUrl();
+
   const xml =
     `<?xml version="1.0" encoding="UTF-8"?>\n` +
     `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">` +
-    `  <sitemap>
-    <loc>${baseUrl}/sitemap-courses.xml</loc>
-    <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
-  </sitemap>
-  <sitemap>
-    <loc>${baseUrl}/sitemap-blogs.xml</loc>
-    <lastmod>${new Date().toISOString().split("T")[0]}</lastmod>
-  </sitemap>` +
     entries
       .map((item) => {
         const lastmod = item.lastModified
