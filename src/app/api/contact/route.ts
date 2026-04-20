@@ -1,48 +1,46 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/db/prisma";
-export const dynamic = "force-dynamic";
 import { verifyRecaptcha } from "@/lib/recaptcha";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(request: NextRequest) {
+  const traceId = Math.random().toString(36).substring(7);
+  console.log(`[API-Contact-${traceId}] Starting request...`);
+
   try {
-  const body = await request.json();
-  const { name, email, message, phone, recaptchaToken } = body;
+    const body = await request.json();
+    const { name, email, message, phone, recaptchaToken } = body;
 
-    // Validate required fields
+    // 1. Validation Trace
     if (!name || !email || !message) {
-      return NextResponse.json(
-        { error: "Name, email, and message are required" },
-        { status: 400 }
-      );
+      console.warn(`[API-Contact-${traceId}] Validation failed: Missing fields`);
+      return NextResponse.json({ error: "Required fields missing" }, { status: 400 });
     }
 
-    // Verify reCAPTCHA
+    // 2. reCAPTCHA Trace
+    console.log(`[API-Contact-${traceId}] Verifying reCAPTCHA...`);
     const captcha = await verifyRecaptcha(recaptchaToken, "contact_submit");
-    if (!captcha.success || (typeof captcha.score === "number" && captcha.score < 0.3)) {
-      return NextResponse.json({ error: "reCAPTCHA verification failed" }, { status: 400 });
+    if (!captcha.success) {
+      console.error(`[API-Contact-${traceId}] reCAPTCHA Failed:`, captcha.errorCodes);
+      return NextResponse.json({ error: "Security check failed. Try again." }, { status: 400 });
     }
 
-    // Create new contact query
-    const newQuery = await prisma.query.create({
-      data: {
-        name,
-        email,
-        message,
-        phone: phone || null,
-        type: "CONTACT",
-        status: "NEW",
-      },
-    });
+    // 3. Database Trace
+    console.log(`[API-Contact-${traceId}] Saving to Database...`);
+    try {
+      const newQuery = await prisma.query.create({
+        data: { name, email, message, phone: phone || null, type: "CONTACT", status: "NEW" },
+      });
+      console.log(`[API-Contact-${traceId}] Success: ID ${newQuery.id}`);
+      return NextResponse.json({ message: "Submitted", id: newQuery.id }, { status: 201 });
+    } catch (dbError) {
+      console.error(`[API-Contact-${traceId}] DATABASE ERROR:`, dbError);
+      throw dbError; // Bubble up to main catch
+    }
 
-    return NextResponse.json(
-      { message: "Contact form submitted successfully", id: newQuery.id },
-      { status: 201 }
-    );
   } catch (error) {
-    console.error("Error submitting contact form:", error);
-    return NextResponse.json(
-      { error: "Failed to submit contact form" },
-      { status: 500 }
-    );
+    console.error(`[API-Contact-${traceId}] GLOBAL CRASH:`, error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
