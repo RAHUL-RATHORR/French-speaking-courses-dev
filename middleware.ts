@@ -69,5 +69,5 @@ export function middleware(request: NextRequest) {
 // Apply CORS only to API routes by default
 export const config = {
   // Apply CORS on API and host canonicalization on all paths
-  matcher: ["/api/:path*", "/((?!_next|.*\\.\(?:ico|png|jpg|jpeg|svg|gif|webp|pdf\)$).*)"],
+  matcher: ["/api/:path*", "/((?!_next|.*\\.(?:ico|png|jpg|jpeg|svg|gif|webp|pdf)$).*)"],
 };
