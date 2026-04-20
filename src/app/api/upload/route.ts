@@ -3,6 +3,8 @@ import { mkdir, writeFile } from 'fs/promises';
 import { join } from 'path';
 import { v4 as uuidv4 } from 'uuid';
 
+export const dynamic = "force-dynamic";
+
 function getPublicOrigin(request: NextRequest): string {
   const forwardedProto = request.headers.get('x-forwarded-proto');
   const forwardedHost = request.headers.get('x-forwarded-host');

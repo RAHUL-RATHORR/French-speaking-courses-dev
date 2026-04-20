@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { readFile } from "fs/promises";
 import { join, basename } from "path";
 
+export const dynamic = "force-dynamic";
+
 function contentTypeFor(filename: string): string {
   const lower = filename.toLowerCase();
   if (lower.endsWith(".png")) return "image/png";

@@ -3,6 +3,8 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import { compare } from 'bcryptjs';
 import { prisma } from '@/lib/db/prisma';
 
+export const dynamic = "force-dynamic";
+
 // Extend the built-in types
 declare module "next-auth" {
   interface User {
