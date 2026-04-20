@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { redirect, notFound } from "next/navigation";
 import { prisma } from "@/lib/db/prisma";
 
 interface Params {
@@ -14,26 +14,27 @@ interface Params {
 export default async function RootSlugRedirect({ params }: Params) {
   const { slug } = await params;
 
-  // Reserved routes are handled by their own folders (Next.js handles this automatically,
-  // but we return null/notFound here just in case of any overlap).
+  // Reserved routes are handled by their own folders. 
+  // If we reach here for a reserved route, we return null to let the 
+  // static route take precedence (Next.js routing behavior).
   const reservedRoutes = ['admin', 'api', 'blog', 'courses', 'support', 'robots.txt', 'sitemap.xml'];
   if (reservedRoutes.includes(slug)) {
     return null;
   }
 
-  // Check if it's a valid course slug
+  // Check if it's a valid course slug in the database
   const course = await prisma.course.findUnique({
     where: { slug },
     select: { slug: true }
   });
 
   if (course) {
-    // 301 Permanent Redirect to canonical URL
+    // 301 Permanent Redirect to canonical singular course URL
     redirect(`/course/${course.slug}`);
   }
 
-  // If not a course, show 404
-  return null;
+  // If slug is not a course and not a reserved route, trigger a proper 404
+  notFound();
 }
 
 // Generate static params for possible root slugs (optional, helps with SEO redirects)
