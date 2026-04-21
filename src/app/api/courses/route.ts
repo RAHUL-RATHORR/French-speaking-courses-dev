@@ -1,14 +1,17 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
+import { Course } from "@prisma/client";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
 // GET all courses for public consumption
 export async function GET(request: NextRequest) {
   try {
+    console.log("Fetching courses from DB...");
     const courses = await prisma.course.findMany({
       orderBy: { createdAt: 'desc' }
     });
+    console.log(`Found ${courses.length} courses`);
 
     const origin = request.nextUrl.origin;
     const normalize = (value: unknown) => {
@@ -26,7 +29,7 @@ export async function GET(request: NextRequest) {
       return trimmed;
     };
 
-    const normalized = courses.map((course) => ({
+    const normalized = courses.map((course: Course) => ({
       ...course,
       image: normalize(course.image),
       instructorImage: normalize(course.instructorImage),
@@ -34,8 +37,12 @@ export async function GET(request: NextRequest) {
     }));
 
     return NextResponse.json(normalized);
-  } catch (error) {
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : "An unknown error occurred";
     console.error("Error fetching courses:", error);
-    return NextResponse.json({ error: "Failed to fetch courses" }, { status: 500 });
+    return NextResponse.json({ 
+      error: "Failed to fetch courses", 
+      details: message 
+    }, { status: 500 });
   }
 }

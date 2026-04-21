@@ -4,9 +4,11 @@ export const dynamic = "force-dynamic"; // ⬅ force API route to run on each re
 // GET all blog posts for public consumption
 export async function GET(request: NextRequest) {
   try {
+    console.log("Fetching blog posts from DB...");
     const blogPosts = await prisma.blogPost.findMany({
       orderBy: { createdAt: 'desc' }
     });
+    console.log(`Found ${blogPosts.length} blog posts`);
 
     const origin = request.nextUrl.origin;
     const normalize = (value: unknown) => {

@@ -12,8 +12,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = getBaseUrl();
 
   // Fetch dynamic content with safe catch
-  let courses: any[] = [];
-  let blogPosts: any[] = [];
+  let courses: { slug: string; updatedAt: Date }[] = [];
+  let blogPosts: { slug: string; updatedAt: Date }[] = [];
 
   try {
     [courses, blogPosts] = await Promise.all([
