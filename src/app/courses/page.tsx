@@ -39,15 +39,21 @@ interface Course {
 }
 
 async function getCourses() {
-  const response = await fetch("/api/courses", {
-    cache: "no-store",
-  });
+  try {
+    const response = await fetch("/api/courses", {
+      cache: "no-store",
+    });
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch courses: ${response.status}`);
+    if (!response.ok) {
+      console.error(`API response error: ${response.status}`);
+      return [];
+    }
+
+    return response.json();
+  } catch (err) {
+    console.error("Fetch failed:", err);
+    return [];
   }
-
-  return response.json();
 }
 
 export default function CoursesPage() {

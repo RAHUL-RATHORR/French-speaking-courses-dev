@@ -96,6 +96,8 @@ export default function CourseFilter({ courses, filterOptions }: CourseFilterPro
     return matchesFilter && matchesSearch;
   });
 
+  console.log(`[CourseFilter] Total: ${courses.length}, Filtered: ${filteredCourses.length}, Selected: ${selectedFilter}`);
+
   return (
     <>
       {/* Search Bar Section */}
