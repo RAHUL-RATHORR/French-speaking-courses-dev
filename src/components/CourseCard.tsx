@@ -56,14 +56,18 @@ export default function CourseCard({
       >
         <span className="sr-only">{title}</span>
       </NextLink>
-      <div className="relative h-44 w-full overflow-hidden">
+      <div className="relative h-44 w-full overflow-hidden bg-gray-100">
         <Image
           src={image || "/french-skill.png"}
           alt={title}
           fill
-          unoptimized={true}
-          className="object-cover group-hover:scale-110 transition-transform duration-500"
+          className="object-cover group-hover:scale-110 transition-transform duration-500 z-0"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.src = "/french-skill.png";
+          }}
         />
+        <div className="absolute inset-0 bg-black/5 z-10" />
 
         {/* Overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />

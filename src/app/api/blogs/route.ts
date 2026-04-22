@@ -6,6 +6,17 @@ export async function GET(request: NextRequest) {
   try {
     console.log("Fetching blog posts from DB...");
     const blogPosts = await prisma.blogPost.findMany({
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        excerpt: true,
+        image: true,
+        author: true,
+        category: true,
+        createdAt: true,
+        updatedAt: true,
+      },
       orderBy: { createdAt: 'desc' }
     });
     console.log(`Found ${blogPosts.length} blog posts`);

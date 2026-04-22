@@ -9,6 +9,24 @@ export async function GET(request: NextRequest) {
   try {
     console.log("Fetching courses from DB...");
     const courses = await prisma.course.findMany({
+      select: {
+        id: true,
+        slug: true,
+        title: true,
+        description: true,
+        level: true,
+        duration: true,
+        price: true,
+        originalPrice: true,
+        rating: true,
+        students: true,
+        image: true,
+        registrationOpen: true,
+        instructorImage: true,
+        brochureUrl: true,
+        createdAt: true,
+        updatedAt: true,
+      },
       orderBy: { createdAt: 'desc' }
     });
     console.log(`Found ${courses.length} courses`);
@@ -29,7 +47,7 @@ export async function GET(request: NextRequest) {
       return trimmed;
     };
 
-    const normalized = courses.map((course: Course) => ({
+    const normalized = courses.map((course) => ({
       ...course,
       image: normalize(course.image),
       instructorImage: normalize(course.instructorImage),

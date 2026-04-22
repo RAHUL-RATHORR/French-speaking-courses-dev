@@ -7,8 +7,8 @@ import Footer from "@/components/Footer";
 import { formatDate } from "@/lib/utils";
 import { generateBreadcrumbStructuredData } from "@/lib/structured-data";
 import { blogPosts as staticBlogPosts } from "@/lib/blog-data";
-import { getRequestOrigin } from "@/lib/server-url";
-export const dynamic = "force-dynamic"; // top of file
+import { prisma } from "@/lib/db/prisma";
+
 interface BlogPost {
   id: string;
   title: string;
@@ -47,25 +47,20 @@ function createBlogPostStructuredData(post: BlogPost) {
 
 // Fetch a single blog post by slug
 async function getBlogPost(slug: string): Promise<BlogPost | null> {
-  // Always try API first, then fallback to static data
   try {
-    const baseUrl = getRequestOrigin();
-    const response = await fetch(`${baseUrl}/api/blogs/${slug}`, {
-      next: { revalidate: 10 }, // Cache for 10 seconds
-      cache: "no-store", // ⬅ always fresh
+    const post = await prisma.blogPost.findUnique({
+      where: { slug }
     });
 
-    if (response.ok) {
-      return response.json();
-    }
-
-    if (response.status === 404) {
-      console.warn(`Blog post with slug '${slug}' not found in API`);
-    } else {
-      console.warn("API response not ok:", response.status);
+    if (post) {
+      return {
+        ...post,
+        createdAt: post.createdAt.toISOString(),
+        updatedAt: post.updatedAt.toISOString(),
+      };
     }
   } catch (error) {
-    console.warn("API fetch failed, falling back to static data:", error);
+    console.warn("DB fetch failed, falling back to static data:", error);
   }
 
   // Fallback to static data
@@ -89,25 +84,33 @@ async function getBlogPost(slug: string): Promise<BlogPost | null> {
 
 // Fetch related blog posts (simplified version)
 async function getRelatedPosts(currentPostId: string): Promise<BlogPost[]> {
-  // Always try API first, then fallback to static data
   try {
-    const baseUrl = getRequestOrigin();
-    const response = await fetch(`${baseUrl}/api/blogs`, {
-      next: { revalidate: 10 }, // Cache for 10 seconds
-      cache: "no-store", // ⬅ always fresh
+    const posts = await prisma.blogPost.findMany({
+      where: {
+        id: { not: currentPostId }
+      },
+      select: {
+        id: true,
+        title: true,
+        slug: true,
+        excerpt: true,
+        image: true,
+        author: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+      take: 3,
+      orderBy: { createdAt: 'desc' }
     });
 
-    if (response.ok) {
-      const allPosts: BlogPost[] = await response.json();
-      return allPosts.filter((post) => post.id !== currentPostId).filter((post) => post?.slug?.toLocaleLowerCase()?.includes("test")).slice(0, 4);
-    }
-
-    console.warn("API response not ok for related posts:", response.status);
+    return posts.map(post => ({
+      ...post,
+      content: '', // Related posts don't need content
+      createdAt: post.createdAt.toISOString(),
+      updatedAt: post.updatedAt.toISOString(),
+    }));
   } catch (error) {
-    console.warn(
-      "API fetch failed for related posts, falling back to static data:",
-      error
-    );
+    console.warn("DB fetch failed for related posts, falling back to static data:", error);
   }
 
   // Fallback to static data
@@ -131,18 +134,17 @@ async function getRelatedPosts(currentPostId: string): Promise<BlogPost[]> {
 
 // Fetch all blog posts for static params generation
 async function getAllBlogPosts(): Promise<BlogPost[]> {
-  // Always use static data during build for generateStaticParams
-  return staticBlogPosts.map((post) => ({
-    id: post.id,
-    title: post.title,
-    slug: post.slug,
-    excerpt: post.excerpt,
-    content: post.content,
-    image: post.image,
-    author: post.author.name,
-    createdAt: post.date,
-    updatedAt: post.date,
-  }));
+  try {
+    const posts = await prisma.blogPost.findMany({
+      select: { slug: true }
+    });
+    return posts.map(p => ({ slug: p.slug } as BlogPost));
+  } catch (err) {
+    // Fallback to static data
+    return staticBlogPosts.map((post) => ({
+      slug: post.slug,
+    } as BlogPost));
+  }
 }
 
 // Generate metadata for the blog post

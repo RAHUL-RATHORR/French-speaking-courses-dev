@@ -1,11 +1,13 @@
-"use client";
-
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { generateCoursesListingStructuredData } from "@/lib/structured-data";
 import CourseFilter from "@/components/courses/CourseFilter";
-import { useEffect, useState } from "react";
-export const dynamic = "force-dynamic"; // top of file
+import { prisma } from "@/lib/db/prisma";
+
+import { unstable_cache } from "next/cache";
+
+export const revalidate = 60; 
+
 // Define course type according to the structured data interface in structured-data.ts
 interface CourseFromAPI {
   id: string;
@@ -19,6 +21,7 @@ interface CourseFromAPI {
   rating?: number;
   students: number;
   image?: string;
+  registrationOpen: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -38,61 +41,52 @@ interface Course {
   image: string;
 }
 
-async function getCourses() {
-  try {
-    const response = await fetch("/api/courses", {
-      cache: "no-store",
-    });
-
-    if (!response.ok) {
-      console.error(`API response error: ${response.status}`);
+const getCachedCourses = unstable_cache(
+  async () => {
+    try {
+      const courses = await prisma.course.findMany({
+        select: {
+          id: true,
+          slug: true,
+          title: true,
+          description: true,
+          level: true,
+          duration: true,
+          price: true,
+          originalPrice: true,
+          rating: true,
+          students: true,
+          image: true,
+          registrationOpen: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+        orderBy: { createdAt: 'desc' }
+      });
+      
+      return courses.map(course => ({
+        ...course,
+        createdAt: course.createdAt.toISOString(),
+        updatedAt: course.updatedAt.toISOString(),
+        originalPrice: course.originalPrice || undefined,
+        rating: course.rating || undefined,
+        image: course.image || undefined,
+      })) as CourseFromAPI[];
+    } catch (err) {
+      console.error("Error fetching courses from DB:", err);
       return [];
     }
+  },
+  ["courses-list"],
+  { revalidate: 60, tags: ["courses"] }
+);
 
-    return response.json();
-  } catch (err) {
-    console.error("Fetch failed:", err);
-    return [];
-  }
+async function getCoursesData(): Promise<CourseFromAPI[]> {
+  return getCachedCourses();
 }
 
-export default function CoursesPage() {
-  const [courses, setCourses] = useState<CourseFromAPI[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchCourses() {
-      try {
-        const coursesData = await getCourses();
-        setCourses(coursesData);
-      } catch (err) {
-        console.error("Error fetching courses:", err);
-        setError("Failed to load courses. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchCourses();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="min-h-screen">
-        <Header />
-        <div className="flex items-center justify-center py-20">
-          <div className="text-center">
-            <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
-            <p className="mt-4 text-lg font-medium text-gray-700">
-              Loading courses...
-            </p>
-          </div>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
+export default async function CoursesPage() {
+  const courses = await getCoursesData();
 
   // Define filter options based on fetched courses
   const filterOptions =
@@ -138,10 +132,10 @@ export default function CoursesPage() {
       level: course.level,
       duration: course.duration,
       price: course.price,
-      rating: course.rating ?? 5.0, // Provide a default rating if undefined
+      rating: course.rating ?? 5.0,
       students: course.students,
-      instructor: "French Skill Academy Instructors", // Default instructor for listing
-      image: course.image ?? "/french-skill.png", // Provide a default image if undefined
+      instructor: "French Skill Academy Instructors",
+      image: course.image ?? "/french-skill.png",
     })
   );
 
@@ -149,25 +143,6 @@ export default function CoursesPage() {
   const coursesStructuredData = generateCoursesListingStructuredData(
     coursesForStructuredData
   );
-
-  // Show error state if courses failed to load
-  if (error) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Header />
-        <div className="flex justify-center items-center h-64 flex-col">
-          <p className="text-lg text-red-600 mb-4">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-french-blue text-white rounded-md"
-          >
-            Retry
-          </button>
-        </div>
-        <Footer />
-      </div>
-    );
-  }
 
   return (
     <>

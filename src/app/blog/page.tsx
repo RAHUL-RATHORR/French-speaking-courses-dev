@@ -5,8 +5,9 @@ import Image from 'next/image';
 import { blogPosts as staticBlogPosts } from '@/lib/blog-data';
 import type { Metadata } from 'next';
 import { getRequestOrigin } from '@/lib/server-url';
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
+import { unstable_cache } from 'next/cache';
+
+export const revalidate = 60; 
 
 export const metadata: Metadata = {
   title: 'French Learning Blog | French Skill',
@@ -38,37 +39,55 @@ interface BlogPost {
   updatedAt: string;
 }
 
-async function getBlogPosts() {
-  // Always try API first, then fallback to static data
-  try {
-    const baseUrl = getRequestOrigin();
-    const response = await fetch(`${baseUrl}/api/blogs`, {
-      next: { revalidate: 10 }, // Cache for 10 seconds
-      cache: "no-store" // ⬅ always fresh
-    });
-    
-    if (response.ok) {
-      const posts = await response.json();
-      return posts;
+import { prisma } from '@/lib/db/prisma';
+
+const getCachedBlogs = unstable_cache(
+  async (): Promise<BlogPost[]> => {
+    try {
+      const posts = await prisma.blogPost.findMany({
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+          excerpt: true,
+          image: true,
+          author: true,
+          createdAt: true,
+          updatedAt: true,
+        },
+        orderBy: {
+          createdAt: 'desc'
+        }
+      });
+
+      return posts.map(post => ({
+        ...post,
+        content: '', // Listing doesn't need content
+        createdAt: post.createdAt.toISOString(),
+        updatedAt: post.updatedAt.toISOString(),
+      }));
+    } catch (err) {
+      console.error("Error fetching blog posts from DB:", err);
+      // Fallback to static data if DB fails
+      return staticBlogPosts.map(post => ({
+        id: post.id,
+        title: post.title,
+        slug: post.slug,
+        excerpt: post.excerpt,
+        content: post.content,
+        image: post.image,
+        author: post.author.name,
+        createdAt: post.date,
+        updatedAt: post.date,
+      }));
     }
-    
-    console.warn('API response not ok:', response.status);
-  } catch (error) {
-    console.warn('API fetch failed, falling back to static data:', error);
-  }
-  
-  // Transform static blog data to match API interface
-  return staticBlogPosts.map(post => ({
-    id: post.id,
-    title: post.title,
-    slug: post.slug,
-    excerpt: post.excerpt,
-    content: post.content,
-    image: post.image,
-    author: post.author.name,
-    createdAt: post.date,
-    updatedAt: post.date,
-  }));
+  },
+  ["blogs-list"],
+  { revalidate: 60, tags: ["blogs"] }
+);
+
+async function getBlogPosts(): Promise<BlogPost[]> {
+  return getCachedBlogs();
 }
 
 export default async function BlogPage() {

@@ -1,0 +1,146 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery - French Skill</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 40px; bg: #f9fafb; color: #111827; }
+        h1 { text-align: center; color: #002654; margin-bottom: 40px; }
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; }
+        .card { background: white; border-radius: 12px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); padding: 15px; text-align: center; border: 1px solid #e5e7eb; transition: transform 0.2s; }
+        .card:hover { transform: translateY(-5px); }
+        img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; border: 1px solid #f3f4f6; }
+        .filename { margin-top: 15px; font-size: 14px; color: #374151; word-break: break-all; font-weight: 500; background: #f3f4f6; padding: 8px; border-radius: 6px; }
+        .copy-btn { margin-top: 10px; cursor: pointer; background: #002654; color: white; border: none; padding: 5px 10px; border-radius: 4px; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <h1>🖼️ Your Uploaded Images</h1>
+    <p style="text-align:center; color:#6b7280; margin-bottom:30px;">In images ko dekh lijiye aur mujhe batayein ki kaunsa filename kis course ke liye hai.</p>
+    <div class="gallery">
+        
+            <div class="card">
+                <img src="/api/uploads/0eb126a0-a94c-4b3f-8c54-214c0ceed189.jpg" alt="0eb126a0-a94c-4b3f-8c54-214c0ceed189.jpg">
+                <div class="filename">0eb126a0-a94c-4b3f-8c54-214c0ceed189.jpg</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('0eb126a0-a94c-4b3f-8c54-214c0ceed189.jpg')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/131ff1cb-38cc-4ba1-9c91-5cef570fa9a4.jpeg" alt="131ff1cb-38cc-4ba1-9c91-5cef570fa9a4.jpeg">
+                <div class="filename">131ff1cb-38cc-4ba1-9c91-5cef570fa9a4.jpeg</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('131ff1cb-38cc-4ba1-9c91-5cef570fa9a4.jpeg')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/374cdb8a-8dff-4b21-bf93-2f47821cfd67.png" alt="374cdb8a-8dff-4b21-bf93-2f47821cfd67.png">
+                <div class="filename">374cdb8a-8dff-4b21-bf93-2f47821cfd67.png</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('374cdb8a-8dff-4b21-bf93-2f47821cfd67.png')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/3b494027-a438-4582-a7d6-e3bd1f625f24.PNG" alt="3b494027-a438-4582-a7d6-e3bd1f625f24.PNG">
+                <div class="filename">3b494027-a438-4582-a7d6-e3bd1f625f24.PNG</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('3b494027-a438-4582-a7d6-e3bd1f625f24.PNG')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/47ad1c4e-2959-484b-83d5-0cdfd46d4a81.jpeg" alt="47ad1c4e-2959-484b-83d5-0cdfd46d4a81.jpeg">
+                <div class="filename">47ad1c4e-2959-484b-83d5-0cdfd46d4a81.jpeg</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('47ad1c4e-2959-484b-83d5-0cdfd46d4a81.jpeg')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/51fabc28-502a-4f2d-bcc2-b7b5ab532e63.png" alt="51fabc28-502a-4f2d-bcc2-b7b5ab532e63.png">
+                <div class="filename">51fabc28-502a-4f2d-bcc2-b7b5ab532e63.png</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('51fabc28-502a-4f2d-bcc2-b7b5ab532e63.png')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/57cd7a79-0466-4185-8a70-eeb7cafb2ca4.jpeg" alt="57cd7a79-0466-4185-8a70-eeb7cafb2ca4.jpeg">
+                <div class="filename">57cd7a79-0466-4185-8a70-eeb7cafb2ca4.jpeg</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('57cd7a79-0466-4185-8a70-eeb7cafb2ca4.jpeg')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/5824f80d-6a20-4203-ad3f-a9bc0e0c37d9.jpeg" alt="5824f80d-6a20-4203-ad3f-a9bc0e0c37d9.jpeg">
+                <div class="filename">5824f80d-6a20-4203-ad3f-a9bc0e0c37d9.jpeg</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('5824f80d-6a20-4203-ad3f-a9bc0e0c37d9.jpeg')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/5bbf88f5-394d-48c7-9923-a50774899aef.jpeg" alt="5bbf88f5-394d-48c7-9923-a50774899aef.jpeg">
+                <div class="filename">5bbf88f5-394d-48c7-9923-a50774899aef.jpeg</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('5bbf88f5-394d-48c7-9923-a50774899aef.jpeg')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/62bc7b0b-5091-4da7-9756-3cc76e7c10b1.jpeg" alt="62bc7b0b-5091-4da7-9756-3cc76e7c10b1.jpeg">
+                <div class="filename">62bc7b0b-5091-4da7-9756-3cc76e7c10b1.jpeg</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('62bc7b0b-5091-4da7-9756-3cc76e7c10b1.jpeg')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/957e0227-f104-407f-92ec-4b4cc6040e2e.jpeg" alt="957e0227-f104-407f-92ec-4b4cc6040e2e.jpeg">
+                <div class="filename">957e0227-f104-407f-92ec-4b4cc6040e2e.jpeg</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('957e0227-f104-407f-92ec-4b4cc6040e2e.jpeg')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/a29b3139-8ca0-4e3c-91c2-a3d51e8c8fa3.jfif" alt="a29b3139-8ca0-4e3c-91c2-a3d51e8c8fa3.jfif">
+                <div class="filename">a29b3139-8ca0-4e3c-91c2-a3d51e8c8fa3.jfif</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('a29b3139-8ca0-4e3c-91c2-a3d51e8c8fa3.jfif')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/a34107b4-2032-4e3a-89e4-671bf05f7ab1.jpeg" alt="a34107b4-2032-4e3a-89e4-671bf05f7ab1.jpeg">
+                <div class="filename">a34107b4-2032-4e3a-89e4-671bf05f7ab1.jpeg</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('a34107b4-2032-4e3a-89e4-671bf05f7ab1.jpeg')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/cb6d96b3-d5c3-4d34-a7b9-11d78ae21965.jpg" alt="cb6d96b3-d5c3-4d34-a7b9-11d78ae21965.jpg">
+                <div class="filename">cb6d96b3-d5c3-4d34-a7b9-11d78ae21965.jpg</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('cb6d96b3-d5c3-4d34-a7b9-11d78ae21965.jpg')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/d5695b5a-ff66-4d6d-9325-e194b979ac7e.jpeg" alt="d5695b5a-ff66-4d6d-9325-e194b979ac7e.jpeg">
+                <div class="filename">d5695b5a-ff66-4d6d-9325-e194b979ac7e.jpeg</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('d5695b5a-ff66-4d6d-9325-e194b979ac7e.jpeg')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/e163afd8-79b3-4bbb-afea-4c1523b19a79.jpeg" alt="e163afd8-79b3-4bbb-afea-4c1523b19a79.jpeg">
+                <div class="filename">e163afd8-79b3-4bbb-afea-4c1523b19a79.jpeg</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('e163afd8-79b3-4bbb-afea-4c1523b19a79.jpeg')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/e785b247-6383-4ef5-9088-48b4e6ec50e6.jpeg" alt="e785b247-6383-4ef5-9088-48b4e6ec50e6.jpeg">
+                <div class="filename">e785b247-6383-4ef5-9088-48b4e6ec50e6.jpeg</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('e785b247-6383-4ef5-9088-48b4e6ec50e6.jpeg')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/f15cc240-96dd-470a-8080-aeb200bc5a94.jpeg" alt="f15cc240-96dd-470a-8080-aeb200bc5a94.jpeg">
+                <div class="filename">f15cc240-96dd-470a-8080-aeb200bc5a94.jpeg</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('f15cc240-96dd-470a-8080-aeb200bc5a94.jpeg')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/f318e821-f6a4-4f6e-accc-b2c75eca5911.jpeg" alt="f318e821-f6a4-4f6e-accc-b2c75eca5911.jpeg">
+                <div class="filename">f318e821-f6a4-4f6e-accc-b2c75eca5911.jpeg</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('f318e821-f6a4-4f6e-accc-b2c75eca5911.jpeg')">Copy Filename</button>
+            </div>
+        
+            <div class="card">
+                <img src="/api/uploads/ffc6ec03-08f0-4e38-ae1a-b0ed9100cd60.jpeg" alt="ffc6ec03-08f0-4e38-ae1a-b0ed9100cd60.jpeg">
+                <div class="filename">ffc6ec03-08f0-4e38-ae1a-b0ed9100cd60.jpeg</div>
+                <button class="copy-btn" onclick="navigator.clipboard.writeText('ffc6ec03-08f0-4e38-ae1a-b0ed9100cd60.jpeg')">Copy Filename</button>
+            </div>
+        
+    </div>
+</body>
+</html>
