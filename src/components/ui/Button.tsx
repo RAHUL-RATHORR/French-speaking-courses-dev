@@ -47,14 +47,14 @@ export default function Button({
   if (href) {
     return (
       <Link href={href} className={buttonStyles}>
-        <span className="relative z-10">{children}</span>
+        <span className="relative z-10 flex items-center justify-center">{children}</span>
       </Link>
     );
   }
   
   return (
     <button className={buttonStyles} {...props}>
-      <span className="relative z-10">{children}</span>
+      <span className="relative z-10 flex items-center justify-center">{children}</span>
     </button>
   );
 }

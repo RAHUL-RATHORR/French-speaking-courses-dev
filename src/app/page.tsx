@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -982,7 +982,7 @@ export default function Home() {
             <Button
               href="#contact"
               variant="primary"
-              className="shadow-lg transform hover:scale-105 active:scale-95"
+              className="shadow-lg transform hover:scale-105 active:scale-95 flex items-center"
             >
               <span>Contact Us</span>
               <svg
