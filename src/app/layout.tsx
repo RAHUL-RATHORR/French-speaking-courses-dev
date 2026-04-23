@@ -45,7 +45,7 @@ export const metadata: Metadata = {
       "Master French with our comprehensive online courses. Interactive lessons, expert instructors, and flexible learning for all levels.",
     images: [
       {
-        url: "/french-skill.png",
+        url: "/frenchskill-logo.png",
         width: 1200,
         height: 630,
         alt: "French Skill logo",
@@ -65,9 +65,9 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-  "max-snippet": -1,
-  "max-image-preview": "large",
-  "max-video-preview": -1,
+      "max-snippet": -1,
+      "max-image-preview": "large",
+      "max-video-preview": -1,
     },
   },
   verification: {
@@ -84,13 +84,13 @@ export default function RootLayout({
     <html lang="en">
       <head>
         {/* Google reCAPTCHA v3 */}
-        { (
+        {(
           <Script
             id="recaptcha-v3"
             src={`https://www.google.com/recaptcha/api.js?render=${'6LdKD5krAAAAAPxNRvx8Tt0E8k4Io5SwvsCXqYiO'}`}
             strategy="afterInteractive"
           />
-        ) }
+        )}
         {/* Schema.org JSON-LD */}
         <Script id="ld-org" type="application/ld+json" strategy="afterInteractive">
           {JSON.stringify({
@@ -114,7 +114,7 @@ export default function RootLayout({
             },
           })}
         </Script>
-        
+
         {/* Google Analytics */}
         <Script
           async

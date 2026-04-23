@@ -6,7 +6,7 @@ import { prisma } from "@/lib/db/prisma";
 
 import { unstable_cache } from "next/cache";
 
-export const revalidate = 60; 
+export const revalidate = 60;
 
 // Define course type according to the structured data interface in structured-data.ts
 interface CourseFromAPI {
@@ -63,7 +63,7 @@ const getCachedCourses = unstable_cache(
         },
         orderBy: { createdAt: 'desc' }
       });
-      
+
       return courses.map(course => ({
         ...course,
         createdAt: course.createdAt.toISOString(),
@@ -92,34 +92,34 @@ export default async function CoursesPage() {
   const filterOptions =
     courses.length > 0
       ? [
-          { label: "All courses", value: "all", count: courses.length },
-          {
-            label: "Beginner",
-            value: "Beginner",
-            count: courses.filter((c: CourseFromAPI) => c.level === "Beginner")
-              .length,
-          },
-          {
-            label: "Intermediate",
-            value: "Intermediate",
-            count: courses.filter(
-              (c: CourseFromAPI) => c.level === "Intermediate"
-            ).length,
-          },
-          {
-            label: "Advanced",
-            value: "Advanced",
-            count: courses.filter((c: CourseFromAPI) => c.level === "Advanced")
-              .length,
-          },
-          {
-            label: "All levels",
-            value: "All levels",
-            count: courses.filter(
-              (c: CourseFromAPI) => c.level === "All levels"
-            ).length,
-          },
-        ]
+        { label: "All courses", value: "all", count: courses.length },
+        {
+          label: "Beginner",
+          value: "Beginner",
+          count: courses.filter((c: CourseFromAPI) => c.level === "Beginner")
+            .length,
+        },
+        {
+          label: "Intermediate",
+          value: "Intermediate",
+          count: courses.filter(
+            (c: CourseFromAPI) => c.level === "Intermediate"
+          ).length,
+        },
+        {
+          label: "Advanced",
+          value: "Advanced",
+          count: courses.filter((c: CourseFromAPI) => c.level === "Advanced")
+            .length,
+        },
+        {
+          label: "All levels",
+          value: "All levels",
+          count: courses.filter(
+            (c: CourseFromAPI) => c.level === "All levels"
+          ).length,
+        },
+      ]
       : [];
 
   // Map API courses to the format required by structured data

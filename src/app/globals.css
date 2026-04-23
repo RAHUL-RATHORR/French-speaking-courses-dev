@@ -28,13 +28,11 @@ body {
 }
 
 .hero-gradient-enhanced {
-  background: linear-gradient(
-    135deg,
-    #001433 0%,
-    #002654 25%,
-    #0066cc 75%,
-    #ce1126 100%
-  );
+  background: linear-gradient(135deg,
+      #001433 0%,
+      #002654 25%,
+      #0066cc 75%,
+      #ce1126 100%);
 }
 
 .red-accent-gradient {
@@ -100,7 +98,7 @@ body {
   left: 0;
 }
 
-.btn-french-primary > * {
+.btn-french-primary>* {
   position: relative;
   z-index: 1;
 }
@@ -127,13 +125,16 @@ body {
 
 /* French Flag Animation */
 @keyframes french-wave {
+
   0%,
   100% {
     transform: translateX(0);
   }
+
   25% {
     transform: translateX(-2px);
   }
+
   75% {
     transform: translateX(2px);
   }
@@ -172,14 +173,17 @@ body {
 .prose h1 {
   font-size: 2.25em;
 }
+
 .prose h2 {
   font-size: 1.875em;
   color: var(--french-blue);
 }
+
 .prose h3 {
   font-size: 1.5em;
   color: #374151;
 }
+
 .prose h4 {
   font-size: 1.25em;
   color: #4b5563;
@@ -190,6 +194,7 @@ body {
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-50%);
   }

@@ -7,7 +7,7 @@ import type { Metadata } from 'next';
 import { getRequestOrigin } from '@/lib/server-url';
 import { unstable_cache } from 'next/cache';
 
-export const revalidate = 60; 
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: 'French Learning Blog | French Skill',
@@ -94,7 +94,7 @@ export default async function BlogPage() {
   // Server-side data fetching
   let blogPosts: BlogPost[] = [];
   let error = null;
-  
+
   try {
     blogPosts = await getBlogPosts();
   } catch (err) {
@@ -125,7 +125,7 @@ export default async function BlogPage() {
         <Header />
         <div className="flex justify-center items-center h-64 flex-col">
           <p className="text-lg text-red-600 mb-4">{error}</p>
-          <Link 
+          <Link
             href="/blog"
             className="px-4 py-2 bg-french-blue text-white rounded-md hover:bg-blue-700 transition-colors"
           >
@@ -145,7 +145,7 @@ export default async function BlogPage() {
       />
       <div className="min-h-screen bg-gray-50">
         <Header />
-      
+
         {/* Page Header */}
         <section className="relative hero-gradient-enhanced text-white py-24 overflow-hidden">
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -153,11 +153,11 @@ export default async function BlogPage() {
               <span className="mr-2">📝</span>
               French Learning Blog
             </div>
-            
+
             <h1 className="text-5xl md:text-6xl font-bold mb-6 leading-tight">
               Our Blog
             </h1>
-            
+
             <p className="text-xl md:text-2xl opacity-90 max-w-4xl mx-auto mb-12">
               Tips, resources, and insights for French language learners
             </p>
@@ -173,8 +173,8 @@ export default async function BlogPage() {
                   <Link href={`/blog/${post.slug}`} key={post.id}>
                     <div className="bg-white rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
                       <div className="relative h-48">
-                        <Image 
-                          src={post.image || '/french-skill.png'} 
+                        <Image
+                          src={post.image || '/french-skill.png'}
                           alt={post.title}
                           fill
                           style={{ objectFit: 'cover' }}
@@ -204,7 +204,7 @@ export default async function BlogPage() {
                 <p className="text-gray-600 mb-8 max-w-md mx-auto">
                   We&apos;re working on creating amazing content for French learners. Check back soon for new articles and resources.
                 </p>
-                <Link 
+                <Link
                   href="/"
                   className="inline-flex items-center px-6 py-3 bg-french-blue text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >

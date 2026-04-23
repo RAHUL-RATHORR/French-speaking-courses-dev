@@ -58,9 +58,9 @@ export async function GET(request: NextRequest) {
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : "An unknown error occurred";
     console.error("Error fetching courses:", error);
-    return NextResponse.json({ 
-      error: "Failed to fetch courses", 
-      details: message 
+    return NextResponse.json({
+      error: "Failed to fetch courses",
+      details: message
     }, { status: 500 });
   }
 }

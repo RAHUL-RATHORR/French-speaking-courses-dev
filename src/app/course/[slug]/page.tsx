@@ -20,10 +20,10 @@ async function getCourse(slug: string): Promise<CourseWithSections | null> {
     const course = await prisma.course.findUnique({
       where: { slug }
     });
-    
+
     // Transform the course data to match our interface
     if (!course) return null;
-    
+
     return {
       ...course,
       originalPrice: course.originalPrice || undefined,
@@ -75,7 +75,7 @@ export async function generateMetadata({ params }: CourseParams): Promise<Metada
       type: "website",
       locale: "en_US",
       siteName: "French Speaking Courses",
-  url: `https://www.frenchskill.com/courses/${course.slug}`,
+      url: `https://www.frenchskill.com/courses/${course.slug}`,
       images: [
         {
           url: course.image || "/french-skill.png",
@@ -157,9 +157,9 @@ export default async function CoursePage({ params }: CourseParams) {
 
   // Generate breadcrumb structured data
   const breadcrumbStructuredData = generateBreadcrumbStructuredData([
-  { name: "Home", url: "https://www.frenchskill.com/" },
-  { name: "Courses", url: "https://www.frenchskill.com/courses" },
-  { name: course.title, url: `https://www.frenchskill.com/courses/${course.slug}` }
+    { name: "Home", url: "https://www.frenchskill.com/" },
+    { name: "Courses", url: "https://www.frenchskill.com/courses" },
+    { name: course.title, url: `https://www.frenchskill.com/courses/${course.slug}` }
   ]);
 
   return (
@@ -169,13 +169,13 @@ export default async function CoursePage({ params }: CourseParams) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(courseStructuredData) }}
       />
-      
+
       {/* Breadcrumb Structured Data for SEO */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbStructuredData) }}
       />
-      
+
       {/* Client-side component for interactivity */}
       <CoursePageClient course={course} />
     </>
