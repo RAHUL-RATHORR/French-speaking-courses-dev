@@ -45,7 +45,7 @@ export const metadata: Metadata = {
       "Master French with our comprehensive online courses. Interactive lessons, expert instructors, and flexible learning for all levels.",
     images: [
       {
-        url: "/frenchskill-logo.png",
+        url: "/french-icon.jpeg",
         width: 1200,
         height: 630,
         alt: "French Skill logo",

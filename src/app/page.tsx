@@ -329,16 +329,16 @@ export default function Home() {
             <div className="w-full md:w-1/2 mt-12 md:mt-0 relative">
               <div className="relative h-96 w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white/30">
                 <Image
-                  src="/1.jpeg"
+                  src="/frenchskill-class.jpeg"
                   alt="French language learning"
                   fill
                   className="object-cover"
                   priority
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
-                  <div className="text-lg font-semibold">Featured Course</div>
-                  <div className="text-2xl font-bold">French for Travelers</div>
-                  <Link
+                  <div className="text-lg font-semibold">All French Courses</div>
+                  <div className="text-2xl font-bold">Certified French Tutors</div>
+                  {/* <Link
                     href="/french-for-travelers"
                     className="text-blue-300 flex items-center mt-2"
                   >
@@ -357,17 +357,17 @@ export default function Home() {
                         d="M9 5l7 7-7 7"
                       />
                     </svg>
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
 
               {/* Floating elements */}
-              <div className="absolute -top-5 -right-5 rounded-full p-4 shadow-lg">
+              <div className="absolute -top-5 -right-5 rounded-full p-2 shadow-lg">
                 <div className="text-3xl">
                   <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="30px" height="30px" viewBox="0 0 36 36" aria-hidden="true" role="img" className="iconify iconify--twemoji" preserveAspectRatio="xMidYMid meet"><path fill="#ED2939" d="M36 27a4 4 0 0 1-4 4h-8V5h8a4 4 0 0 1 4 4v18z" /><path fill="#002495" d="M4 5a4 4 0 0 0-4 4v18a4 4 0 0 0 4 4h8V5H4z" /><path fill="#EEE" d="M12 5h12v26H12z" /></svg>
                 </div>
               </div>
-              <div className="absolute -bottom-5 -left-5 bg-french-red rounded-full p-4 shadow-lg">
+              <div className="absolute -bottom-5 -left-5 bg-french-red rounded-full p-2 shadow-lg">
                 <div className="text-3xl">📚</div>
               </div>
             </div>
@@ -616,7 +616,7 @@ export default function Home() {
               <div className="rounded-2xl overflow-hidden shadow-lg">
                 <div className="aspect-video relative">
                   <Image
-                    src="/e163afd8-79b3-4bbb-afea-4c1523b19a79.jpeg"
+                    src="/frenchskill-team.jpeg"
                     alt="Our teaching team"
                     fill
                     className="object-cover"

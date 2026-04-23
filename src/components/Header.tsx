@@ -28,7 +28,7 @@ export default function Header() {
                 alt="French Skill Logo"
                 width={48}
                 height={48}
-                className="rounded-full shadow-french-lg"
+                // className="rounded-full shadow-french-lg"
                 priority
               />
             </div>
