@@ -141,8 +141,19 @@ export default function CoursesManagement() {
       });
       
       if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Failed to save course");
+        let errorMessage = "Failed to save course";
+        try {
+          const errorData = await res.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch (e) {
+          // If response is not JSON (like Vercel 413 error)
+          if (res.status === 413) {
+            errorMessage = "Data too large! Please reduce the amount of text or sections.";
+          } else {
+            errorMessage = `Server Error (${res.status}). Please try again.`;
+          }
+        }
+        throw new Error(errorMessage);
       }
       
       // Reset form and refresh courses list
