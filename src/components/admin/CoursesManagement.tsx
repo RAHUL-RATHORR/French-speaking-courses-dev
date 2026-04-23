@@ -119,9 +119,17 @@ export default function CoursesManagement() {
     e.preventDefault();
     
     try {
+      // Filter out empty dynamic sections to reduce payload size
+      const cleanedDynamicSections = Object.entries(dynamicSections).reduce((acc, [key, value]) => {
+        if (value !== null && value !== undefined && (typeof value !== 'object' || Object.keys(value as object).length > 0)) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {} as Record<string, unknown>);
+
       const courseData = {
         ...formData,
-        ...dynamicSections,
+        ...cleanedDynamicSections,
         rating: formData.rating ? parseFloat(formData.rating) : null,
         students: formData.students ? parseInt(formData.students) : 0,
       };
