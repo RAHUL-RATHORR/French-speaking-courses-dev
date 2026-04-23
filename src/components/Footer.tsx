@@ -262,7 +262,7 @@ export default function Footer() {
                 <li>
                   <Link
                     href="/courses"
-                    className="group flex items-center !text-yellow-400 font-bold hover:text-white"
+                    className="group flex items-center !text-red-300 hover:text-white"
                   >
                     <span className="mr-2 opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300">
                       ›
@@ -330,7 +330,7 @@ export default function Footer() {
                 <li>
                   <Link
                     href="/blog"
-                    className="group flex items-center !text-yellow-400 font-bold hover:text-white"
+                    className="group flex items-center !text-red-300 hover:text-white"
                   >
                     <span className="mr-2 opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300">
                       ›
@@ -372,7 +372,7 @@ export default function Footer() {
                   </Link>
                 </li>
                 <li className="flex items-center mt-6 bg-gray-700/30 p-3 rounded-lg">
-                  <div className="mr-3 text-french-red">
+                  <div className="mr-3 !text-red-300">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       className="h-5 w-5"
@@ -392,7 +392,7 @@ export default function Footer() {
                     <div className="text-sm font-medium">Need Help?</div>
                     <a
                       href="mail:info@frenchskill.com"
-                      className="text-white hover:text-french-red transition-colors"
+                      className="text-white hover:!text-red-300 transition-colors"
                     >
                       info@frenchskill.com
                     </a>
