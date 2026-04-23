@@ -41,7 +41,7 @@ export default function Footer() {
             "6LdKD5krAAAAAPxNRvx8Tt0E8k4Io5SwvsCXqYiO",
             { action: "newsletter_submit" }
           );
-        } catch {}
+        } catch { }
       }
 
       const response = await fetch("/api/newsletter", {
@@ -219,9 +219,7 @@ export default function Footer() {
             {/* Courses */}
             <div>
               <h3 className="text-lg font-semibold mb-4 relative pb-2 border-b border-gray-700 inline-block">
-                <span className="relative after:absolute after:bottom-[-8px] after:left-0 after:w-1/2 after:h-[3px] after:bg-french-red">
-                  Courses
-                </span>
+                Courses
               </h3>
               <ul className="space-y-3">
                 <li>
@@ -264,8 +262,7 @@ export default function Footer() {
                 <li>
                   <Link
                     href="/courses"
-                    variant="footer"
-                    className="group flex items-center text-french-red hover:text-white"
+                    className="group flex items-center !text-yellow-400 font-bold hover:text-white"
                   >
                     <span className="mr-2 opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300">
                       ›
@@ -279,9 +276,7 @@ export default function Footer() {
             {/* Blog */}
             <div>
               <h3 className="text-lg font-semibold mb-4 relative pb-2 border-b border-gray-700 inline-block">
-                <span className="relative after:absolute after:bottom-[-8px] after:left-0 after:w-1/2 after:h-[3px] after:bg-french-red">
-                  Blog
-                </span>
+                Blog
               </h3>
               <ul className="space-y-3">
                 <li>
@@ -335,8 +330,7 @@ export default function Footer() {
                 <li>
                   <Link
                     href="/blog"
-                    variant="footer"
-                    className="group flex items-center text-french-red hover:text-white"
+                    className="group flex items-center !text-yellow-400 font-bold hover:text-white"
                   >
                     <span className="mr-2 opacity-0 group-hover:opacity-100 transform translate-x-[-10px] group-hover:translate-x-0 transition-all duration-300">
                       ›
@@ -350,9 +344,7 @@ export default function Footer() {
             {/* Support */}
             <div>
               <h3 className="text-lg font-semibold mb-4 relative pb-2 border-b border-gray-700 inline-block">
-                <span className="relative after:absolute after:bottom-[-8px] after:left-0 after:w-1/2 after:h-[3px] after:bg-french-red">
-                  Support
-                </span>
+                Support
               </h3>
               <ul className="space-y-3">
                 <li>
