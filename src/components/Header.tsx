@@ -24,7 +24,7 @@ export default function Header() {
           >
             <div className="relative">
               <Image
-                src="/frenchskill-white.png"
+                src="/french-icon.png"
                 alt="French Skill Logo"
                 width={48}
                 height={48}

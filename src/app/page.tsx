@@ -163,10 +163,10 @@ export default function Home() {
     try {
       // reCAPTCHA v3 token
       let recaptchaToken = "";
-    if (typeof window !== "undefined" && window.grecaptcha && '6LdKD5krAAAAAPxNRvx8Tt0E8k4Io5SwvsCXqYiO') {
+      if (typeof window !== "undefined" && window.grecaptcha && '6LdKD5krAAAAAPxNRvx8Tt0E8k4Io5SwvsCXqYiO') {
         try {
-      recaptchaToken = await window.grecaptcha.execute('6LdKD5krAAAAAPxNRvx8Tt0E8k4Io5SwvsCXqYiO', { action: "contact_submit" });
-        } catch {}
+          recaptchaToken = await window.grecaptcha.execute('6LdKD5krAAAAAPxNRvx8Tt0E8k4Io5SwvsCXqYiO', { action: "contact_submit" });
+        } catch { }
       }
 
       const response = await fetch("/api/contact", {
@@ -364,7 +364,7 @@ export default function Home() {
               {/* Floating elements */}
               <div className="absolute -top-5 -right-5 rounded-full p-4 shadow-lg">
                 <div className="text-3xl">
-                 <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="30px" height="30px" viewBox="0 0 36 36" aria-hidden="true" role="img" className="iconify iconify--twemoji" preserveAspectRatio="xMidYMid meet"><path fill="#ED2939" d="M36 27a4 4 0 0 1-4 4h-8V5h8a4 4 0 0 1 4 4v18z"/><path fill="#002495" d="M4 5a4 4 0 0 0-4 4v18a4 4 0 0 0 4 4h8V5H4z"/><path fill="#EEE" d="M12 5h12v26H12z"/></svg>
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" width="30px" height="30px" viewBox="0 0 36 36" aria-hidden="true" role="img" className="iconify iconify--twemoji" preserveAspectRatio="xMidYMid meet"><path fill="#ED2939" d="M36 27a4 4 0 0 1-4 4h-8V5h8a4 4 0 0 1 4 4v18z" /><path fill="#002495" d="M4 5a4 4 0 0 0-4 4v18a4 4 0 0 0 4 4h8V5H4z" /><path fill="#EEE" d="M12 5h12v26H12z" /></svg>
                 </div>
               </div>
               <div className="absolute -bottom-5 -left-5 bg-french-red rounded-full p-4 shadow-lg">
@@ -814,9 +814,8 @@ export default function Home() {
                   <button
                     type="submit"
                     disabled={contactLoading}
-                    className={`w-full btn-french-primary text-white hover:text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 ${
-                      contactLoading ? "opacity-70 cursor-not-allowed" : ""
-                    }`}
+                    className={`w-full btn-french-primary text-white hover:text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition-all duration-300 ${contactLoading ? "opacity-70 cursor-not-allowed" : ""
+                      }`}
                   >
                     {contactLoading ? (
                       <span className="flex items-center justify-center">
@@ -949,9 +948,8 @@ export default function Home() {
                     {faq.question}
                   </span>
                   <svg
-                    className={`w-5 h-5 text-french-blue transform transition-transform duration-200 flex-shrink-0 ${
-                      openFAQ === index ? "rotate-180" : ""
-                    }`}
+                    className={`w-5 h-5 text-french-blue transform transition-transform duration-200 flex-shrink-0 ${openFAQ === index ? "rotate-180" : ""
+                      }`}
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
