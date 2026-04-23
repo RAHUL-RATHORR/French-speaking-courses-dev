@@ -187,52 +187,70 @@ export default function CoursesManagement() {
     }
   };
   
-  const startEdit = (course: Course) => {
-    setEditingCourse(course);
-    setFormData({
-      title: course.title,
-      description: course.description,
-      level: course.level,
-      duration: course.duration,
-      price: course.price,
-      originalPrice: course.originalPrice || "",
-      rating: course.rating?.toString() || "",
-      students: course.students.toString(),
-      image: course?.image || "",
-      instructorImage: course?.instructorImage || "",
-      brochureUrl: course?.brochureUrl || "", // Add brochure URL field
-      slug: course.slug,
-      offerEndDate: course.offerEndDate || "",
-      promotionBannerText: course.promotionBannerText || "",
-      startDate: course.startDate || "",
-      metaTitle: course.metaTitle || "",
-      metaDescription: course.metaDescription || "",
-      ctaText: course.ctaText || "",
-      registrationOpen: course.registrationOpen !== false, // Default to true if not specified
-      batches: course.batches ? JSON.stringify(course.batches) : "[]",
-      requirements: course.requirements ? JSON.stringify(course.requirements) : "[]",
-      timings: course.timings ? JSON.stringify(course.timings) : "{}"
-    });
-    
-    // Load existing dynamic sections if available
-    const existingSections = {
-      heroBannerSection: (course as unknown as Record<string, unknown>).heroBannerSection || null,
-      overviewSection: (course as unknown as Record<string, unknown>).overviewSection || null,
-      whyEnrollSection: (course as unknown as Record<string, unknown>).whyEnrollSection || null,
-      benefitsSection: (course as unknown as Record<string, unknown>).benefitsSection || null,
-      curriculumSection: (course as unknown as Record<string, unknown>).curriculumSection || null,
-      feesSection: (course as unknown as Record<string, unknown>).feesSection || null,
-      skillsToolsSection: (course as unknown as Record<string, unknown>).skillsToolsSection || null,
-      projectsSection: (course as unknown as Record<string, unknown>).projectsSection || null,
-      reviewsSection: (course as unknown as Record<string, unknown>).reviewsSection || null,
-      faqSection: (course as unknown as Record<string, unknown>).faqSection || null,
-      comparisonSection: (course as unknown as Record<string, unknown>).comparisonSection || null,
-      batchScheduleSection: (course as unknown as Record<string, unknown>).batchScheduleSection || null,
-      ctaSections: (course as unknown as Record<string, unknown>).ctaSections || null,
-    };
-    setDynamicSections(existingSections);
-    
-    setShowForm(true);
+  const [fetchingCourseId, setFetchingCourseId] = useState<string | null>(null);
+
+  const startEdit = async (courseSummary: Course) => {
+    try {
+      setFetchingCourseId(courseSummary.id);
+      const res = await fetch(`/api/admin/courses/${courseSummary.id}`);
+      
+      if (!res.ok) {
+        throw new Error("Failed to fetch full course details");
+      }
+      
+      const course = await res.json();
+      
+      setEditingCourse(course);
+      setFormData({
+        title: course.title,
+        description: course.description || "",
+        level: course.level,
+        duration: course.duration,
+        price: course.price,
+        originalPrice: course.originalPrice || "",
+        rating: course.rating?.toString() || "",
+        students: course.students.toString(),
+        image: course?.image || "",
+        instructorImage: course?.instructorImage || "",
+        brochureUrl: course?.brochureUrl || "",
+        slug: course.slug,
+        offerEndDate: course.offerEndDate || "",
+        promotionBannerText: course.promotionBannerText || "",
+        startDate: course.startDate || "",
+        metaTitle: course.metaTitle || "",
+        metaDescription: course.metaDescription || "",
+        ctaText: course.ctaText || "",
+        registrationOpen: course.registrationOpen !== false,
+        batches: course.batches ? (typeof course.batches === 'string' ? course.batches : JSON.stringify(course.batches)) : "[]",
+        requirements: course.requirements ? (typeof course.requirements === 'string' ? course.requirements : JSON.stringify(course.requirements)) : "[]",
+        timings: course.timings ? (typeof course.timings === 'string' ? course.timings : JSON.stringify(course.timings)) : "{}"
+      });
+      
+      // Load existing dynamic sections if available
+      const existingSections = {
+        heroBannerSection: course.heroBannerSection || null,
+        overviewSection: course.overviewSection || null,
+        whyEnrollSection: course.whyEnrollSection || null,
+        benefitsSection: course.benefitsSection || null,
+        curriculumSection: course.curriculumSection || null,
+        feesSection: course.feesSection || null,
+        skillsToolsSection: course.skillsToolsSection || null,
+        projectsSection: course.projectsSection || null,
+        reviewsSection: course.reviewsSection || null,
+        faqSection: course.faqSection || null,
+        comparisonSection: course.comparisonSection || null,
+        batchScheduleSection: course.batchScheduleSection || null,
+        ctaSections: course.ctaSections || null,
+      };
+      setDynamicSections(existingSections);
+      
+      setShowForm(true);
+    } catch (err) {
+      console.error("Error fetching course details:", err);
+      setError("Failed to load course details for editing");
+    } finally {
+      setFetchingCourseId(null);
+    }
   };
   
   const handleDelete = async (id: string) => {
@@ -732,9 +750,10 @@ export default function CoursesManagement() {
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button
                       onClick={() => startEdit(course)}
-                      className="text-indigo-600 hover:text-indigo-900 mr-4"
+                      disabled={fetchingCourseId === course.id}
+                      className={`text-indigo-600 hover:text-indigo-900 mr-4 font-medium ${fetchingCourseId === course.id ? 'opacity-50 cursor-not-allowed' : ''}`}
                     >
-                      Edit
+                      {fetchingCourseId === course.id ? "Loading..." : "Edit"}
                     </button>
                     <button
                       onClick={() => handleDelete(course.id)}
