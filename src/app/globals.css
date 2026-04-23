@@ -120,7 +120,8 @@ body {
 .section-divider {
   height: 4px;
   background: linear-gradient(90deg, #002654 33%, #ffffff 33% 66%, #ce1126 66%);
-  margin: 2rem 0;
+  margin: 2rem auto;
+  width: 8rem;
 }
 
 /* French Flag Animation */

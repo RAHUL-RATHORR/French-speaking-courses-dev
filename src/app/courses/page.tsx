@@ -82,7 +82,17 @@ const getCachedCourses = unstable_cache(
 );
 
 async function getCoursesData(): Promise<CourseFromAPI[]> {
-  return getCachedCourses();
+  try {
+    const baseUrl = process.env.NEXTAUTH_URL || 'https://www.frenchskill.com';
+    const response = await fetch(`${baseUrl}/api/courses`, { 
+      next: { revalidate: 60, tags: ['courses'] } 
+    });
+    if (!response.ok) throw new Error("Failed to fetch courses");
+    return await response.json();
+  } catch (err) {
+    console.error("Error fetching courses via API:", err);
+    return [];
+  }
 }
 
 export default async function CoursesPage() {

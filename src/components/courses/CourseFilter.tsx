@@ -170,7 +170,7 @@ export default function CourseFilter({ courses, filterOptions }: CourseFilterPro
                 <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
                   {selectedFilter === 'all' ? 'All our courses' : `Courses ${selectedFilter}`}
                 </h2>
-                <div className="section-divider w-24 mx-auto"></div>
+                <div className="section-divider w-32 mx-auto"></div>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
