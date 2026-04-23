@@ -59,7 +59,7 @@ export default function CourseFilter({ courses, filterOptions }: CourseFilterPro
       params.delete('category');
     } else {
       // Check if it's a level or category filter
-      const isLevel = ['Beginner', 'Intermediate', 'Advanced', 'All levels'].includes(filter);
+      const isLevel = ['Beginner', 'Intermediate', 'Advanced', 'All Levels'].includes(filter);
       if (isLevel) {
         params.set('level', filter);
         params.delete('category');

@@ -44,6 +44,7 @@ interface Course {
 const getCachedCourses = unstable_cache(
   async () => {
     try {
+      console.log("Fetching courses from DB (Cache Miss)...");
       const courses = await prisma.course.findMany({
         select: {
           id: true,
@@ -73,11 +74,11 @@ const getCachedCourses = unstable_cache(
         image: course.image || undefined,
       })) as CourseFromAPI[];
     } catch (err) {
-      console.error("Error fetching courses from DB:", err);
+      console.error("Error in getCachedCourses:", err);
       return [];
     }
   },
-  ["courses-list"],
+  ["courses-list-v2"],
   { revalidate: 60, tags: ["courses"] }
 );
 
@@ -86,7 +87,10 @@ async function getCoursesData(): Promise<CourseFromAPI[]> {
 }
 
 export default async function CoursesPage() {
+  const start = Date.now();
   const courses = await getCoursesData();
+  const duration = Date.now() - start;
+  console.log(`[CoursesPage] Data fetch took ${duration}ms`);
 
   // Define filter options based on fetched courses
   const filterOptions =
@@ -113,10 +117,10 @@ export default async function CoursesPage() {
             .length,
         },
         {
-          label: "All levels",
-          value: "All levels",
+          label: "All Levels",
+          value: "All Levels",
           count: courses.filter(
-            (c: CourseFromAPI) => c.level === "All levels"
+            (c: CourseFromAPI) => c.level === "All Levels"
           ).length,
         },
       ]
