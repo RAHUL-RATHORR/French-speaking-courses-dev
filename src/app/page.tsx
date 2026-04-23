@@ -1024,7 +1024,8 @@ export default function Home() {
               variant="outline"
               className="border-2 border-white !text-white hover:bg-white/10 px-8 py-3 rounded-lg font-semibold transition duration-300"
             >
-              <span>Contact Us </span>
+              {/* Force refresh */}
+              <span>Contact Us</span>
             </Button>
           </div>
         </div>
