@@ -58,7 +58,13 @@ export default function CourseCard({
       </NextLink>
       <div className="relative h-44 w-full overflow-hidden bg-gray-100">
         <Image
-          src={image || "/french-skill.png"}
+          src={
+            image
+              ? image.startsWith("http") || image.startsWith("/")
+                ? image
+                : `/uploads/${image}`
+              : "/french-skill.png"
+          }
           alt={title}
           fill
           className="object-cover group-hover:scale-110 transition-transform duration-500 z-0"
