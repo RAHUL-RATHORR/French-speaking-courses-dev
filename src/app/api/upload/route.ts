@@ -1,18 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { mkdir, writeFile } from 'fs/promises';
-import { join } from 'path';
 import { randomUUID } from 'crypto';
+import { supabase } from '@/lib/supabase';
 
 export const dynamic = "force-dynamic";
-
-function getPublicOrigin(request: NextRequest): string {
-  const forwardedProto = request.headers.get('x-forwarded-proto');
-  const forwardedHost = request.headers.get('x-forwarded-host');
-  const host = forwardedHost ?? request.headers.get('host');
-  const proto = forwardedProto ?? request.nextUrl.protocol.replace(':', '');
-  if (host) return `${proto}://${host}`;
-  return request.nextUrl.origin;
-}
 
 function extensionFromMime(mime: string): string | null {
   switch (mime) {
@@ -41,12 +31,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
-    console.log('Received file:', {
-      name: file.name,
-      type: file.type,
-      size: file.size
-    });
-
     // Validate file type
     const allowedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/jfif'];
     const allowedDocumentTypes = ['application/pdf'];
@@ -59,7 +43,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate file size (max 10MB for PDFs, 5MB for images)
-    const maxSize = file.type === 'application/pdf' ? 10 * 1024 * 1024 : 5 * 1024 * 1024; // 10MB for PDF, 5MB for images
+    const maxSize = file.type === 'application/pdf' ? 10 * 1024 * 1024 : 5 * 1024 * 1024;
     if (file.size > maxSize) {
       const maxSizeText = file.type === 'application/pdf' ? '10MB' : '5MB';
       return NextResponse.json({ 
@@ -70,38 +54,37 @@ export async function POST(request: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    // Generate unique filename (prefer MIME-derived extension)
+    // Generate unique filename
     const mimeExt = extensionFromMime(file.type);
     const nameExt = file.name.includes('.') ? file.name.split('.').pop() : null;
     const safeExt = (mimeExt ?? nameExt ?? 'bin').toString().toLowerCase().replace(/[^a-z0-9]/g, '');
     const filename = `${randomUUID()}.${safeExt}`;
     
-    // Save to public/uploads directory
-    const cwd = process.cwd();
-    const uploadDir = join(cwd, 'public', 'uploads');
-    console.log(`Current working directory: ${cwd}`);
-    console.log(`Target upload directory: ${uploadDir}`);
-    
-    try {
-      await mkdir(uploadDir, { recursive: true });
-    } catch (dirError) {
-      console.error('Error creating upload directory:', dirError);
-      // Continue anyway, it might already exist or be a permission issue we'll catch later
+    // Upload to Supabase Storage
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from('uploads') // You must create this bucket in Supabase Dashboard and set it to public
+      .upload(filename, buffer, {
+        contentType: file.type,
+        upsert: false
+      });
+
+    if (uploadError) {
+      console.error('Supabase upload error:', uploadError);
+      return NextResponse.json({ 
+        error: 'Failed to upload to cloud storage',
+        details: uploadError.message
+      }, { status: 500 });
     }
 
-    const path = join(uploadDir, filename);
-    console.log(`Uploading file to: ${path}`);
-    
-    await writeFile(path, buffer);
-
-    // Return an API-backed URL (works even if a reverse proxy isn't serving the public folder)
-    const fileUrl = `/api/uploads/${filename}`;
-    const absoluteUrl = `${getPublicOrigin(request)}${fileUrl}`;
+    // Get public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('uploads')
+      .getPublicUrl(filename);
     
     return NextResponse.json({ 
       message: 'File uploaded successfully',
-      url: fileUrl,
-      absoluteUrl
+      url: publicUrl,
+      absoluteUrl: publicUrl
     });
 
   } catch (error) {
