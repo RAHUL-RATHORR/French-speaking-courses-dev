@@ -168,6 +168,10 @@ export async function PUT(
     }
     revalidatePath("/sitemap.xml");
     
+    // Add revalidateTag for unstable_cache
+    const { revalidateTag } = await import("next/cache");
+    revalidateTag("courses");
+    
     return NextResponse.json(updatedCourse);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
@@ -212,6 +216,10 @@ export async function DELETE(
     revalidatePath(`/courses/${existingCourse.slug}`);
     revalidatePath(`/` + existingCourse.slug);
     revalidatePath("/sitemap.xml");
+    
+    // Add revalidateTag for unstable_cache
+    const { revalidateTag } = await import("next/cache");
+    revalidateTag("courses");
     
     return NextResponse.json({ message: "Course deleted successfully" });
   } catch (error) {

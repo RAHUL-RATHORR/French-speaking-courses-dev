@@ -147,6 +147,10 @@ export async function POST(request: NextRequest) {
     revalidatePath(`/` + course.slug);
     revalidatePath("/sitemap.xml");
     
+    // Add revalidateTag for unstable_cache
+    const { revalidateTag } = await import("next/cache");
+    revalidateTag("courses");
+    
     return NextResponse.json(course, { status: 201 });
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
