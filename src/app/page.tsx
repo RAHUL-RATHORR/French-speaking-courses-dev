@@ -329,7 +329,7 @@ export default function Home() {
             <div className="w-full md:w-1/2 mt-12 md:mt-0 relative">
               <div className="relative h-96 w-full rounded-2xl overflow-hidden shadow-2xl border-4 border-white/30">
                 <Image
-                  src="/5bbf88f5-394d-48c7-9923-a50774899aef.jpeg"
+                  src="/1.jpeg"
                   alt="French language learning"
                   fill
                   className="object-cover"
