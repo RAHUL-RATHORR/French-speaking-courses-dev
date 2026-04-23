@@ -316,12 +316,17 @@ export default function BlogManagement() {
                       formData.append('file', blobInfo.blob(), blobInfo.filename());
                       
                       try {
+                        console.log('Starting blog image upload...');
                         const response = await fetch('/api/upload', {
                           method: 'POST',
                           body: formData,
                         });
                         
-                        if (!response.ok) throw new Error('Upload failed');
+                        if (!response.ok) {
+                          const errorText = await response.text();
+                          console.error('Upload failed with status:', response.status, errorText);
+                          throw new Error(`Upload failed: ${response.status}`);
+                        }
                         
                         const data = await response.json();
                         return data.url;

@@ -84,7 +84,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ 
       message: 'File uploaded successfully',
       url: publicUrl,
-      absoluteUrl: publicUrl
+      absoluteUrl: publicUrl,
+      location: publicUrl
     });
 
   } catch (error) {

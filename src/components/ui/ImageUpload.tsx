@@ -60,10 +60,19 @@ export default function ImageUpload({
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
-        const errorMessage = errorData.details 
-          ? `${errorData.error}: ${errorData.details}` 
-          : (errorData.error || 'Failed to upload image');
+        let errorMessage = `Upload failed (${response.status})`;
+        const contentType = response.headers.get('content-type');
+        
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json();
+          errorMessage = errorData.details 
+            ? `${errorData.error}: ${errorData.details}` 
+            : (errorData.error || errorMessage);
+        } else {
+          const text = await response.text();
+          console.error('Non-JSON error response:', text);
+          errorMessage = `Server Error: The upload service returned an invalid response. Please check your server logs.`;
+        }
         throw new Error(errorMessage);
       }
 
