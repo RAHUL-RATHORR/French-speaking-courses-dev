@@ -61,10 +61,10 @@ const getCachedCourses = unstable_cache(
           createdAt: true,
           updatedAt: true,
         },
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: "desc" },
       });
 
-      return courses.map(course => ({
+      return courses.map((course) => ({
         ...course,
         createdAt: course.createdAt.toISOString(),
         updatedAt: course.updatedAt.toISOString(),
@@ -82,17 +82,7 @@ const getCachedCourses = unstable_cache(
 );
 
 async function getCoursesData(): Promise<CourseFromAPI[]> {
-  try {
-    const baseUrl = process.env.NEXTAUTH_URL || 'https://www.frenchskill.com';
-    const response = await fetch(`${baseUrl}/api/courses`, { 
-      next: { revalidate: 60, tags: ['courses'] } 
-    });
-    if (!response.ok) throw new Error("Failed to fetch courses");
-    return await response.json();
-  } catch (err) {
-    console.error("Error fetching courses via API:", err);
-    return [];
-  }
+  return getCachedCourses();
 }
 
 export default async function CoursesPage() {

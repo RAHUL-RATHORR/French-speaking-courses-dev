@@ -151,16 +151,30 @@ export default function CoursesManagement() {
       if (!res.ok) {
         let errorMessage = "Failed to save course";
         try {
-          const errorData = await res.json();
-          errorMessage = errorData.error || errorMessage;
-        } catch (e) {
-          // If response is not JSON (like Vercel 413 error)
-          if (res.status === 413) {
-            errorMessage = "Data too large! Please reduce the amount of text or sections.";
-          } else {
-            errorMessage = `Server Error (${res.status}). Please try again.`;
+          // Only attempt to parse as JSON if the response is not empty
+          const text = await res.text();
+          if (text) {
+            try {
+              const errorData = JSON.parse(text);
+              errorMessage = errorData.error || errorMessage;
+            } catch (e) {
+              // Not JSON, use the text if it's short
+              errorMessage = text.length < 100 ? text : errorMessage;
+            }
           }
+        } catch (e) {
+          console.error("Error parsing response:", e);
         }
+
+        // Specific handling for common server errors
+        if (res.status === 413) {
+          errorMessage = "Data too large! Please reduce the amount of text or sections.";
+        } else if (res.status === 504) {
+          errorMessage = "Request timeout. The data might be too large for the server to process.";
+        } else if (errorMessage === "Failed to save course") {
+          errorMessage = `Server Error (${res.status}). Please try again.`;
+        }
+        
         throw new Error(errorMessage);
       }
       

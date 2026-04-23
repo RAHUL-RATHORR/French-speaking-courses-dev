@@ -8,6 +8,7 @@ import { formatDate } from "@/lib/utils";
 import { generateBreadcrumbStructuredData } from "@/lib/structured-data";
 import { blogPosts as staticBlogPosts } from "@/lib/blog-data";
 import { prisma } from "@/lib/db/prisma";
+export const revalidate = 60;
 
 interface BlogPost {
   id: string;
