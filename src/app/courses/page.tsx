@@ -41,48 +41,25 @@ interface Course {
   image: string;
 }
 
-const getCachedCourses = unstable_cache(
-  async (): Promise<CourseFromAPI[]> => {
-    try {
-      const courses = await prisma.course.findMany({
-        select: {
-          id: true,
-          slug: true,
-          title: true,
-          description: true,
-          level: true,
-          duration: true,
-          price: true,
-          originalPrice: true,
-          rating: true,
-          students: true,
-          image: true,
-          registrationOpen: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-        orderBy: { createdAt: "desc" },
-      });
-
-      return courses.map((course) => ({
-        ...course,
-        createdAt: course.createdAt.toISOString(),
-        updatedAt: course.updatedAt.toISOString(),
-        originalPrice: course.originalPrice || undefined,
-        rating: course.rating || undefined,
-        image: course.image || undefined,
-      })) as CourseFromAPI[];
-    } catch (err) {
-      console.error("Error fetching courses from DB:", err);
-      return [];
-    }
-  },
-  ["courses-list-final"],
-  { revalidate: 60, tags: ["courses"] }
-);
-
 async function getCoursesData(): Promise<CourseFromAPI[]> {
-  return getCachedCourses();
+  try {
+    // Direct fetch for debugging - removing select and cache temporarily
+    const courses = await prisma.course.findMany({
+      orderBy: { createdAt: "desc" },
+    });
+
+    return courses.map((course) => ({
+      ...course,
+      createdAt: course.createdAt.toISOString(),
+      updatedAt: course.updatedAt.toISOString(),
+      originalPrice: course.originalPrice || undefined,
+      rating: course.rating || undefined,
+      image: course.image || undefined,
+    })) as CourseFromAPI[];
+  } catch (err) {
+    console.error("Error fetching courses directly:", err);
+    return [];
+  }
 }
 
 export default async function CoursesPage() {
