@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { mkdir, writeFile } from 'fs/promises';
 import { join } from 'path';
-import { v4 as uuidv4 } from 'uuid';
+import { randomUUID } from 'crypto';
 
 export const dynamic = "force-dynamic";
 
@@ -41,6 +41,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
     }
 
+    console.log('Received file:', {
+      name: file.name,
+      type: file.type,
+      size: file.size
+    });
+
     // Validate file type
     const allowedImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'image/jfif'];
     const allowedDocumentTypes = ['application/pdf'];
@@ -68,12 +74,24 @@ export async function POST(request: NextRequest) {
     const mimeExt = extensionFromMime(file.type);
     const nameExt = file.name.includes('.') ? file.name.split('.').pop() : null;
     const safeExt = (mimeExt ?? nameExt ?? 'bin').toString().toLowerCase().replace(/[^a-z0-9]/g, '');
-    const filename = `${uuidv4()}.${safeExt}`;
+    const filename = `${randomUUID()}.${safeExt}`;
     
     // Save to public/uploads directory
-    const uploadDir = join(process.cwd(), 'public', 'uploads');
-    await mkdir(uploadDir, { recursive: true });
+    const cwd = process.cwd();
+    const uploadDir = join(cwd, 'public', 'uploads');
+    console.log(`Current working directory: ${cwd}`);
+    console.log(`Target upload directory: ${uploadDir}`);
+    
+    try {
+      await mkdir(uploadDir, { recursive: true });
+    } catch (dirError) {
+      console.error('Error creating upload directory:', dirError);
+      // Continue anyway, it might already exist or be a permission issue we'll catch later
+    }
+
     const path = join(uploadDir, filename);
+    console.log(`Uploading file to: ${path}`);
+    
     await writeFile(path, buffer);
 
     // Return an API-backed URL (works even if a reverse proxy isn't serving the public folder)
@@ -89,7 +107,8 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     console.error('Error uploading file:', error);
     return NextResponse.json({ 
-      error: 'Failed to upload file' 
+      error: 'Failed to upload file',
+      details: error instanceof Error ? error.message : String(error)
     }, { status: 500 });
   }
 }
