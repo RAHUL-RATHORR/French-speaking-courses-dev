@@ -55,11 +55,28 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(normalized);
   } catch (error: unknown) {
-    const message = error instanceof Error ? error.message : "An unknown error occurred";
-    console.error("Error fetching courses:", error);
+    console.error("CRITICAL API ERROR:", error);
+    
+    let message = "An unknown error occurred";
+    let code = "UNKNOWN_ERROR";
+    
+    if (error instanceof Error) {
+      message = error.message;
+      // Check for common Prisma connection errors
+      if (message.includes("Can't reach database server")) {
+        code = "DB_CONNECTION_FAILED";
+        message = "The database is currently unreachable. Please check the DATABASE_URL or network connection.";
+      } else if (message.includes("Too many connections")) {
+        code = "DB_CONNECTION_LIMIT";
+        message = "Database connection limit reached. Please wait a moment.";
+      }
+    }
+    
     return NextResponse.json({
       error: "Failed to fetch courses",
-      details: message
+      message: message,
+      code: code,
+      timestamp: new Date().toISOString()
     }, { status: 500 });
   }
 }
