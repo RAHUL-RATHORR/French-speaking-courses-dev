@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(_request: NextRequest) {
+export function middleware() {
   // Bare minimum pass-through to restore site functionality
   return NextResponse.next();
 }

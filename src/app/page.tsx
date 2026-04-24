@@ -217,21 +217,21 @@ export default function Home() {
   });
 
   // Convert testimonials from API to the format expected by TestimonialCarousel
-  const formattedTestimonials = testimonials.map((testimonial, idx) => {
+  const formattedTestimonials = testimonials.map((testimonial, index) => {
     // Determine if the avatar is a valid external or internal path
-    const hasValidAvatar = testimonial.avatar && (
+    const hasValidAvatar = !!(testimonial.avatar && (
       testimonial.avatar.startsWith('http') || 
       testimonial.avatar.startsWith('/')
-    );
+    ));
     
     return {
-      name: testimonial?.name || "Student",
+      name: testimonial.name || "Student",
       role: testimonial.role || "Student",
       content: testimonial.message || "",
       image: hasValidAvatar && testimonial.avatar
         ? testimonial.avatar 
-        : `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial?.name || "S")}&background=random&color=fff&size=150`,
-    } as any; // Cast as any or ensure it matches TestimonialCarousel expected type
+        : `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial.name || "S")}&background=random&color=fff&size=150`,
+    };
   });
 
   // Featured courses - first 4 courses from API
