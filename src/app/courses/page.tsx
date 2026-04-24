@@ -1,14 +1,11 @@
+"use client";
+
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { generateCoursesListingStructuredData } from "@/lib/structured-data";
 import CourseFilter from "@/components/courses/CourseFilter";
-import { prisma } from "@/lib/db/prisma";
+import { useEffect, useState } from "react";
+import { generateCoursesListingStructuredData } from "@/lib/structured-data";
 
-import { unstable_cache } from "next/cache";
-
-export const revalidate = 60;
-
-// Define course type according to the structured data interface in structured-data.ts
 interface CourseFromAPI {
   id: string;
   slug: string;
@@ -41,62 +38,60 @@ interface Course {
   image: string;
 }
 
-async function getCoursesData(): Promise<CourseFromAPI[]> {
-  try {
-    // Direct fetch for debugging - removing select and cache temporarily
-    const courses = await prisma.course.findMany({
-      orderBy: { createdAt: "desc" },
-    });
+export default function CoursesPage() {
+  const [courses, setCourses] = useState<CourseFromAPI[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-    return courses.map((course) => ({
-      ...course,
-      createdAt: course.createdAt.toISOString(),
-      updatedAt: course.updatedAt.toISOString(),
-      originalPrice: course.originalPrice || undefined,
-      rating: course.rating || undefined,
-      image: course.image || undefined,
-    })) as CourseFromAPI[];
-  } catch (err) {
-    console.error("Error fetching courses directly:", err);
-    return [];
-  }
-}
-
-export default async function CoursesPage() {
-  const courses = await getCoursesData();
+  useEffect(() => {
+    async function fetchCourses() {
+      try {
+        setLoading(true);
+        const response = await fetch("/api/courses");
+        if (!response.ok) throw new Error("Failed to fetch courses");
+        const data = await response.json();
+        setCourses(data);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+        setError("Unable to load courses. Please try again later.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchCourses();
+  }, []);
 
   // Define filter options based on fetched courses
   const filterOptions =
     courses.length > 0
       ? [
-        { label: "All courses", value: "all", count: courses.length },
-        {
-          label: "Beginner",
-          value: "Beginner",
-          count: courses.filter((c: CourseFromAPI) => c.level === "Beginner")
-            .length,
-        },
-        {
-          label: "Intermediate",
-          value: "Intermediate",
-          count: courses.filter(
-            (c: CourseFromAPI) => c.level === "Intermediate"
-          ).length,
-        },
-        {
-          label: "Advanced",
-          value: "Advanced",
-          count: courses.filter((c: CourseFromAPI) => c.level === "Advanced")
-            .length,
-        },
-        {
-          label: "All Levels",
-          value: "All Levels",
-          count: courses.filter(
-            (c: CourseFromAPI) => c.level === "All Levels"
-          ).length,
-        },
-      ]
+          { label: "All courses", value: "all", count: courses.length },
+          {
+            label: "Beginner",
+            value: "Beginner",
+            count: courses.filter((c: CourseFromAPI) => c.level === "Beginner")
+              .length,
+          },
+          {
+            label: "Intermediate",
+            value: "Intermediate",
+            count: courses.filter(
+              (c: CourseFromAPI) => c.level === "Intermediate"
+            ).length,
+          },
+          {
+            label: "Advanced",
+            value: "Advanced",
+            count: courses.filter((c: CourseFromAPI) => c.level === "Advanced")
+              .length,
+          },
+          {
+            label: "All Levels",
+            value: "All Levels",
+            count: courses.filter((c: CourseFromAPI) => c.level === "All Levels")
+              .length,
+          },
+        ]
       : [];
 
   // Map API courses to the format required by structured data
@@ -145,6 +140,7 @@ export default async function CoursesPage() {
           </div>
 
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            {/* Put Badge back inside Hero */}
             <div className="inline-flex items-center px-4 py-2 bg-white/10 rounded-full text-sm font-medium mb-8 backdrop-blur-sm">
               <span className="mr-2">🎓</span>
               Over {courses.length} courses available
@@ -167,40 +163,58 @@ export default async function CoursesPage() {
           <div className="absolute bottom-0 left-0 right-0 h-4 french-gradient-horizontal"></div>
         </section>
 
-        {/* Client-side filtering is handled in the CourseFilter component */}
-        <CourseFilter courses={courses} filterOptions={filterOptions} />
-
-        {/* Stats Section */}
-        <section className="py-16 bg-linear-to-br from-blue-50 to-gray-50">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-              <div className="group">
-                <div className="text-4xl font-bold text-french-blue mb-2 group-hover:scale-110 transition-transform">
-                  {courses.length}+
-                </div>
-                <div className="text-gray-600">Courses available</div>
-              </div>
-              <div className="group">
-                <div className="text-4xl font-bold text-french-red mb-2 group-hover:scale-110 transition-transform">
-                  15,000+
-                </div>
-                <div className="text-gray-600">Students enrolled</div>
-              </div>
-              <div className="group">
-                <div className="text-4xl font-bold text-accent-blue mb-2 group-hover:scale-110 transition-transform">
-                  98%
-                </div>
-                <div className="text-gray-600">Success rate</div>
-              </div>
-              <div className="group">
-                <div className="text-4xl font-bold text-french-blue mb-2 group-hover:scale-110 transition-transform">
-                  24/7
-                </div>
-                <div className="text-gray-600">Support available</div>
-              </div>
-            </div>
+        {loading ? (
+          <div className="py-24 text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-french-blue mx-auto mb-4"></div>
+            <p className="text-gray-500 text-lg">Loading our latest French courses...</p>
           </div>
-        </section>
+        ) : error ? (
+          <div className="py-24 text-center">
+             <p className="text-red-500 mb-4">{error}</p>
+             <button 
+                onClick={() => window.location.reload()}
+                className="bg-french-blue text-white px-6 py-2 rounded-lg"
+             >
+                Retry
+             </button>
+          </div>
+        ) : (
+          <>
+            <CourseFilter courses={courses} filterOptions={filterOptions} />
+
+            {/* Stats Grid */}
+            <section className="py-16 bg-linear-to-br from-blue-50 to-gray-50">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                  <div className="group">
+                    <div className="text-4xl font-bold text-french-blue mb-2 group-hover:scale-110 transition-transform">
+                      {courses.length}+
+                    </div>
+                    <div className="text-gray-600">Courses available</div>
+                  </div>
+                  <div className="group">
+                    <div className="text-4xl font-bold text-french-red mb-2 group-hover:scale-110 transition-transform">
+                      15,000+
+                    </div>
+                    <div className="text-gray-600">Students enrolled</div>
+                  </div>
+                  <div className="group">
+                    <div className="text-4xl font-bold text-accent-blue mb-2 group-hover:scale-110 transition-transform">
+                      98%
+                    </div>
+                    <div className="text-gray-600">Success rate</div>
+                  </div>
+                  <div className="group">
+                    <div className="text-4xl font-bold text-french-blue mb-2 group-hover:scale-110 transition-transform">
+                      24/7
+                    </div>
+                    <div className="text-gray-600">Support available</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          </>
+        )}
 
         {/* CTA Section */}
         <section className="py-20 hero-gradient text-white">
