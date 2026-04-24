@@ -13,7 +13,7 @@ declare module "next-auth" {
     email?: string | null;
     role?: string | null;
   }
-  
+
   interface Session {
     user: {
       id: string;
@@ -46,8 +46,8 @@ export const authOptions: NextAuthOptions = {
         }
 
         // Check if it's the default admin (for initial setup)
-        if (credentials.username === process.env.ADMIN_USERNAME && 
-            credentials.password === process.env.ADMIN_PASSWORD) {
+        if (credentials.username === process.env.ADMIN_USERNAME &&
+          credentials.password === process.env.ADMIN_PASSWORD) {
           return {
             id: 'default-admin',
             name: 'Administrator',

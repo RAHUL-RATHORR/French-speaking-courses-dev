@@ -56,10 +56,10 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(normalized);
   } catch (error: unknown) {
     console.error("CRITICAL API ERROR:", error);
-    
+
     let message = "An unknown error occurred";
     let code = "UNKNOWN_ERROR";
-    
+
     if (error instanceof Error) {
       message = error.message;
       // Check for common Prisma connection errors
@@ -71,7 +71,7 @@ export async function GET(request: NextRequest) {
         message = "Database connection limit reached. Please wait a moment.";
       }
     }
-    
+
     return NextResponse.json({
       error: "Failed to fetch courses",
       message: message,

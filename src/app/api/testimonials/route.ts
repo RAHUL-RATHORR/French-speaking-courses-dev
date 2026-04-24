@@ -8,7 +8,7 @@ export async function GET() {
     const testimonials = await prisma.testimonial.findMany({
       orderBy: { createdAt: 'desc' }
     });
-    
+
     return NextResponse.json(testimonials);
   } catch (error) {
     console.error("Error fetching testimonials:", error);

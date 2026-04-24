@@ -80,25 +80,30 @@ export default function TestimonialCarousel({ testimonials }: TestimonialCarouse
     <div className="relative px-4">
       {/* Multi-card responsive carousel */}
       <div className="overflow-hidden" ref={carouselRef}>
-        <div className="flex flex-wrap -mx-4 p-3 transition-all duration-500">
+        <div className="flex flex-wrap -mx-4 p-3">
           {getVisibleTestimonials().map((testimonial, idx) => (
             <div 
               key={`${currentIndex}-${idx}`}
-              className={`px-4 mb-4 md:mb-0 transition-all duration-500 ${
+              className={`px-4 mb-4 md:mb-0 ${
                 visibleCount === 1 ? 'w-full' : 
                 visibleCount === 2 ? 'w-full sm:w-1/2' : 
                 'w-full sm:w-1/2 lg:w-1/3'
               }`}
             >
-              <div className="bg-white p-6 md:p-8 rounded-2xl shadow-md hover:shadow-lg h-full flex flex-col transform transition-all duration-300 hover:translate-y-[-5px]">
+              <div className="bg-white p-6 md:p-8 rounded-2xl shadow-md h-full flex flex-col transition-all duration-200">
                 <div className="flex flex-col sm:flex-row sm:items-center mb-4">
                   <div className="flex-shrink-0 mb-3 sm:mb-0 sm:mr-4 flex justify-center">
                     <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-french-red/20 shadow-sm">
                       <Image
-                        src={testimonial?.image || "/default-avatar.png"}
+                        src={testimonial?.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial?.name || "S")}&background=random&color=fff`}
                         alt={testimonial?.name || "Student"}
                         fill
                         className="object-cover"
+                        unoptimized
+                        onError={(e) => {
+                          const target = e.target as HTMLImageElement;
+                          target.src = `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial?.name || "S")}&background=random&color=fff`;
+                        }}
                       />
                     </div>
                   </div>
@@ -119,22 +124,22 @@ export default function TestimonialCarousel({ testimonials }: TestimonialCarouse
       
       {/* Navigation buttons */}
       <button 
-        className="absolute top-1/2 -translate-y-1/2 -left-4 md:-left-6 transform -translate-y-1/2 bg-french-blue text-blue rounded-full p-2 md:p-3 shadow-lg z-10 hover:text-white hover:bg-blue-700 transition-colors"
+        className="absolute top-1/2 -translate-y-1/2 -left-4 md:-left-6 transform -translate-y-1/2 bg-slate-50 text-black rounded-full p-2 md:p-3 shadow-lg z-10 hover:bg-slate-200 hover:scale-110 transition-all duration-300"
         onClick={prevSlide}
         aria-label="Previous testimonial"
       >
         <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" />
         </svg>
       </button>
       
       <button 
-        className="absolute top-1/2 -translate-y-1/2 -right-4 md:-right-6 transform -translate-y-1/2 bg-french-blue text-blue rounded-full p-2 md:p-3 shadow-lg z-10 hover:text-white hover:bg-blue-700 transition-colors"
+        className="absolute top-1/2 -translate-y-1/2 -right-4 md:-right-6 transform -translate-y-1/2 bg-slate-50 text-black rounded-full p-2 md:p-3 shadow-lg z-10 hover:bg-slate-200 hover:scale-110 transition-all duration-300"
         onClick={nextSlide}
         aria-label="Next testimonial"
       >
         <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
         </svg>
       </button>
       

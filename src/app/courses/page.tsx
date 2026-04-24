@@ -65,33 +65,33 @@ export default function CoursesPage() {
   const filterOptions =
     courses.length > 0
       ? [
-          { label: "All courses", value: "all", count: courses.length },
-          {
-            label: "Beginner",
-            value: "Beginner",
-            count: courses.filter((c: CourseFromAPI) => c.level === "Beginner")
-              .length,
-          },
-          {
-            label: "Intermediate",
-            value: "Intermediate",
-            count: courses.filter(
-              (c: CourseFromAPI) => c.level === "Intermediate"
-            ).length,
-          },
-          {
-            label: "Advanced",
-            value: "Advanced",
-            count: courses.filter((c: CourseFromAPI) => c.level === "Advanced")
-              .length,
-          },
-          {
-            label: "All Levels",
-            value: "All Levels",
-            count: courses.filter((c: CourseFromAPI) => c.level === "All Levels")
-              .length,
-          },
-        ]
+        { label: "All courses", value: "all", count: courses.length },
+        {
+          label: "Beginner",
+          value: "Beginner",
+          count: courses.filter((c: CourseFromAPI) => c.level === "Beginner")
+            .length,
+        },
+        {
+          label: "Intermediate",
+          value: "Intermediate",
+          count: courses.filter(
+            (c: CourseFromAPI) => c.level === "Intermediate"
+          ).length,
+        },
+        {
+          label: "Advanced",
+          value: "Advanced",
+          count: courses.filter((c: CourseFromAPI) => c.level === "Advanced")
+            .length,
+        },
+        {
+          label: "All Levels",
+          value: "All Levels",
+          count: courses.filter((c: CourseFromAPI) => c.level === "All Levels")
+            .length,
+        },
+      ]
       : [];
 
   // Map API courses to the format required by structured data
@@ -170,13 +170,13 @@ export default function CoursesPage() {
           </div>
         ) : error ? (
           <div className="py-24 text-center">
-             <p className="text-red-500 mb-4">{error}</p>
-             <button 
-                onClick={() => window.location.reload()}
-                className="bg-french-blue text-white px-6 py-2 rounded-lg"
-             >
-                Retry
-             </button>
+            <p className="text-red-500 mb-4">{error}</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="bg-french-blue text-white px-6 py-2 rounded-lg"
+            >
+              Retry
+            </button>
           </div>
         ) : (
           <>
