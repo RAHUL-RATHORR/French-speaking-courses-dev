@@ -162,7 +162,7 @@ export default function CourseFilter({ courses, filterOptions }: CourseFilterPro
       </section>
       
       {/* Courses Grid */}
-      <section className="py-20">
+      <section id="all-courses" className="py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {filteredCourses.length > 0 ? (
             <>

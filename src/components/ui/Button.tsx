@@ -8,6 +8,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   size?: 'sm' | 'md' | 'lg';
   fullWidth?: boolean;
   href?: string;
+  scroll?: boolean;
   className?: string;
 }
 
@@ -17,6 +18,7 @@ export default function Button({
   size = 'md',
   fullWidth = false,
   href,
+  scroll,
   className = '',
   ...props
 }: ButtonProps) {
@@ -46,7 +48,7 @@ export default function Button({
   // Return Link if href is provided, otherwise return button
   if (href) {
     return (
-      <Link href={href} className={buttonStyles}>
+      <Link href={href} scroll={scroll} className={buttonStyles}>
         <span className="relative z-10 flex items-center justify-center">{children}</span>
       </Link>
     );
