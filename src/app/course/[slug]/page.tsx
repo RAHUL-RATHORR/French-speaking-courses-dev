@@ -74,7 +74,7 @@ export async function generateMetadata({ params }: CourseParams): Promise<Metada
       type: "website",
       locale: "en_US",
       siteName: "French Speaking Courses",
-      url: `https://www.frenchskill.com/courses/${course.slug}`,
+      url: `https://www.frenchskill.com/course/${course.slug}`,
       images: [
         {
           url: course.image || "/french-skill.png",
@@ -102,7 +102,7 @@ export async function generateMetadata({ params }: CourseParams): Promise<Metada
       },
     },
     alternates: {
-      canonical: `https://www.frenchskill.com/courses/${course.slug}`,
+      canonical: `https://www.frenchskill.com/course/${course.slug}`,
     },
     other: {
       "price:amount": price.replace(/[^\d.,]/g, ""),
@@ -158,7 +158,7 @@ export default async function CoursePage({ params }: CourseParams) {
   const breadcrumbStructuredData = generateBreadcrumbStructuredData([
     { name: "Home", url: "https://www.frenchskill.com/" },
     { name: "Courses", url: "https://www.frenchskill.com/courses" },
-    { name: course.title, url: `https://www.frenchskill.com/courses/${course.slug}` }
+    { name: course.title, url: `https://www.frenchskill.com/course/${course.slug}` }
   ]);
 
   return (

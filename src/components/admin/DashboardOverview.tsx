@@ -26,28 +26,30 @@ interface Course {
   createdAt: string;
 }
 
-export default function DashboardOverview() {
+export default function DashboardOverview({ initialData }: { initialData?: any }) {
   // State for each data type
-  const [blogs, setBlogs] = useState<BlogPost[]>([]);
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [courses, setCourses] = useState<Course[]>([]);
+  const [blogs, setBlogs] = useState<BlogPost[]>(initialData?.blogs || []);
+  const [testimonials, setTestimonials] = useState<Testimonial[]>(initialData?.testimonials || []);
+  const [courses, setCourses] = useState<Course[]>(initialData?.courses || []);
   
   // Loading states
-  const [loadingBlogs, setLoadingBlogs] = useState(true);
-  const [loadingTestimonials, setLoadingTestimonials] = useState(true);
-  const [loadingCourses, setLoadingCourses] = useState(true);
+  const [loadingBlogs, setLoadingBlogs] = useState(!initialData);
+  const [loadingTestimonials, setLoadingTestimonials] = useState(!initialData);
+  const [loadingCourses, setLoadingCourses] = useState(!initialData);
   
   // Error states
   const [blogsError, setBlogsError] = useState("");
   const [testimonialsError, setTestimonialsError] = useState("");
   const [coursesError, setCoursesError] = useState("");
 
-  // Fetch all data on component mount
+  // Fetch all data on component mount if not provided
   useEffect(() => {
+    if (initialData) return;
+    
     fetchBlogs();
     fetchTestimonials();
     fetchCourses();
-  }, []);
+  }, [initialData]);
 
   // Function to fetch blogs
   const fetchBlogs = async () => {

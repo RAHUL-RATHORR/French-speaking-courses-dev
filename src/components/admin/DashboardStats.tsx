@@ -25,52 +25,26 @@ interface StatsItem {
   };
 }
 
-export default function DashboardStats() {
-  const [stats, setStats] = useState({
+export default function DashboardStats({ initialData }: { initialData?: any }) {
+  const [stats, setStats] = useState(initialData || {
     courses: 0,
     blogPosts: 0,
     testimonials: 0,
     totalStudents: 0,
     avgRating: 0,
   });
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!initialData);
   const [error, setError] = useState("");
   
   useEffect(() => {
+    if (initialData) return;
+
     const fetchStats = async () => {
       try {
-        const [coursesRes, blogPostsRes, testimonialsRes] = await Promise.all([
-          fetch("/api/admin/courses"),
-          fetch("/api/admin/blog"),
-          fetch("/api/admin/testimonials"),
-        ]);
-        
-        if (!coursesRes.ok || !blogPostsRes.ok || !testimonialsRes.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        
-        const courses: Course[] = await coursesRes.json();
-        const blogPosts = await blogPostsRes.json();
-        const testimonials: Testimonial[] = await testimonialsRes.json();
-        
-        // Calculate total students and average rating
-        const totalStudents = courses.reduce((sum: number, course: Course) => sum + (course.students || 0), 0);
-        
-        // Calculate average rating across all courses and testimonials
-        const courseRatings = courses.filter((course: Course) => course.rating).map((course: Course) => course.rating || 0);
-        const testimonialRatings = testimonials.map((testimonial: Testimonial) => testimonial.rating);
-        const allRatings = [...courseRatings, ...testimonialRatings];
-        const avgRating = allRatings.length ? 
-          parseFloat((allRatings.reduce((sum: number, rating: number) => sum + rating, 0) / allRatings.length).toFixed(1)) : 
-          0;
-        
-        setStats({
-          courses: courses.length,
-          blogPosts: blogPosts.length,
-          testimonials: testimonials.length,
-          totalStudents: totalStudents,
-          avgRating: avgRating
-        });
+        const res = await fetch("/api/admin/dashboard/stats");
+        if (!res.ok) throw new Error("Failed to fetch data");
+        const data = await res.json();
+        setStats(data.stats);
       } catch (err) {
         console.error("Error fetching dashboard data:", err);
         setError("Failed to load dashboard data");
@@ -80,7 +54,7 @@ export default function DashboardStats() {
     };
     
     fetchStats();
-  }, []);
+  }, [initialData]);
   
   const statsItems: StatsItem[] = [
     {
