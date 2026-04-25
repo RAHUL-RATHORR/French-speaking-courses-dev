@@ -26,7 +26,13 @@ interface Course {
   createdAt: string;
 }
 
-export default function DashboardOverview({ initialData }: { initialData?: any }) {
+interface DashboardData {
+  blogs: BlogPost[];
+  testimonials: Testimonial[];
+  courses: Course[];
+}
+
+export default function DashboardOverview({ initialData }: { initialData?: DashboardData | null }) {
   // State for each data type
   const [blogs, setBlogs] = useState<BlogPost[]>(initialData?.blogs || []);
   const [testimonials, setTestimonials] = useState<Testimonial[]>(initialData?.testimonials || []);

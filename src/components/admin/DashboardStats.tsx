@@ -2,16 +2,12 @@
 
 import { useEffect, useState } from "react";
 
-interface Course {
-  id: string;
-  title: string;
-  students: number;
-  rating?: number | null;
-}
-
-interface Testimonial {
-  id: string;
-  rating: number;
+interface DashboardStatsData {
+  courses: number;
+  blogPosts: number;
+  testimonials: number;
+  totalStudents: number;
+  avgRating: number;
 }
 
 interface StatsItem {
@@ -25,7 +21,7 @@ interface StatsItem {
   };
 }
 
-export default function DashboardStats({ initialData }: { initialData?: any }) {
+export default function DashboardStats({ initialData }: { initialData?: DashboardStatsData | null }) {
   const [stats, setStats] = useState(initialData || {
     courses: 0,
     blogPosts: 0,
