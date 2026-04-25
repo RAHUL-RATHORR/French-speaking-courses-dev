@@ -8,7 +8,8 @@ export async function getDashboardData() {
     recentCourses,
     recentBlogs,
     recentTestimonials,
-    allCourseStats
+    courseStats,
+    testimonialStats
   ] = await Promise.all([
     prisma.course.count(),
     prisma.blogPost.count(),
@@ -28,24 +29,25 @@ export async function getDashboardData() {
       orderBy: { createdAt: 'desc' },
       select: { id: true, name: true, rating: true, createdAt: true }
     }),
-    prisma.course.findMany({
-      select: { students: true, rating: true }
+    prisma.course.aggregate({
+      _sum: { students: true },
+      _avg: { rating: true }
+    }),
+    prisma.testimonial.aggregate({
+      _avg: { rating: true }
     })
   ]);
 
   // Calculate total students
-  const totalStudents = allCourseStats.reduce((sum, c) => sum + (c.students || 0), 0);
+  const totalStudents = courseStats._sum.students || 0;
   
-  // Average rating logic
-  const allTestimonialRatings = await prisma.testimonial.findMany({ select: { rating: true } });
-  const ratings = [
-    ...allCourseStats.filter(c => c.rating).map(c => c.rating as number),
-    ...allTestimonialRatings.map(t => t.rating)
-  ];
+  // Combine ratings for average
+  const courseAvg = courseStats._avg.rating || 0;
+  const testimonialAvg = testimonialStats._avg.rating || 0;
   
-  const avgRating = ratings.length > 0 
-    ? parseFloat((ratings.reduce((a, b) => a + b, 0) / ratings.length).toFixed(1))
-    : 0;
+  const avgRating = courseAvg && testimonialAvg 
+    ? parseFloat(((courseAvg + testimonialAvg) / 2).toFixed(1))
+    : parseFloat((courseAvg || testimonialAvg || 0).toFixed(1));
 
   return {
     stats: {

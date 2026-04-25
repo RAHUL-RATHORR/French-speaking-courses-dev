@@ -32,7 +32,18 @@ export async function GET() {
     }
     
     const courses = await prisma.course.findMany({
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        title: true,
+        level: true,
+        price: true,
+        originalPrice: true,
+        image: true,
+        slug: true,
+        description: true,
+        createdAt: true
+      }
     });
     
     return NextResponse.json(courses);
