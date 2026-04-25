@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { requireAuth } from "@/lib/auth/session";
 import DashboardStats from "@/components/admin/DashboardStats";
 import DashboardOverview from "@/components/admin/DashboardOverview";
-import { headers } from "next/headers";
+import { getDashboardData } from "@/lib/db/dashboard";
 
 export const metadata = {
   title: "Admin Dashboard | French Skill Academy",
@@ -17,17 +17,10 @@ export default async function AdminDashboard() {
     redirect("/admin/login");
   }
 
-  // Fetch dashboard data on the server
+  // Fetch dashboard data directly from the database on the server
   let dashboardData = null;
   try {
-    const host = (await headers()).get("host");
-    const protocol = process.env.NODE_ENV === "development" ? "http" : "https";
-    const res = await fetch(`${protocol}://${host}/api/admin/dashboard/stats`, {
-      headers: await headers(), // Pass cookies for auth
-    });
-    if (res.ok) {
-      dashboardData = await res.json();
-    }
+    dashboardData = await getDashboardData();
   } catch (error) {
     console.error("Failed to fetch dashboard data on server:", error);
   }
