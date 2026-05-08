@@ -12,6 +12,7 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const cityPages = await (prisma as any).cityPage.findMany({
       orderBy: { createdAt: 'desc' },
     });
@@ -38,6 +39,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Check if slug is already taken
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const existingPage = await (prisma as any).cityPage.findUnique({
       where: { slug: data.slug }
     });
@@ -46,6 +48,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "City page with this slug already exists" }, { status: 409 });
     }
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const cityPage = await (prisma as any).cityPage.create({
       data: {
         cityName: data.cityName,

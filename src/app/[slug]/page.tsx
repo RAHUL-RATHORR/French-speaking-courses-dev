@@ -10,6 +10,7 @@ interface Params {
 export async function generateMetadata({ params }: Params) {
   const { slug } = await params;
   
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const cityPage = await (prisma as any).cityPage.findUnique({
     where: { slug, published: true }
   });
@@ -40,6 +41,7 @@ export default async function RootSlugRedirect({ params }: Params) {
   }
 
   // 1. Check if it's a valid city page slug
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const cityPage = await (prisma as any).cityPage.findUnique({
     where: { slug, published: true }
   });

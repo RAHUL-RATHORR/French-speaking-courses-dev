@@ -9,7 +9,7 @@ interface CityPage {
   slug: string;
   title: string;
   description: string;
-  content: any;
+  content: string | null;
   metaTitle: string | null;
   metaDescription: string | null;
   published: boolean;
@@ -116,9 +116,10 @@ export default function CityPageManagement() {
       
       resetForm();
       await fetchCityPages();
-    } catch (err: any) {
-      console.error("Error saving city page:", err);
-      setError(err.message || "Failed to save city page");
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error("Error saving city page:", error);
+      setError(error.message || "Failed to save city page");
     }
   };
   

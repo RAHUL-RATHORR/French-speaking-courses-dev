@@ -16,6 +16,7 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const cityPage = await (prisma as any).cityPage.findUnique({
       where: { id }
     });
@@ -45,6 +46,7 @@ export async function PATCH(
     
     const data = await request.json();
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const cityPage = await (prisma as any).cityPage.update({
       where: { id },
       data: {
@@ -80,6 +82,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
     
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const cityPage = await (prisma as any).cityPage.delete({
       where: { id }
     });
