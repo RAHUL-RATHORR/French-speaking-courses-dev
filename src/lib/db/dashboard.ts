@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from "./prisma";
 
 export async function getDashboardData() {
@@ -12,29 +11,29 @@ export async function getDashboardData() {
     courseStats,
     testimonialStats
   ] = await Promise.all([
-    (prisma as any).course.count(),
-    (prisma as any).blogPost.count(),
-    (prisma as any).testimonial.count(),
-    (prisma as any).course.findMany({
+    prisma.course.count(),
+    prisma.blogPost.count(),
+    prisma.testimonial.count(),
+    prisma.course.findMany({
       take: 5,
       orderBy: { createdAt: 'desc' },
       select: { id: true, title: true, level: true, slug: true, createdAt: true }
     }),
-    (prisma as any).blogPost.findMany({
+    prisma.blogPost.findMany({
       take: 5,
       orderBy: { createdAt: 'desc' },
       select: { id: true, title: true, slug: true, createdAt: true }
     }),
-    (prisma as any).testimonial.findMany({
+    prisma.testimonial.findMany({
       take: 5,
       orderBy: { createdAt: 'desc' },
       select: { id: true, name: true, rating: true, createdAt: true }
     }),
-    (prisma as any).course.aggregate({
+    prisma.course.aggregate({
       _sum: { students: true },
       _avg: { rating: true }
     }),
-    (prisma as any).testimonial.aggregate({
+    prisma.testimonial.aggregate({
       _avg: { rating: true }
     })
   ]);

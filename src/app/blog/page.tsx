@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { blogPosts as staticBlogPosts } from '@/lib/blog-data';
 import type { Metadata } from 'next';
-// import { getRequestOrigin } from '@/lib/server-url';
+import { getRequestOrigin } from '@/lib/server-url';
 import { unstable_cache } from 'next/cache';
 
 export const revalidate = 60;
@@ -39,7 +39,6 @@ interface BlogPost {
   updatedAt: string;
 }
 
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { prisma } from '@/lib/db/prisma';
 
 const getCachedBlogs = unstable_cache(
@@ -67,8 +66,8 @@ const getCachedBlogs = unstable_cache(
         createdAt: post.createdAt.toISOString(),
         updatedAt: post.updatedAt.toISOString(),
       }));
-    } catch (_err) {
-      console.error("Error fetching blog posts from DB:", _err);
+    } catch (err) {
+      console.error("Error fetching blog posts from DB:", err);
       // Fallback to static data if DB fails
       return staticBlogPosts.map(post => ({
         id: post.id,
@@ -98,8 +97,8 @@ export default async function BlogPage() {
 
   try {
     blogPosts = await getBlogPosts();
-  } catch (_err) {
-    console.error('Error fetching blog posts:', _err);
+  } catch (err) {
+    console.error('Error fetching blog posts:', err);
     error = 'Failed to load blog posts. Please try again later.';
   }
 
@@ -107,9 +106,9 @@ export default async function BlogPage() {
   const blogStructuredData = {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    'itemListElement': blogPosts.map((post, _index) => ({
+    'itemListElement': blogPosts.map((post, index) => ({
       '@type': 'ListItem',
-      'position': _index + 1,
+      'position': index + 1,
       'item': {
         '@type': 'BlogPosting',
         'headline': post.title,

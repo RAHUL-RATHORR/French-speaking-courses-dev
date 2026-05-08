@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import Image from "next/image";
 import NextLink from "next/link";
+import { placeholderImages } from "@/lib/placeholder-images";
 import { formatRupee } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
