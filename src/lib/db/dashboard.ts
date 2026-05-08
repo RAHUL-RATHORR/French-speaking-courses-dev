@@ -11,29 +11,29 @@ export async function getDashboardData() {
     courseStats,
     testimonialStats
   ] = await Promise.all([
-    prisma.course.count(),
-    prisma.blogPost.count(),
-    prisma.testimonial.count(),
-    prisma.course.findMany({
+    (prisma as any).course.count(),
+    (prisma as any).blogPost.count(),
+    (prisma as any).testimonial.count(),
+    (prisma as any).course.findMany({
       take: 5,
       orderBy: { createdAt: 'desc' },
       select: { id: true, title: true, level: true, slug: true, createdAt: true }
     }),
-    prisma.blogPost.findMany({
+    (prisma as any).blogPost.findMany({
       take: 5,
       orderBy: { createdAt: 'desc' },
       select: { id: true, title: true, slug: true, createdAt: true }
     }),
-    prisma.testimonial.findMany({
+    (prisma as any).testimonial.findMany({
       take: 5,
       orderBy: { createdAt: 'desc' },
       select: { id: true, name: true, rating: true, createdAt: true }
     }),
-    prisma.course.aggregate({
+    (prisma as any).course.aggregate({
       _sum: { students: true },
       _avg: { rating: true }
     }),
-    prisma.testimonial.aggregate({
+    (prisma as any).testimonial.aggregate({
       _avg: { rating: true }
     })
   ]);
