@@ -1,7 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from "./prisma";
 
 export async function getDashboardData() {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [
     courseCount,
     blogCount,
