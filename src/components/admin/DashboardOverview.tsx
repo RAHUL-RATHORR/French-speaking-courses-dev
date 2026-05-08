@@ -8,14 +8,14 @@ interface BlogPost {
   id: string;
   title: string;
   slug: string;
-  createdAt: string;
+  createdAt: string | Date;
 }
 
 interface Testimonial {
   id: string;
   name: string;
   rating: number;
-  createdAt: string;
+  createdAt: string | Date;
 }
 
 interface Course {
@@ -23,7 +23,7 @@ interface Course {
   title: string;
   level: string;
   slug: string;
-  createdAt: string;
+  createdAt: string | Date;
 }
 
 interface DashboardData {
@@ -121,8 +121,8 @@ export default function DashboardOverview({ initialData }: { initialData?: Dashb
   };
 
   // Format date for display
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
+  const formatDate = (dateValue: string | Date) => {
+    const date = new Date(dateValue);
     return date.toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",

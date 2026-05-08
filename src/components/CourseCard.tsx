@@ -50,8 +50,7 @@ export default function CourseCard({
   return (
     <Card variant="hover" className="relative">
       <NextLink
-        href={`/course/${slug}#all-courses`}
-        scroll={false}
+        href={`/course/${slug}`}
         aria-label={`Open course: ${title}`}
         className="after:absolute after:inset-0 after:z-10 after:content-['']"
       >
@@ -136,8 +135,7 @@ export default function CourseCard({
             )}
           </div>
           <Button
-            href={`/course/${slug}#all-courses`}
-            scroll={false}
+            href={`/course/${slug}`}
             variant="primary"
             size="sm"
             className="z-20 text-sm py-1.5 px-3"
