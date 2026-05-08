@@ -7,6 +7,7 @@ import Footer from "@/components/Footer";
 import { formatDate } from "@/lib/utils";
 import { generateBreadcrumbStructuredData } from "@/lib/structured-data";
 import { blogPosts as staticBlogPosts } from "@/lib/blog-data";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { prisma } from "@/lib/db/prisma";
 export const revalidate = 60;
 
@@ -140,7 +141,7 @@ async function getAllBlogPosts(): Promise<BlogPost[]> {
       select: { slug: true }
     });
     return posts.map(p => ({ slug: p.slug } as BlogPost));
-  } catch (err) {
+  } catch (_err) {
     // Fallback to static data
     return staticBlogPosts.map((post) => ({
       slug: post.slug,

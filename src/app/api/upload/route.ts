@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'crypto';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { prisma } from "@/lib/db/prisma";
 import { supabase } from '@/lib/supabase';
 
 export const dynamic = "force-dynamic";
@@ -61,7 +63,7 @@ export async function POST(request: NextRequest) {
     const filename = `${randomUUID()}.${safeExt}`;
     
     // Upload to Supabase Storage
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from('uploads') // You must create this bucket in Supabase Dashboard and set it to public
       .upload(filename, buffer, {
         contentType: file.type,

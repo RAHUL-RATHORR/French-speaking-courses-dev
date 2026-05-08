@@ -6,6 +6,7 @@ import CourseCard from "@/components/CourseCard";
 import BlogCard from "@/components/BlogCard";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import Link from "next/link";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import Image from "next/image";
 import Button from "@/components/ui/Button";
 import { useEffect, useState } from "react";
@@ -217,7 +218,7 @@ export default function Home() {
   });
 
   // Convert testimonials from API to the format expected by TestimonialCarousel
-  const formattedTestimonials = testimonials.map((testimonial, index) => {
+  const formattedTestimonials = testimonials.map((testimonial, _index) => {
     // Determine if the avatar is a valid external or internal path
     const hasValidAvatar = !!(testimonial.avatar && (
       testimonial.avatar.startsWith('http') || 

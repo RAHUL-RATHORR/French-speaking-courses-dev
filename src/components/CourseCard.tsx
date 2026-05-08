@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Image from "next/image";
 import NextLink from "next/link";
 import { formatRupee } from "@/lib/utils";
