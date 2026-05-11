@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { Editor } from '@tinymce/tinymce-react';
 import Button from "@/components/ui/Button";
 import ImageUpload from "../ui/ImageUpload";
@@ -141,9 +141,9 @@ export default function CityPageManagement() {
 
   const addTestimonial = () => setFormData({ ...formData, testimonials: [...(formData.testimonials || []), { name: "", rating: 5, designation: "", profile: "", description: "" }] });
   const removeTestimonial = (index: number) => setFormData({ ...formData, testimonials: formData.testimonials?.filter((_, i) => i !== index) });
-  const updateTestimonial = (index: number, field: keyof Testimonial, value: any) => {
+  const updateTestimonial = (index: number, field: keyof Testimonial, value: string | number) => {
     const newTestimonials = [...(formData.testimonials || [])];
-    newTestimonials[index] = { ...newTestimonials[index], [field]: value };
+    newTestimonials[index] = { ...newTestimonials[index], [field]: value } as Testimonial;
     setFormData({ ...formData, testimonials: newTestimonials });
   };
 
@@ -229,7 +229,7 @@ export default function CityPageManagement() {
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Page Content:</label>
                   <Editor
                     apiKey={editorConfig.apiKey}
-                    init={editorConfig as any}
+                    init={editorConfig as Record<string, unknown>}
                     value={formData.content}
                     onEditorChange={(content) => setFormData({ ...formData, content })}
                   />
@@ -239,7 +239,7 @@ export default function CityPageManagement() {
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Page Middle Content:</label>
                   <Editor
                     apiKey={editorConfig.apiKey}
-                    init={editorConfig as any}
+                    init={editorConfig as Record<string, unknown>}
                     value={formData.middleContent}
                     onEditorChange={(content) => setFormData({ ...formData, middleContent: content })}
                   />
@@ -249,7 +249,7 @@ export default function CityPageManagement() {
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Page After Course Content:</label>
                   <Editor
                     apiKey={editorConfig.apiKey}
-                    init={editorConfig as any}
+                    init={editorConfig as Record<string, unknown>}
                     value={formData.afterCourseContent}
                     onEditorChange={(content) => setFormData({ ...formData, afterCourseContent: content })}
                   />
@@ -312,7 +312,7 @@ export default function CityPageManagement() {
             {/* FAQ Section */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
               <div className="p-6 border-b bg-gray-50/50 flex justify-between items-center">
-                <h3 className="font-bold text-gray-800">Faq's</h3>
+                <h3 className="font-bold text-gray-800">Faq&apos;s</h3>
                 <button type="button" onClick={addFaq} className="p-1 bg-[#1A3260] text-white rounded hover:bg-blue-900 transition-colors">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" /></svg>
                 </button>

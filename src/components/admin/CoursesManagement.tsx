@@ -157,13 +157,13 @@ export default function CoursesManagement() {
             try {
               const errorData = JSON.parse(text);
               errorMessage = errorData.error || errorMessage;
-            } catch (e) {
+            } catch {
               // Not JSON, use the text if it's short
               errorMessage = text.length < 100 ? text : errorMessage;
             }
           }
-        } catch (e) {
-          console.error("Error parsing response:", e);
+        } catch {
+          console.error("Error parsing response");
         }
 
         // Specific handling for common server errors
