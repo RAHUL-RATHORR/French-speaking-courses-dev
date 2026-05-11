@@ -12,11 +12,17 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+interface TestimonialData {
+  name: string;
+  designation?: string;
+  description: string;
+  profile?: string;
+  rating?: number;
+}
+
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const cityPageModel = (prisma as any).cityPage;
-  if (!cityPageModel) return { title: "French Skill Academy" };
-  const cityPage = await cityPageModel.findUnique({ where: { slug } });
+  const cityPage = await prisma.cityPage.findUnique({ where: { slug } });
   if (!cityPage) return { title: "Page Not Found" };
   return {
     title: cityPage.metaTitle || `${cityPage.cityName} - French Skill Academy`,
@@ -27,14 +33,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function PublicCityPage({ params }: PageProps) {
   const { slug } = await params;
-  const cityPageModel = (prisma as any).cityPage;
-  if (!cityPageModel) return <div className="p-10 text-center text-[#1A3260] font-bold">Server Error. Please restart dev server.</div>;
-
-  const cityPage = await cityPageModel.findUnique({ where: { slug } });
+  const cityPage = await prisma.cityPage.findUnique({ where: { slug } });
   if (!cityPage) notFound();
 
   const courses = await prisma.course.findMany({ take: 3, orderBy: { createdAt: 'desc' } });
-  const formattedTestimonials = (cityPage.testimonials as any[] || []).map(t => ({
+  const testimonialsData = (cityPage.testimonials as unknown as TestimonialData[]) || [];
+  const formattedTestimonials = testimonialsData.map(t => ({
     name: t.name,
     role: t.designation || "Student",
     content: t.description,
@@ -43,8 +47,9 @@ export default async function PublicCityPage({ params }: PageProps) {
   }));
 
   // Default FAQs if none provided in Admin Panel
-  const displayFaqs: FAQ[] = (cityPage.faqs && (cityPage.faqs as any[]).length > 0) 
-    ? (cityPage.faqs as FAQ[]) 
+  const faqData = cityPage.faqs as unknown as FAQ[];
+  const displayFaqs: FAQ[] = (faqData && faqData.length > 0) 
+    ? faqData 
     : [
         { question: `How much do your French classes in ${cityPage.cityName} cost?`, answer: "Our fees are highly competitive and vary based on the course level. Contact us for a detailed fee structure." },
         { question: `Can I join your French language courses in ${cityPage.cityName} as a beginner?`, answer: "Yes, we have specialized batches for absolute beginners starting from A1 level." },
@@ -55,7 +60,7 @@ export default async function PublicCityPage({ params }: PageProps) {
 
   return (
     <CityPageRedesign 
-      cityPage={cityPage}
+      cityPage={cityPage as unknown as Parameters<typeof CityPageRedesign>[0]['cityPage']}
       courses={courses}
       formattedTestimonials={formattedTestimonials}
       displayFaqs={displayFaqs}

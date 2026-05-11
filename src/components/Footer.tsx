@@ -2,7 +2,7 @@
 
 import Link from "@/components/ui/Link";
 import Image from "next/image";
-import Button from "./ui/Button";
+
 
 declare global {
   interface Window {

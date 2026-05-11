@@ -61,7 +61,7 @@ export async function POST(request: NextRequest) {
     const filename = `${randomUUID()}.${safeExt}`;
     
     // Upload to Supabase Storage
-    const { data: uploadData, error: uploadError } = await supabase.storage
+    const { error: uploadError } = await supabase.storage
       .from('uploads') // You must create this bucket in Supabase Dashboard and set it to public
       .upload(filename, buffer, {
         contentType: file.type,

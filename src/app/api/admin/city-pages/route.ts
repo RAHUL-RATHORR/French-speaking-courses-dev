@@ -4,17 +4,13 @@ import { prisma } from "@/lib/db/prisma";
 // GET all city pages
 export async function GET() {
   try {
-    const cityPageModel = (prisma as any).cityPage;
-    if (!cityPageModel) {
-      return NextResponse.json({ error: "Prisma model 'cityPage' not found. Please restart your dev server (CTRL+C and npm run dev)." }, { status: 500 });
-    }
-    const cityPages = await cityPageModel.findMany({
+    const cityPages = await prisma.cityPage.findMany({
       orderBy: { createdAt: 'desc' }
     });
     return NextResponse.json(cityPages);
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error fetching city pages:", error);
-    return NextResponse.json({ error: error.message || "Failed to fetch city pages" }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Failed to fetch city pages" }, { status: 500 });
   }
 }
 
@@ -33,13 +29,8 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "City Name and Slug are required" }, { status: 400 });
     }
 
-    const cityPageModel = (prisma as any).cityPage;
-    if (!cityPageModel) {
-      return NextResponse.json({ error: "Prisma model 'cityPage' not found. Please restart your dev server (CTRL+C and npm run dev)." }, { status: 500 });
-    }
-
     try {
-      const cityPage = await cityPageModel.create({
+      const cityPage = await prisma.cityPage.create({
         data: {
           cityName,
           slug,
@@ -57,16 +48,16 @@ export async function POST(request: NextRequest) {
         }
       });
       return NextResponse.json(cityPage);
-    } catch (dbError: any) {
+    } catch (dbError) {
       console.error("PRISMA CREATE ERROR:", dbError);
-      if (dbError.code === 'P2002') {
+      if (typeof dbError === 'object' && dbError !== null && 'code' in dbError && dbError.code === 'P2002') {
         return NextResponse.json({ error: "A page with this URL Slug already exists" }, { status: 400 });
       }
-      return NextResponse.json({ error: `Database Error: ${dbError.message}` }, { status: 500 });
+      return NextResponse.json({ error: `Database Error: ${dbError instanceof Error ? dbError.message : String(dbError)}` }, { status: 500 });
     }
 
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error in POST /api/admin/city-pages:", error);
-    return NextResponse.json({ error: error.message || "Failed to create city page" }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Failed to create city page" }, { status: 500 });
   }
 }

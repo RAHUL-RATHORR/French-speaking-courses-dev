@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const cityPage = await (prisma as any).cityPage.findUnique({
+    const cityPage = await prisma.cityPage.findUnique({
       where: { id }
     });
 
@@ -34,24 +34,27 @@ export async function PATCH(
     console.log("Updating city page", id, "with data:", JSON.stringify(body, null, 2));
     
     // Remove ID from body if present to avoid prisma error
-    const { id: _, createdAt, updatedAt, ...updateData } = body;
+    const updateData = { ...body };
+    delete updateData.id;
+    delete updateData.createdAt;
+    delete updateData.updatedAt;
 
     try {
-      const cityPage = await (prisma as any).cityPage.update({
+      const cityPage = await prisma.cityPage.update({
         where: { id },
         data: updateData
       });
       return NextResponse.json(cityPage);
-    } catch (dbError: any) {
+    } catch (dbError) {
       console.error("PRISMA UPDATE ERROR:", dbError);
-      if (dbError.code === 'P2002') {
+      if (typeof dbError === 'object' && dbError !== null && 'code' in dbError && dbError.code === 'P2002') {
         return NextResponse.json({ error: "A page with this URL Slug already exists" }, { status: 400 });
       }
-      return NextResponse.json({ error: `Database Error: ${dbError.message}` }, { status: 500 });
+      return NextResponse.json({ error: `Database Error: ${dbError instanceof Error ? dbError.message : String(dbError)}` }, { status: 500 });
     }
-  } catch (error: any) {
+  } catch (error) {
     console.error("Error in PATCH /api/admin/city-pages/[id]:", error);
-    return NextResponse.json({ error: error.message || "Failed to update city page" }, { status: 500 });
+    return NextResponse.json({ error: error instanceof Error ? error.message : "Failed to update city page" }, { status: 500 });
   }
 }
 
@@ -62,7 +65,7 @@ export async function DELETE(
 ) {
   try {
     const { id } = await params;
-    await (prisma as any).cityPage.delete({
+    await prisma.cityPage.delete({
       where: { id }
     });
 

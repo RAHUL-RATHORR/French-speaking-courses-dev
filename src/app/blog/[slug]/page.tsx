@@ -140,7 +140,7 @@ async function getAllBlogPosts(): Promise<BlogPost[]> {
       select: { slug: true }
     });
     return posts.map(p => ({ slug: p.slug } as BlogPost));
-  } catch (err) {
+  } catch {
     // Fallback to static data
     return staticBlogPosts.map((post) => ({
       slug: post.slug,

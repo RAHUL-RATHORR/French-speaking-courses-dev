@@ -217,7 +217,7 @@ export default function Home() {
   });
 
   // Convert testimonials from API to the format expected by TestimonialCarousel
-  const formattedTestimonials = testimonials.map((testimonial, index) => {
+  const formattedTestimonials = testimonials.map((testimonial) => {
     // Determine if the avatar is a valid external or internal path
     const hasValidAvatar = !!(testimonial.avatar && (
       testimonial.avatar.startsWith('http') || 

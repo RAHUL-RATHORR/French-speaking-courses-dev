@@ -4,7 +4,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { blogPosts as staticBlogPosts } from '@/lib/blog-data';
 import type { Metadata } from 'next';
-import { getRequestOrigin } from '@/lib/server-url';
 import { unstable_cache } from 'next/cache';
 
 export const revalidate = 60;

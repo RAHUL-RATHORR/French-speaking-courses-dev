@@ -4,26 +4,48 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform, AnimatePresence, Variants } from "framer-motion";
 import {
-  CheckCircle2, GraduationCap, Users, Award, BookOpen, Clock,
-  ArrowRight, ArrowLeft, Star, Check, Globe, Zap, ShieldCheck, MessageCircle,
-  HelpCircle, ChevronDown
+  GraduationCap, Users, Award, BookOpen, Clock,
+  ArrowRight, Star, Check, Globe, Zap, ShieldCheck,
+  ChevronDown
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CourseCard from "@/components/CourseCard";
-import TestimonialCarousel from "@/components/TestimonialCarousel";
-import PremiumTestimonialSlider from "@/components/PremiumTestimonialSlider";
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 
 interface FAQ {
   question: string;
   answer: string;
 }
 
+interface CityPage {
+  id?: string;
+  title?: string | null;
+  cityName: string;
+  slug: string;
+  headerImage?: string | null;
+  metaTitle?: string | null;
+  metaDescription?: string | null;
+  keywords?: string | null;
+  faqs?: FAQ[] | null;
+  testimonials?: unknown;
+  isActive?: boolean;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+}
+
+interface Testimonial {
+  name: string;
+  role: string;
+  content: string;
+  image: string;
+  rating?: number;
+}
+
 interface CityPageRedesignProps {
-  cityPage: any;
-  courses: any[];
-  formattedTestimonials: any[];
+  cityPage: CityPage;
+  courses: Record<string, unknown>[];
+  formattedTestimonials: Testimonial[];
   displayFaqs: FAQ[];
 }
 
@@ -35,7 +57,6 @@ export default function CityPageRedesign({
 }: CityPageRedesignProps) {
   const { scrollY } = useScroll();
   const y1 = useTransform(scrollY, [0, 500], [0, 100]);
-  const y2 = useTransform(scrollY, [0, 500], [0, -100]);
 
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
 
@@ -88,20 +109,16 @@ export default function CityPageRedesign({
     }
   ];
 
-  const nextTestimonial = () => {
+  const nextTestimonial = useCallback(() => {
     setTestimonialIndex((prev) => (prev + 1) % (testimonials.length - (testimonialsPerPage - 1)));
-  };
+  }, [testimonials.length]);
 
-  const prevTestimonial = () => {
-    setTestimonialIndex((prev) => (prev - 1 + (testimonials.length - (testimonialsPerPage - 1))) % (testimonials.length - (testimonialsPerPage - 1)));
-  };
-
-  React.useEffect(() => {
+  useEffect(() => {
     const interval = setInterval(() => {
       nextTestimonial();
     }, 3000);
     return () => clearInterval(interval);
-  }, [testimonials.length]);
+  }, [nextTestimonial]);
 
   return (
     <main className="min-h-screen bg-white font-sans overflow-x-hidden selection:bg-red-100 selection:text-red-600">
@@ -276,12 +293,12 @@ export default function CityPageRedesign({
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {courses.map((course, i) => (
               <motion.div
-                key={course.id}
+                key={String(course.id || i)}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
               >
-                <CourseCard {...(course as any)} />
+                <CourseCard {...(course as unknown as Parameters<typeof CourseCard>[0])} />
               </motion.div>
             ))}
           </div>
@@ -367,10 +384,10 @@ export default function CityPageRedesign({
               </h2>
               <div className="space-y-6 text-gray-600 font-medium leading-relaxed text-lg">
                 <p>
-                  In today's global economy, French is more than just a language—it's a gateway to international opportunities. At French Skill, we've reimagined how language is taught.
+                  In today&apos;s global economy, French is more than just a language—it&apos;s a gateway to international opportunities. At French Skill, we&apos;ve reimagined how language is taught.
                 </p>
                 <p>
-                  Our curriculum combines traditional linguistic foundations with modern immersive techniques. Whether you're aiming for Canada PR, higher education, or career growth, we provide the tools to get you there.
+                  Our curriculum combines traditional linguistic foundations with modern immersive techniques. Whether you&apos;re aiming for Canada PR, higher education, or career growth, we provide the tools to get you there.
                 </p>
                 <ul className="space-y-4 pt-6">
                   {["Expert Native Instructors", "Modern E-Learning Portal", "24/7 Student Support"].map((item, i) => (
@@ -504,7 +521,7 @@ export default function CityPageRedesign({
               </h2>
               <div className="space-y-6 text-gray-600 font-medium leading-relaxed text-lg">
                 <p>
-                  Looking for classes to help you prepare for the TEF French exam in {cityPage.title || cityPage.cityName}? French Skill is here to support you with professional, customized courses designed to match your learning goals. No matter which level you're aiming for (A1, A2, B1, or B2), we help you build a strong foundation in the French language so you can succeed.
+                  Looking for classes to help you prepare for the TEF French exam in {cityPage.title || cityPage.cityName}? French Skill is here to support you with professional, customized courses designed to match your learning goals. No matter which level you&apos;re aiming for (A1, A2, B1, or B2), we help you build a strong foundation in the French language so you can succeed.
                 </p>
                 <p>
                   Our courses are self-paced, allowing you to learn French without worrying about strict schedules or timing conflicts. We offer lessons for both beginners and advanced learners, making sure your learning experience is smooth, engaging, and confidence-building.
@@ -591,7 +608,7 @@ export default function CityPageRedesign({
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 rounded-full blur-3xl"></div>
             <p className="text-blue-100 text-xl font-medium mb-8 relative z-10 leading-relaxed max-w-4xl mx-auto">
-              "So if you are someone whose goal is to qualify for a Canada PR visa, upgrade your career, or simply learn a new language for overall development, French Skill has a program specially curated for you."
+              &quot;So if you are someone whose goal is to qualify for a Canada PR visa, upgrade your career, or simply learn a new language for overall development, French Skill has a program specially curated for you.&quot;
             </p>
             <Link href="/courses" className="inline-flex items-center gap-2 bg-[#E4222A] text-white px-10 py-5 rounded-2xl font-bold shadow-xl hover:bg-red-700 transition-all relative z-10">
               Start Your Journey Now <ArrowRight className="w-5 h-5" />
