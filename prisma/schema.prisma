@@ -76,24 +76,16 @@ model Course {
 }
 
 model BlogPost {
-  id        String      @id @default(cuid())
+  id        String       @id @default(cuid())
   title     String
   content   String
-  slug      String      @unique
+  slug      String       @unique
   image     String?
-  author    String      @default("French Skill Academy")
+  author    String       @default("French Skill Academy")
   excerpt   String?
   category  BlogCategory @default(LEARNING)
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
-}
-
-enum BlogCategory {
-  CULTURE
-  LEARNING
-  GRAMMAR
-  VOCABULARY
-  TRAVEL
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 }
 
 model Testimonial {
@@ -105,6 +97,25 @@ model Testimonial {
   avatar    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model CityPage {
+  id                 String   @id @default(cuid())
+  cityName           String
+  slug               String   @unique
+  title              String
+  content            String
+  metaTitle          String?
+  metaDescription    String?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  isActive           Boolean  @default(true)
+  keywords           String?
+  afterCourseContent String?
+  faqs               Json?
+  headerImage        String?
+  middleContent      String?
+  testimonials       Json?
 }
 
 model Query {
@@ -120,6 +131,14 @@ model Query {
   notes       String?
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
+}
+
+enum BlogCategory {
+  CULTURE
+  LEARNING
+  GRAMMAR
+  VOCABULARY
+  TRAVEL
 }
 
 enum QueryType {

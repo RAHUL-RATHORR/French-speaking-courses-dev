@@ -67,55 +67,6 @@ export default function Footer() {
 
   return (
     <>
-      {/* Newsletter/CTA Section */}
-      <div className="bg-light-blue py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="md:flex">
-              <div className="md:w-2/3 p-8 md:p-12">
-                <h2 className="text-3xl font-bold text-gray-900 mb-4">
-                  Start Your French Journey Today
-                </h2>
-                <p className="text-lg text-gray-600 mb-6">
-                  Sign up for our newsletter and receive free learning
-                  resources, tips and special offers.
-                </p>
-                <form
-                  className="flex flex-col sm:flex-row gap-4"
-                  onSubmit={handleNewsletterSubmit}
-                >
-                  <input
-                    type="email"
-                    name="email"
-                    placeholder="Your email address"
-                    className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-french-blue focus:border-french-blue flex-grow"
-                    aria-label="Email address"
-                    required
-                  />
-
-                  <Button variant="primary" size="md" type="submit">
-                    <span>Subscribe</span>
-                  </Button>
-                </form>
-                <p className="mt-3 text-sm text-gray-500">
-                  We respect your privacy. Unsubscribe at any time.
-                </p>
-              </div>
-              <div className="md:w-1/3 french-gradient hidden md:block relative">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <Image
-                    src="/french-skill.png"
-                    alt="Learn French"
-                    width={200}
-                    height={200}
-                    className="object-contain filter drop-shadow-lg"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
 
       <footer className="bg-gradient-to-b from-gray-800 to-gray-900 text-white">
         {/* Wave decoration */}
