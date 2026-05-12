@@ -219,41 +219,138 @@ export default function CityPageManagement() {
                     />
                   </div>
                 </div>
+
               </div>
             </div>
 
-            {/* Content Sections */}
+            {/* Section 1: Hero Title */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-              <div className="p-6 space-y-8">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Page Content:</label>
-                  <Editor
-                    apiKey={editorConfig.apiKey}
-                    init={editorConfig as Record<string, unknown>}
-                    value={formData.content}
-                    onEditorChange={(content) => setFormData({ ...formData, content })}
-                  />
-                </div>
+              <div className="bg-french-blue/5 px-6 py-3 border-b border-gray-100">
+                <h3 className="text-sm font-bold text-french-blue uppercase tracking-wider">Section 1 (Hero Title)</h3>
+              </div>
+              <div className="p-6">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Main Heading of the Page:</label>
+                <input
+                  type="text"
+                  value={formData.title}
+                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                  placeholder="e.g. French Classes in Mumbai"
+                />
+              </div>
+            </div>
 
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Page Middle Content:</label>
-                  <Editor
-                    apiKey={editorConfig.apiKey}
-                    init={editorConfig as Record<string, unknown>}
-                    value={formData.middleContent}
-                    onEditorChange={(content) => setFormData({ ...formData, middleContent: content })}
-                  />
+            {/* Section 2: Our Vision */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+              <div className="bg-french-blue/5 px-6 py-3 border-b border-gray-100">
+                <h3 className="text-sm font-bold text-french-blue uppercase tracking-wider">Section 2 (Our Vision)</h3>
+              </div>
+              <div className="p-6 space-y-6">
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Badge Text: (e.g. OUR VISION)</label>
+                    <input
+                      type="text"
+                      value={formData.middleContent?.split('|||')[0] || ""}
+                      onChange={(e) => {
+                        const parts = formData.middleContent?.split('|||') || ["", "", ""];
+                        setFormData({ ...formData, middleContent: `${e.target.value}|||${parts[1] || ""}|||${parts[2] || ""}` });
+                      }}
+                      className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                      placeholder="e.g. OUR VISION"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Main Heading: (e.g. Unlock Fluency in Mumbai)</label>
+                    <input
+                      type="text"
+                      value={formData.middleContent?.split('|||')[1] || ""}
+                      onChange={(e) => {
+                        const parts = formData.middleContent?.split('|||') || ["", "", ""];
+                        setFormData({ ...formData, middleContent: `${parts[0] || ""}|||${e.target.value}|||${parts[2] || ""}` });
+                      }}
+                      className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                      placeholder="e.g. Unlock Fluency in Mumbai"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Description:</label>
+                    <Editor
+                      apiKey={editorConfig.apiKey}
+                      init={editorConfig as Record<string, unknown>}
+                      value={formData.middleContent?.split('|||')[2] || formData.middleContent || ""}
+                      onEditorChange={(content) => {
+                        const parts = formData.middleContent?.split('|||') || ["", "", ""];
+                        setFormData({ ...formData, middleContent: `${parts[0] || ""}|||${parts[1] || ""}|||${content}` });
+                      }}
+                    />
+                  </div>
                 </div>
+              </div>
+            </div>
 
+            {/* Section 3: Self-Paced & Structured */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+              <div className="bg-french-blue/5 px-6 py-3 border-b border-gray-100">
+                <h3 className="text-sm font-bold text-french-blue uppercase tracking-wider">Section 3 (Self-Paced & Structured)</h3>
+              </div>
+              <div className="p-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Page After Course Content:</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Section 3 Heading: (e.g. Self-Paced & Structured)</label>
+                  <input
+                    type="text"
+                    value={formData.afterCourseContent?.includes('|||') ? formData.afterCourseContent.split('|||')[0] : ""}
+                    onChange={(e) => {
+                      const raw = formData.afterCourseContent || "";
+                      const parts = raw.includes('|||') ? raw.split('|||') : ["", raw, ""];
+                      while(parts.length < 3) parts.push("");
+                      setFormData({ ...formData, afterCourseContent: `${e.target.value}|||${parts[1]}|||${parts[2]}` });
+                    }}
+                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                    placeholder="Section 3 Title"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Section 3 Description:</label>
                   <Editor
                     apiKey={editorConfig.apiKey}
                     init={editorConfig as Record<string, unknown>}
-                    value={formData.afterCourseContent}
-                    onEditorChange={(content) => setFormData({ ...formData, afterCourseContent: content })}
+                    value={formData.afterCourseContent?.includes('|||') ? formData.afterCourseContent.split('|||')[1] : formData.afterCourseContent || ""}
+                    onEditorChange={(content) => {
+                      const raw = formData.afterCourseContent || "";
+                      const parts = raw.includes('|||') ? raw.split('|||') : ["", raw, ""];
+                      // Ensure at least 3 parts
+                      while(parts.length < 3) parts.push("");
+                      setFormData({ ...formData, afterCourseContent: `${parts[0]}|||${content}|||${parts[2]}` });
+                    }}
                   />
                 </div>
+              </div>
+            </div>
+
+            {/* Section 4: Start Your Journey Now */}
+            <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+              <div className="bg-french-blue/5 px-6 py-3 border-b border-gray-100">
+                <h3 className="text-sm font-bold text-french-blue uppercase tracking-wider">Section 4 (Start Your Journey Now)</h3>
+              </div>
+              <div className="p-6">
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Paragraph Text: (Inside the blue box)</label>
+                <textarea
+                  value={formData.afterCourseContent?.includes('|||') ? formData.afterCourseContent.split('|||')[2] : ""}
+                  onChange={(e) => {
+                    const raw = formData.afterCourseContent || "";
+                    const parts = raw.includes('|||') ? raw.split('|||') : ["", raw, ""];
+                    // Ensure at least 3 parts
+                    while(parts.length < 3) parts.push("");
+                    setFormData({ ...formData, afterCourseContent: `${parts[0]}|||${parts[1]}|||${e.target.value}` });
+                  }}
+                  rows={4}
+                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                  placeholder="Paste your CTA paragraph here..."
+                />
               </div>
             </div>
 

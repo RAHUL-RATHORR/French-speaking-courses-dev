@@ -4,13 +4,39 @@ import { prisma } from "@/lib/db/prisma";
 // GET all city pages
 export async function GET() {
   try {
-    const cityPages = await prisma.cityPage.findMany({
-      orderBy: { createdAt: 'desc' }
+    console.log("Fetching city pages from database...");
+    
+    const cityPages = await (prisma.cityPage as any).findMany({
+      orderBy: { createdAt: 'desc' },
+      select: {
+        id: true,
+        cityName: true,
+        slug: true,
+        title: true,
+        content: true,
+        middleContent: true,
+        afterCourseContent: true,
+        headerImage: true,
+        faqs: true,
+        testimonials: true,
+        metaTitle: true,
+        metaDescription: true,
+        keywords: true,
+        isActive: true,
+        createdAt: true,
+        updatedAt: true
+      }
     });
+    
+    console.log(`Successfully fetched ${cityPages.length} city pages.`);
     return NextResponse.json(cityPages);
   } catch (error) {
-    console.error("Error fetching city pages:", error);
-    return NextResponse.json({ error: error instanceof Error ? error.message : "Failed to fetch city pages" }, { status: 500 });
+    console.error("CRITICAL ERROR FETCHING CITY PAGES:", error);
+
+    return NextResponse.json({ 
+      error: error instanceof Error ? error.message : "Failed to fetch city pages",
+      details: error
+    }, { status: 500 });
   }
 }
 
@@ -30,7 +56,7 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      const cityPage = await prisma.cityPage.create({
+      const cityPage = await (prisma.cityPage as any).create({
         data: {
           cityName,
           slug,
@@ -45,6 +71,24 @@ export async function POST(request: NextRequest) {
           faqs: faqs || [],
           testimonials: testimonials || [],
           isActive: true
+        },
+        select: {
+          id: true,
+          cityName: true,
+          slug: true,
+          title: true,
+          content: true,
+          middleContent: true,
+          afterCourseContent: true,
+          headerImage: true,
+          faqs: true,
+          testimonials: true,
+          metaTitle: true,
+          metaDescription: true,
+          keywords: true,
+          isActive: true,
+          createdAt: true,
+          updatedAt: true
         }
       });
       return NextResponse.json(cityPage);

@@ -22,7 +22,15 @@ interface TestimonialData {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const cityPage = await prisma.cityPage.findUnique({ where: { slug } });
+  const cityPage = await (prisma.cityPage as any).findUnique({ 
+    where: { slug },
+    select: {
+      cityName: true,
+      metaTitle: true,
+      metaDescription: true,
+      keywords: true
+    }
+  });
   if (!cityPage) return { title: "Page Not Found" };
   return {
     title: cityPage.metaTitle || `${cityPage.cityName} - French Skill Academy`,
@@ -33,8 +41,27 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function PublicCityPage({ params }: PageProps) {
   const { slug } = await params;
-  const cityPage = await prisma.cityPage.findUnique({ where: { slug } });
   
+  let cityPage = await (prisma.cityPage as any).findUnique({
+    where: { slug },
+    select: {
+      id: true,
+      cityName: true,
+      slug: true,
+      title: true,
+      content: true,
+      middleContent: true,
+      afterCourseContent: true,
+      headerImage: true,
+      faqs: true,
+      testimonials: true,
+      metaTitle: true,
+      metaDescription: true,
+      keywords: true,
+      isActive: true,
+    }
+  });
+
   if (!cityPage) notFound();
 
   const courses = await prisma.course.findMany({ take: 3, orderBy: { createdAt: 'desc' } });

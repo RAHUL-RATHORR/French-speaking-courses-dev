@@ -104,18 +104,18 @@ model CityPage {
   cityName           String
   slug               String   @unique
   title              String
+  headerImage        String?
   content            String
+  middleContent      String?
+  afterCourseContent String?
   metaTitle          String?
   metaDescription    String?
+  keywords           String?
+  faqs               Json?
+  testimonials       Json?
+  isActive           Boolean  @default(true)
   createdAt          DateTime @default(now())
   updatedAt          DateTime @updatedAt
-  isActive           Boolean  @default(true)
-  keywords           String?
-  afterCourseContent String?
-  faqs               Json?
-  headerImage        String?
-  middleContent      String?
-  testimonials       Json?
 }
 
 model Query {

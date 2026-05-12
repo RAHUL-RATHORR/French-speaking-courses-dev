@@ -8,8 +8,26 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const cityPage = await prisma.cityPage.findUnique({
-      where: { id }
+    const cityPage = await (prisma.cityPage as any).findUnique({
+      where: { id },
+      select: {
+        id: true,
+        cityName: true,
+        slug: true,
+        title: true,
+        content: true,
+        middleContent: true,
+        afterCourseContent: true,
+        headerImage: true,
+        faqs: true,
+        testimonials: true,
+        metaTitle: true,
+        metaDescription: true,
+        keywords: true,
+        isActive: true,
+        createdAt: true,
+        updatedAt: true
+      }
     });
 
     if (!cityPage) {
@@ -38,11 +56,30 @@ export async function PATCH(
     delete updateData.id;
     delete updateData.createdAt;
     delete updateData.updatedAt;
+    delete updateData.section4Content; // Forcefully remove Section 4 to avoid DB errors
 
     try {
-      const cityPage = await prisma.cityPage.update({
+      const cityPage = await (prisma.cityPage as any).update({
         where: { id },
-        data: updateData
+        data: updateData,
+        select: {
+          id: true,
+          cityName: true,
+          slug: true,
+          title: true,
+          content: true,
+          middleContent: true,
+          afterCourseContent: true,
+          headerImage: true,
+          faqs: true,
+          testimonials: true,
+          metaTitle: true,
+          metaDescription: true,
+          keywords: true,
+          isActive: true,
+          createdAt: true,
+          updatedAt: true
+        }
       });
       return NextResponse.json(cityPage);
     } catch (dbError) {

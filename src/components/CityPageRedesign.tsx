@@ -23,7 +23,10 @@ interface CityPage {
   title?: string | null;
   cityName: string;
   slug: string;
-  headerImage?: string | null;
+  content: string | null;
+  middleContent: string | null;
+  afterCourseContent: string | null;
+  headerImage: string | null;
   metaTitle?: string | null;
   metaDescription?: string | null;
   keywords?: string | null;
@@ -127,7 +130,7 @@ export default function CityPageRedesign({
   ];
 
   // Merge DB testimonials with fallbacks to ensure we always have a good number of them
-  const testimonials = formattedTestimonials && formattedTestimonials.length > 0 
+  const testimonials = formattedTestimonials && formattedTestimonials.length > 0
     ? [...formattedTestimonials, ...fallbackTestimonials.slice(formattedTestimonials.length)]
     : fallbackTestimonials;
 
@@ -189,7 +192,11 @@ export default function CityPageRedesign({
             </motion.div>
 
             <h1 className="text-4xl md:text-7xl font-black text-[#1A3260] leading-[1.05] mb-8 tracking-tighter">
-              {cityPage.slug}
+              {cityPage.title ? (
+                <span>{cityPage.title}</span>
+              ) : (
+                <div dangerouslySetInnerHTML={{ __html: cityPage.content || cityPage.cityName }} />
+              )}
               <span className="text-red-600 block">Unlock Your Future.</span>
             </h1>
 
@@ -219,6 +226,8 @@ export default function CityPageRedesign({
                 </div>
               </div>
             </div>
+
+
 
             {/* Stats Section */}
             <motion.div
@@ -400,17 +409,33 @@ export default function CityPageRedesign({
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
             >
-              <span className="bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-6 inline-block">Our Vision</span>
+              <span className="bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-6 inline-block">
+                {cityPage.middleContent?.includes('|||')
+                  ? cityPage.middleContent.split('|||')[0]
+                  : "Our Vision"}
+              </span>
               <h2 className="text-4xl md:text-5xl font-black text-[#1A3260] mb-8 leading-[1.1] tracking-tighter">
-                Unlock Fluency in <span className="text-red-600">{cityPage.cityName}</span>
+                {cityPage.middleContent?.includes('|||')
+                  ? cityPage.middleContent.split('|||')[1]
+                  : <>Unlock Fluency in <span className="text-red-600">{cityPage.cityName}</span></>}
               </h2>
               <div className="space-y-6 text-gray-600 font-medium leading-relaxed text-lg">
-                <p>
-                  In today&apos;s global economy, French is more than just a language—it&apos;s a gateway to international opportunities. At French Skill, we&apos;ve reimagined how language is taught.
-                </p>
-                <p>
-                  Our curriculum combines traditional linguistic foundations with modern immersive techniques. Whether you&apos;re aiming for Canada PR, higher education, or career growth, we provide the tools to get you there.
-                </p>
+                {cityPage.middleContent ? (
+                  <div dangerouslySetInnerHTML={{
+                    __html: cityPage.middleContent.includes('|||')
+                      ? cityPage.middleContent.split('|||')[2]
+                      : cityPage.middleContent
+                  }} />
+                ) : (
+                  <>
+                    <p>
+                      In today&apos;s global economy, French is more than just a language—it&apos;s a gateway to international opportunities. At French Skill, we&apos;ve reimagined how language is taught.
+                    </p>
+                    <p>
+                      Our curriculum combines traditional linguistic foundations with modern immersive techniques. Whether you&apos;re aiming for Canada PR, higher education, or career growth, we provide the tools to get you there.
+                    </p>
+                  </>
+                )}
                 <ul className="space-y-4 pt-6">
                   {["Expert Native Instructors", "Modern E-Learning Portal", "24/7 Student Support"].map((item, i) => (
                     <li key={i} className="flex items-center gap-4 text-[#1A3260] font-black">
@@ -538,16 +563,28 @@ export default function CityPageRedesign({
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
             >
-              <h2 className="text-4xl font-black text-[#1A3260] mb-8 tracking-tighter">
-                Self-Paced & Structured <span className="text-red-600">Lessons</span> in {cityPage.title || cityPage.cityName}
+              <h2 className="text-4xl font-black text-[#1A3260] mb-8 tracking-tighter leading-[1.1]">
+                {cityPage.afterCourseContent?.includes('|||')
+                  ? cityPage.afterCourseContent.split('|||')[0]
+                  : <>Self-Paced & Structured <span className="text-red-600">Lessons</span> in {cityPage.title || cityPage.cityName}</>}
               </h2>
               <div className="space-y-6 text-gray-600 font-medium leading-relaxed text-lg">
-                <p>
-                  Looking for classes to help you prepare for the TEF French exam in {cityPage.title || cityPage.cityName}? French Skill is here to support you with professional, customized courses designed to match your learning goals. No matter which level you&apos;re aiming for (A1, A2, B1, or B2), we help you build a strong foundation in the French language so you can succeed.
-                </p>
-                <p>
-                  Our courses are self-paced, allowing you to learn French without worrying about strict schedules or timing conflicts. We offer lessons for both beginners and advanced learners, making sure your learning experience is smooth, engaging, and confidence-building.
-                </p>
+                {cityPage.afterCourseContent ? (
+                  <div dangerouslySetInnerHTML={{
+                    __html: cityPage.afterCourseContent.includes('|||')
+                      ? cityPage.afterCourseContent.split('|||')[1]
+                      : cityPage.afterCourseContent
+                  }} />
+                ) : (
+                  <>
+                    <p>
+                      Looking for classes to help you prepare for the TEF French exam in {cityPage.title || cityPage.cityName}? French Skill is here to support you with professional, customized courses designed to match your learning goals. No matter which level you&apos;re aiming for (A1, A2, B1, or B2), we help you build a strong foundation in the French language so you can succeed.
+                    </p>
+                    <p>
+                      Our courses are self-paced, allowing you to learn French without worrying about strict schedules or timing conflicts. We offer lessons for both beginners and advanced learners, making sure your learning experience is smooth, engaging, and confidence-building.
+                    </p>
+                  </>
+                )}
               </div>
             </motion.div>
 
@@ -622,24 +659,42 @@ export default function CityPageRedesign({
               </motion.div>
             ))}
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            className="mt-16 bg-[#1A3260] p-8 md:p-12 rounded-[32px] md:rounded-[48px] text-center relative overflow-hidden"
-          >
-            <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 rounded-full blur-3xl"></div>
-            <p className="text-blue-100 text-xl font-medium mb-8 relative z-10 leading-relaxed max-w-4xl mx-auto">
-              &quot;So if you are someone whose goal is to qualify for a Canada PR visa, upgrade your career, or simply learn a new language for overall development, French Skill has a program specially curated for you.&quot;
-            </p>
-            <Link href="/courses" className="inline-flex items-center gap-2 bg-[#E4222A] text-white px-10 py-5 rounded-2xl font-bold shadow-xl hover:bg-red-700 transition-all relative z-10">
-              Start Your Journey Now <ArrowRight className="w-5 h-5" />
-            </Link>
-          </motion.div>
         </div>
       </section>
 
       {/* --- COMPARISON (MODERN TABLE) --- */}
+      {/* Section 4: Start Your Journey Now */}
+      {cityPage.afterCourseContent?.includes('|||') && cityPage.afterCourseContent.split('|||')[2] && (
+        <section className="py-12 px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              className="bg-[#1A3260] rounded-[40px] p-8 md:p-16 text-center shadow-2xl relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-64 h-64 bg-blue-400/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+              <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-400/10 rounded-full blur-3xl -ml-32 -mb-32"></div>
+
+              <div className="relative z-10">
+                <p className="text-white text-lg md:text-2xl font-medium leading-relaxed max-w-4xl mx-auto mb-10 italic">
+                  &quot;{cityPage.afterCourseContent.split('|||')[2]}&quot;
+                </p>
+                
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="bg-[#EF233C] hover:bg-[#D90429] text-white px-8 py-4 rounded-xl text-lg font-bold flex items-center gap-3 mx-auto shadow-lg shadow-red-900/20 transition-colors"
+                >
+                  Start Your Journey Now
+                  <ArrowRight className="w-5 h-5" />
+                </motion.button>
+              </div>
+            </motion.div>
+          </div>
+        </section>
+      )}
+
       <section className="py-24 bg-white px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
@@ -748,7 +803,7 @@ export default function CityPageRedesign({
             <div className="py-8 overflow-hidden">
               <motion.div
                 className="flex gap-2"
-                animate={{ 
+                animate={{
                   x: `calc(-${testimonialIndex * (100 / visibleCards)}% - ${testimonialIndex * 0.5}rem)`
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -839,7 +894,7 @@ export default function CityPageRedesign({
               We provide Career-oriented consultation services for all interested students to understand the importance of courses and empower the strengths of opportunities offered by French Skill Academy.
             </p>
           </div>
- 
+
           {/* Center Image */}
           <div className="relative w-full lg:w-[450px] h-[300px] md:h-[400px] flex items-center justify-center order-first lg:order-none">
             <div className="absolute inset-0 bg-red-100/30 rounded-full blur-[80px] md:blur-[100px] -z-10"></div>
@@ -851,7 +906,7 @@ export default function CityPageRedesign({
               className="object-contain h-full w-auto mix-blend-multiply"
             />
           </div>
- 
+
           {/* Right Content */}
           <div className="flex-1 w-full lg:max-w-[350px] space-y-6 md:space-y-8">
             <div className="text-center lg:text-left">
@@ -862,7 +917,7 @@ export default function CityPageRedesign({
                 20 Minutes of Guidance often boost the Idea of Learning and Practise.
               </p>
             </div>
- 
+
             <Link href="/#contact" className="group block w-full bg-[#E4222A] text-white text-center py-4 md:py-5 rounded-2xl font-black shadow-2xl hover:bg-red-700 transition-all hover:scale-[1.02]">
               BOOK A FREE SESSION
             </Link>
@@ -916,6 +971,8 @@ export default function CityPageRedesign({
             ))}
           </div>
         </div>
+        
+
       </section> */}
 
       <Footer />
