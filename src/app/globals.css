@@ -210,3 +210,8 @@ body {
 .pause-on-hover:hover {
   animation-play-state: paused;
 }
+
+/* Hide reCAPTCHA Badge */
+.grecaptcha-badge {
+  visibility: hidden !important;
+}

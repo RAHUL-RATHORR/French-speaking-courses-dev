@@ -134,23 +134,23 @@ export default function DashboardOverview({ initialData }: { initialData?: Dashb
     <div className="space-y-8">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Dashboard summary cards */}
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-medium text-gray-900">Total Blogs</h3>
-          <p className="text-3xl font-bold text-french-blue mt-2">
+        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
+          <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider">Total Blogs</h3>
+          <p className="text-4xl font-black text-[#1A3260] mt-2 tracking-tighter">
             {loadingBlogs ? "..." : blogs.length}
           </p>
         </div>
         
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-medium text-gray-900">Total Testimonials</h3>
-          <p className="text-3xl font-bold text-french-blue mt-2">
+        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
+          <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider">Total Testimonials</h3>
+          <p className="text-4xl font-black text-[#1A3260] mt-2 tracking-tighter">
             {loadingTestimonials ? "..." : testimonials.length}
           </p>
         </div>
         
-        <div className="bg-white rounded-lg shadow-md p-6">
-          <h3 className="text-lg font-medium text-gray-900">Total Courses</h3>
-          <p className="text-3xl font-bold text-french-blue mt-2">
+        <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-100 hover:shadow-md transition-shadow">
+          <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider">Total Courses</h3>
+          <p className="text-4xl font-black text-[#1A3260] mt-2 tracking-tighter">
             {loadingCourses ? "..." : courses.length}
           </p>
         </div>

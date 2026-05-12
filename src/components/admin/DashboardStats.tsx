@@ -131,14 +131,14 @@ export default function DashboardStats({ initialData }: { initialData?: Dashboar
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
       {statsItems.map((item, index) => (
-        <div key={index} className="bg-white p-6 rounded-lg shadow-md">
-          <div className="flex items-center mb-4">
-            <div className={`${item.color} text-white p-3 rounded-full`}>
+        <div key={index} className="bg-white p-5 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+          <div className="flex items-center mb-3">
+            <div className={`${item.color} text-white p-2 rounded-lg shadow-sm`}>
               {item.icon}
             </div>
-            <h3 className="ml-4 text-xl font-semibold text-gray-700">{item.title}</h3>
+            <h3 className="ml-3 text-base font-bold text-gray-600 truncate" title={item.title}>{item.title}</h3>
           </div>
-          <p className="text-3xl font-bold">{item.value}</p>
+          <p className="text-4xl font-black text-[#1A3260] tracking-tighter">{item.value}</p>
         </div>
       ))}
     </div>

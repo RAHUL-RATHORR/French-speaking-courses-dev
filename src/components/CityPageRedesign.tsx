@@ -206,15 +206,15 @@ export default function CityPageRedesign({
               className="flex gap-10 md:gap-16 pt-8 border-t border-gray-100"
             >
               <div>
-                <h3 className="text-4xl md:text-5xl font-black text-[#1A3260] tracking-tighter">2,000+</h3>
+                <h3 className="text-3xl md:text-4xl font-black text-[#1A3260] tracking-tighter">2,000+</h3>
                 <p className="text-gray-400 font-bold uppercase tracking-widest text-[10px] mt-1">Students</p>
               </div>
               <div>
-                <h3 className="text-4xl md:text-5xl font-black text-[#1A3260] tracking-tighter">5+</h3>
+                <h3 className="text-3xl md:text-4xl font-black text-[#1A3260] tracking-tighter">5+</h3>
                 <p className="text-gray-400 font-bold uppercase tracking-widest text-[10px] mt-1">Courses</p>
               </div>
               <div>
-                <h3 className="text-4xl md:text-5xl font-black text-[#1A3260] tracking-tighter">4.5</h3>
+                <h3 className="text-3xl md:text-4xl font-black text-[#1A3260] tracking-tighter">4.5</h3>
                 <p className="text-gray-400 font-bold uppercase tracking-widest text-[10px] mt-1">Avg. Rating</p>
               </div>
             </motion.div>
@@ -661,31 +661,27 @@ export default function CityPageRedesign({
         </div>
       </section>
 
-      {/* --- FAQ SECTION (MODERN ACCORDION) --- */}
-      <section className="py-12 px-4 bg-gray-50/50">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-8">
-            <span className="text-red-600 font-black uppercase tracking-[0.3em] text-xs mb-4 block">Common Queries</span>
-            <h2 className="text-4xl md:text-5xl font-black text-[#1A3260] tracking-tighter">Frequently Asked</h2>
+      {/* --- FAQ SECTION (BOXED STYLE) --- */}
+      <section className="py-24 px-4 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-black text-[#1A3260] tracking-tighter">Frequently Asked Questions</h2>
           </div>
 
-          <div className="space-y-3">
+          <div className="border border-gray-200 rounded-xl overflow-hidden shadow-sm">
             {displayFaqs.map((faq, i) => (
-              <motion.div
+              <div
                 key={i}
-                initial={false}
-                className={`rounded-[32px] overflow-hidden transition-all duration-300 border ${activeFaq === i ? 'bg-white border-red-100 shadow-xl' : 'bg-white border-gray-100'}`}
+                className={`border-b border-gray-200 last:border-b-0 bg-white transition-all`}
               >
                 <button
                   onClick={() => setActiveFaq(activeFaq === i ? null : i)}
-                  className="w-full px-10 py-3 flex justify-between items-center text-left"
+                  className="w-full px-8 py-6 flex justify-between items-center text-left group"
                 >
-                  <span className={`text-xl font-black transition-colors ${activeFaq === i ? 'text-red-600' : 'text-[#1A3260]'}`}>
+                  <span className={`text-lg font-bold transition-colors ${activeFaq === i ? 'text-blue-600' : 'text-[#1A3260] group-hover:text-blue-600'}`}>
                     {faq.question}
                   </span>
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${activeFaq === i ? 'bg-red-600 text-white rotate-180' : 'bg-gray-100 text-[#1A3260]'}`}>
-                    <ChevronDown className="w-5 h-5" />
-                  </div>
+                  <ChevronDown className={`w-5 h-5 transition-transform duration-300 ${activeFaq === i ? 'text-blue-600 rotate-180' : 'text-blue-400'}`} />
                 </button>
                 <AnimatePresence>
                   {activeFaq === i && (
@@ -695,13 +691,13 @@ export default function CityPageRedesign({
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <div className="px-10 pb-3 text-gray-500 font-medium leading-relaxed">
+                      <div className="px-8 pb-8 text-gray-600 font-medium leading-relaxed">
                         {faq.answer}
                       </div>
                     </motion.div>
                   )}
                 </AnimatePresence>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -726,25 +722,25 @@ export default function CityPageRedesign({
 
           {/* Right Side: Carousel Area */}
           <div className="flex-1 pt-0 md:-mt-10 relative">
-            
+
             <div className="py-8 overflow-hidden">
-              <motion.div 
-                className="flex gap-8"
-                animate={{ x: `calc(-${testimonialIndex * (100 / testimonialsPerPage)}% - ${testimonialIndex * 2}rem)` }}
+              <motion.div
+                className="flex gap-2"
+                animate={{ x: `calc(-${testimonialIndex * (100 / testimonialsPerPage)}% - ${testimonialIndex * 0.5}rem)` }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
               >
                 {testimonials.map((testimonial, i) => (
                   <motion.div
                     key={i}
-                    className="min-w-[calc(100%/1)] md:min-w-[calc(100%/2)] lg:min-w-[calc(100%/3)] group relative h-[380px] rounded-none overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.1)] cursor-pointer"
+                    className="min-w-[calc(100%/1)] md:min-w-[calc(100%/2)] lg:min-w-[calc(100%/3)] group relative h-[380px] rounded-[5%] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.1)] cursor-pointer"
                   >
                     {/* Full Card Image Background */}
-                    <div className="absolute inset-0 z-0">
+                    <div className="absolute inset-0 z-0 rounded-[5%] overflow-hidden">
                       <Image
                         src={testimonial.image || `https://i.pravatar.cc/150?u=${testimonial.name}`}
                         alt={testimonial.name}
                         fill
-                        className="object-cover"
+                        className="object-cover rounded-[5%]"
                       />
                     </div>
 
@@ -778,6 +774,49 @@ export default function CityPageRedesign({
                 ))}
               </motion.div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- CTA SECTION (INSPIRED BY SCREENSHOT) --- */}
+      <section className="py-0 bg-gray-50 px-4 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
+          {/* Left Content */}
+          <div className="flex-1 text-left lg:max-w-[400px]">
+            <h2 className="text-4xl font-black text-[#1A3260] leading-[1.1] mb-6 tracking-tighter">
+              Start your Career with <span className="text-red-600">French Skill</span> Now!
+            </h2>
+            <p className="text-gray-500 font-medium leading-relaxed">
+              We provide Career-oriented consultation services for all interested students to understand the importance of courses and empower the strengths of opportunities offered by French Skill Academy.
+            </p>
+          </div>
+
+          {/* Center Image */}
+          <div className="relative w-full lg:w-[450px] h-[400px] flex items-center justify-center">
+            <div className="absolute inset-0 bg-red-100/30 rounded-full blur-[100px] -z-10"></div>
+            <Image
+              src="/female-student-cta.png"
+              alt="Student Success"
+              width={500}
+              height={500}
+              className="object-contain h-full w-auto mix-blend-multiply"
+            />
+          </div>
+
+          {/* Right Content */}
+          <div className="flex-1 lg:max-w-[350px] space-y-8">
+            <div>
+              <h3 className="text-2xl font-black text-[#1A3260] mb-4">
+                Book a Free Session for career consultation
+              </h3>
+              <p className="text-gray-400 text-sm font-medium italic">
+                20 Minutes of Guidance often boost the Idea of Learning and Practise.
+              </p>
+            </div>
+
+            <Link href="/contact" className="group block w-full bg-[#E4222A] text-white text-center py-5 rounded-2xl font-black shadow-2xl hover:bg-red-700 transition-all hover:scale-[1.02]">
+              BOOK A FREE SESSION
+            </Link>
           </div>
         </div>
       </section>
