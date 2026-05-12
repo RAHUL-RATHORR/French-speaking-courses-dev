@@ -34,25 +34,29 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function PublicCityPage({ params }: PageProps) {
   const { slug } = await params;
   const cityPage = await prisma.cityPage.findUnique({ where: { slug } });
+  
   if (!cityPage) notFound();
 
   const courses = await prisma.course.findMany({ take: 3, orderBy: { createdAt: 'desc' } });
-  const testimonialsData = (cityPage.testimonials as unknown as TestimonialData[]) || [];
+  
+  const rawTestimonials = cityPage.testimonials;
+  const testimonialsData = Array.isArray(rawTestimonials) ? (rawTestimonials as unknown as TestimonialData[]) : [];
+  
   const formattedTestimonials = testimonialsData.map(t => ({
-    name: t.name,
+    name: t.name || "Anonymous",
     role: t.designation || "Student",
-    content: t.description,
+    content: t.description || "",
     image: t.profile || "/french-skill.png",
     rating: t.rating
   }));
 
   // Default FAQs if none provided in Admin Panel
-  const faqData = cityPage.faqs as unknown as FAQ[];
+  const faqData = cityPage?.faqs as unknown as FAQ[];
   const displayFaqs: FAQ[] = (faqData && faqData.length > 0) 
     ? faqData 
     : [
-        { question: `How much do your French classes in ${cityPage.cityName} cost?`, answer: "Our fees are highly competitive and vary based on the course level. Contact us for a detailed fee structure." },
-        { question: `Can I join your French language courses in ${cityPage.cityName} as a beginner?`, answer: "Yes, we have specialized batches for absolute beginners starting from A1 level." },
+        { question: `How much do your French classes in ${cityPage?.cityName} cost?`, answer: "Our fees are highly competitive and vary based on the course level. Contact us for a detailed fee structure." },
+        { question: `Can I join your French language courses in ${cityPage?.cityName} as a beginner?`, answer: "Yes, we have specialized batches for absolute beginners starting from A1 level." },
         { question: "Can I enroll my kid in one of your French Courses?", answer: "Absolutely! We offer 'French for Kids' programs specially designed for young learners." },
         { question: "Do you offer courses for preparing for Canada PR or immigration exams?", answer: "Yes, we provide intensive training for TEF and TCF exams required for Canada PR." },
         { question: "Can I request a doubt-clearing session?", answer: "Yes, we provide personalized mentorship and dedicated doubt-clearing sessions for all our students." }

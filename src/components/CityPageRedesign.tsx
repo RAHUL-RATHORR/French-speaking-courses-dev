@@ -81,33 +81,55 @@ export default function CityPageRedesign({
   };
 
   const [testimonialIndex, setTestimonialIndex] = useState(0);
-  const testimonialsPerPage = 3;
-  const testimonials = formattedTestimonials && formattedTestimonials.length > 0 ? formattedTestimonials : [
+  const [visibleCards, setVisibleCards] = useState(3);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 768) setVisibleCards(1);
+      else if (window.innerWidth < 1024) setVisibleCards(2);
+      else setVisibleCards(3);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const testimonialsPerPage = visibleCards;
+  const fallbackTestimonials = [
     {
-      name: "Rahul",
+      name: "Rahul Mehra",
       role: "STUDENT",
+      rating: 4.5,
       content: "The teachers at FrenchSkill explain everything clearly. I actually look forward to every class! The interactive sessions make learning complex grammar very easy.",
       image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=800"
     },
     {
-      name: "Sumit",
+      name: "Sumit Vats",
       role: "STUDENT",
+      rating: 4.5,
       content: "Great platform for beginners! I started speaking basic French in just a few weeks. The personalized attention from tutors is what sets them apart.",
       image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800"
     },
     {
-      name: "Nitin Gupta",
-      role: "Founder, Orange Planet",
-      content: "FrenchSkill is working with us to bring down turnaround times. As an educational publisher it is essential for us to meet any unforeseen demand in quick time.",
+      name: "Rohan Khanna",
+      role: "STUDENT",
+      rating: 4.5,
+      content: "The weekend batches are a lifesaver for working professionals like me. The instructors are patient and the study material is very comprehensive. Highly recommended!",
       image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800"
     },
     {
       name: "Anjali Sharma",
-      role: "Business Analyst",
-      content: "The corporate training program is top-notch. Our team's productivity increased as we could now directly communicate with our French counterparts.",
+      role: "STUDENT",
+      rating: 4.5,
+      content: "I joined for TEF preparation and the results were amazing. The mock tests and speaking practice sessions gave me the confidence I needed to clear my exams.",
       image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=800"
     }
   ];
+
+  // Merge DB testimonials with fallbacks to ensure we always have a good number of them
+  const testimonials = formattedTestimonials && formattedTestimonials.length > 0 
+    ? [...formattedTestimonials, ...fallbackTestimonials.slice(formattedTestimonials.length)]
+    : fallbackTestimonials;
 
   const nextTestimonial = useCallback(() => {
     setTestimonialIndex((prev) => (prev + 1) % (testimonials.length - (testimonialsPerPage - 1)));
@@ -166,7 +188,7 @@ export default function CityPageRedesign({
               <span className="text-xs font-black text-[#1A3260] uppercase tracking-wider">#1 French Academy in {cityPage.title || cityPage.cityName}</span>
             </motion.div>
 
-            <h1 className="text-5xl md:text-7xl font-black text-[#1A3260] leading-[1.05] mb-8 tracking-tighter">
+            <h1 className="text-4xl md:text-7xl font-black text-[#1A3260] leading-[1.05] mb-8 tracking-tighter">
               {cityPage.slug}
               <span className="text-red-600 block">Unlock Your Future.</span>
             </h1>
@@ -203,7 +225,7 @@ export default function CityPageRedesign({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="flex gap-10 md:gap-16 pt-8 border-t border-gray-100"
+              className="flex gap-6 md:gap-16 pt-8 border-t border-gray-100"
             >
               <div>
                 <h3 className="text-3xl md:text-4xl font-black text-[#1A3260] tracking-tighter">2,000+</h3>
@@ -225,7 +247,7 @@ export default function CityPageRedesign({
               style={{ y: y1 }}
               className="relative z-10"
             >
-              <div className="relative h-[550px] w-full rounded-[48px] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] border-[12px] border-white">
+              <div className="relative h-[400px] md:h-[550px] w-full rounded-[32px] md:rounded-[48px] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] border-8 md:border-[12px] border-white">
                 <Image
                   src={cityPage.headerImage || "/french-icon.jpeg"}
                   alt="French Learning"
@@ -241,7 +263,7 @@ export default function CityPageRedesign({
                 initial={{ opacity: 0, scale: 0.8, x: 40 }}
                 animate={{ opacity: 1, scale: 1, x: 0 }}
                 transition={{ delay: 0.5 }}
-                className="absolute -right-8 top-12 bg-white/95 backdrop-blur-md p-6 rounded-3xl shadow-2xl border border-white/50 z-20"
+                className="absolute -right-4 md:-right-8 top-12 bg-white/95 backdrop-blur-md p-4 md:p-6 rounded-2xl md:rounded-3xl shadow-2xl border border-white/50 z-20"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-red-50 rounded-2xl flex items-center justify-center">
@@ -258,7 +280,7 @@ export default function CityPageRedesign({
                 initial={{ opacity: 0, scale: 0.8, x: -40 }}
                 animate={{ opacity: 1, scale: 1, x: 0 }}
                 transition={{ delay: 0.7 }}
-                className="absolute -left-8 bottom-12 bg-[#1A3260] p-6 rounded-3xl shadow-2xl z-20 border-2 border-white/10"
+                className="absolute -left-4 md:-left-8 bottom-12 bg-[#1A3260] p-4 md:p-6 rounded-2xl md:rounded-3xl shadow-2xl z-20 border-2 border-white/10"
               >
                 <div className="flex items-center gap-4">
                   <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center text-white">
@@ -364,7 +386,7 @@ export default function CityPageRedesign({
               whileInView={{ opacity: 1, x: 0 }}
               className="relative group"
             >
-              <div className="relative h-[650px] rounded-[56px] overflow-hidden shadow-2xl">
+              <div className="relative h-[400px] md:h-[650px] rounded-[32px] md:rounded-[56px] overflow-hidden shadow-2xl">
                 <Image src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop" alt="Vision" fill className="object-cover group-hover:scale-105 transition-transform duration-1000" />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#1A3260]/60 to-transparent"></div>
               </div>
@@ -604,7 +626,7 @@ export default function CityPageRedesign({
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="mt-16 bg-[#1A3260] p-12 rounded-[48px] text-center relative overflow-hidden"
+            className="mt-16 bg-[#1A3260] p-8 md:p-12 rounded-[32px] md:rounded-[48px] text-center relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-64 h-64 bg-red-600/10 rounded-full blur-3xl"></div>
             <p className="text-blue-100 text-xl font-medium mb-8 relative z-10 leading-relaxed max-w-4xl mx-auto">
@@ -624,13 +646,13 @@ export default function CityPageRedesign({
             <h2 className="text-4xl font-black text-[#1A3260] tracking-tighter">The French Skill Advantage</h2>
           </div>
 
-          <div className="overflow-hidden rounded-[40px] border border-gray-100 shadow-2xl">
-            <table className="w-full text-left border-collapse">
+          <div className="overflow-x-auto rounded-[32px] md:rounded-[40px] border border-gray-100 shadow-2xl">
+            <table className="w-full text-left border-collapse min-w-[600px]">
               <thead>
                 <tr className="bg-[#1A3260]">
-                  <th className="px-10 py-8 font-black text-white uppercase tracking-[0.2em] text-xs">Benefit</th>
-                  <th className="px-10 py-8 text-center bg-[#E4222A] text-white font-black italic text-xl">French Skill</th>
-                  <th className="px-10 py-8 text-center text-blue-200 font-bold opacity-50 uppercase tracking-widest text-[10px]">Others</th>
+                  <th className="px-6 md:px-10 py-6 md:py-8 font-black text-white uppercase tracking-[0.2em] text-xs">Benefit</th>
+                  <th className="px-6 md:px-10 py-6 md:py-8 text-center bg-[#E4222A] text-white font-black italic text-xl">French Skill</th>
+                  <th className="px-6 md:px-10 py-6 md:py-8 text-center text-blue-200 font-bold opacity-50 uppercase tracking-widest text-[10px]">Others</th>
                 </tr>
               </thead>
               <tbody>
@@ -642,15 +664,15 @@ export default function CityPageRedesign({
                   "24/7 Doubt Support"
                 ].map((feature, i) => (
                   <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
-                    <td className="px-10 py-6 font-black text-[#1A3260] border-r border-gray-100">{feature}</td>
-                    <td className="px-10 py-6 text-center border-r border-gray-100">
-                      <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                        <Check className="text-green-600 w-6 h-6" />
+                    <td className="px-6 md:px-10 py-4 md:py-6 font-black text-[#1A3260] border-r border-gray-100">{feature}</td>
+                    <td className="px-6 md:px-10 py-4 md:py-6 text-center border-r border-gray-100">
+                      <div className="w-8 h-8 md:w-10 md:h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto">
+                        <Check className="text-green-600 w-4 h-4 md:w-6 md:h-6" />
                       </div>
                     </td>
-                    <td className="px-10 py-6 text-center opacity-20">
-                      <div className="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                        <div className="w-4 h-0.5 bg-gray-400"></div>
+                    <td className="px-6 md:px-10 py-4 md:py-6 text-center opacity-20">
+                      <div className="w-8 h-8 md:w-10 md:h-10 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
+                        <div className="w-3 md:w-4 h-0.5 bg-gray-400"></div>
                       </div>
                     </td>
                   </tr>
@@ -726,13 +748,15 @@ export default function CityPageRedesign({
             <div className="py-8 overflow-hidden">
               <motion.div
                 className="flex gap-2"
-                animate={{ x: `calc(-${testimonialIndex * (100 / testimonialsPerPage)}% - ${testimonialIndex * 0.5}rem)` }}
+                animate={{ 
+                  x: `calc(-${testimonialIndex * (100 / visibleCards)}% - ${testimonialIndex * 0.5}rem)`
+                }}
                 transition={{ type: "spring", stiffness: 300, damping: 30 }}
               >
                 {testimonials.map((testimonial, i) => (
                   <motion.div
                     key={i}
-                    className="min-w-[calc(100%/1)] md:min-w-[calc(100%/2)] lg:min-w-[calc(100%/3)] group relative h-[380px] rounded-[5%] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.1)] cursor-pointer"
+                    className="min-w-full md:min-w-[calc(50%-0.25rem)] lg:min-w-[calc(33.333%-0.25rem)] group relative h-[380px] rounded-[32px] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.1)] cursor-pointer"
                   >
                     {/* Full Card Image Background */}
                     <div className="absolute inset-0 z-0 rounded-[5%] overflow-hidden">
@@ -750,9 +774,34 @@ export default function CityPageRedesign({
                     {/* Content Area */}
                     <div className="absolute inset-0 p-8 flex flex-col justify-end z-20 text-left">
                       <div className="mb-0">
-                        <h4 className="text-xl font-bold text-white tracking-tight">
-                          {testimonial.name}
-                        </h4>
+                        <div className="flex items-center gap-3">
+                          <h4 className="text-xl font-bold text-white tracking-tight">
+                            {testimonial.name}
+                          </h4>
+                          <div className="flex items-center gap-0.5">
+                            {[1, 2, 3, 4, 5].map((star) => {
+                              // FORCE 4.5 for testing
+                              const rating = 4.5;
+                              const isFull = star <= 4;
+                              const isHalf = star === 5;
+
+                              if (isFull) {
+                                return <Star key={star} className="w-3.5 h-3.5 text-yellow-400 fill-current" />;
+                              } else if (isHalf) {
+                                return (
+                                  <div key={star} className="relative w-3.5 h-3.5">
+                                    <Star className="absolute inset-0 w-3.5 h-3.5 text-gray-500" />
+                                    <div className="absolute inset-0 overflow-hidden w-[50%] z-10">
+                                      <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
+                                    </div>
+                                  </div>
+                                );
+                              } else {
+                                return <Star key={star} className="w-3.5 h-3.5 text-gray-500" />;
+                              }
+                            })}
+                          </div>
+                        </div>
                         <p className="text-gray-300 text-xs font-medium">
                           {testimonial.role}
                         </p>
@@ -779,21 +828,21 @@ export default function CityPageRedesign({
       </section>
 
       {/* --- CTA SECTION (INSPIRED BY SCREENSHOT) --- */}
-      <section className="py-0 bg-gray-50 px-4 relative overflow-hidden">
-        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
+      <section className="py-16 md:py-0 bg-gray-50 px-4 relative overflow-hidden">
+        <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12">
           {/* Left Content */}
-          <div className="flex-1 text-left lg:max-w-[400px]">
-            <h2 className="text-4xl font-black text-[#1A3260] leading-[1.1] mb-6 tracking-tighter">
+          <div className="flex-1 text-center lg:text-left lg:max-w-[400px]">
+            <h2 className="text-3xl md:text-4xl font-black text-[#1A3260] leading-[1.1] mb-6 tracking-tighter">
               Start your Career with <span className="text-red-600">French Skill</span> Now!
             </h2>
-            <p className="text-gray-500 font-medium leading-relaxed">
+            <p className="text-gray-500 font-medium leading-relaxed text-sm md:text-base">
               We provide Career-oriented consultation services for all interested students to understand the importance of courses and empower the strengths of opportunities offered by French Skill Academy.
             </p>
           </div>
-
+ 
           {/* Center Image */}
-          <div className="relative w-full lg:w-[450px] h-[400px] flex items-center justify-center">
-            <div className="absolute inset-0 bg-red-100/30 rounded-full blur-[100px] -z-10"></div>
+          <div className="relative w-full lg:w-[450px] h-[300px] md:h-[400px] flex items-center justify-center order-first lg:order-none">
+            <div className="absolute inset-0 bg-red-100/30 rounded-full blur-[80px] md:blur-[100px] -z-10"></div>
             <Image
               src="/female-student-cta.png"
               alt="Student Success"
@@ -802,19 +851,19 @@ export default function CityPageRedesign({
               className="object-contain h-full w-auto mix-blend-multiply"
             />
           </div>
-
+ 
           {/* Right Content */}
-          <div className="flex-1 lg:max-w-[350px] space-y-8">
-            <div>
-              <h3 className="text-2xl font-black text-[#1A3260] mb-4">
+          <div className="flex-1 w-full lg:max-w-[350px] space-y-6 md:space-y-8">
+            <div className="text-center lg:text-left">
+              <h3 className="text-xl md:text-2xl font-black text-[#1A3260] mb-3 md:mb-4">
                 Book a Free Session for career consultation
               </h3>
-              <p className="text-gray-400 text-sm font-medium italic">
+              <p className="text-gray-400 text-xs md:text-sm font-medium italic">
                 20 Minutes of Guidance often boost the Idea of Learning and Practise.
               </p>
             </div>
-
-            <Link href="/contact" className="group block w-full bg-[#E4222A] text-white text-center py-5 rounded-2xl font-black shadow-2xl hover:bg-red-700 transition-all hover:scale-[1.02]">
+ 
+            <Link href="/#contact" className="group block w-full bg-[#E4222A] text-white text-center py-4 md:py-5 rounded-2xl font-black shadow-2xl hover:bg-red-700 transition-all hover:scale-[1.02]">
               BOOK A FREE SESSION
             </Link>
           </div>
