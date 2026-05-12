@@ -59,38 +59,38 @@ export default function CourseCard({
         <span className="sr-only">{title}</span>
       </NextLink>
       <div className="relative h-44 w-full overflow-hidden bg-gray-100">
-        <Image
-          src={
-            image
-              ? image.startsWith("http") || image.startsWith("/")
-                ? image
-                : `/uploads/${image}`
-              : "/french-skill.png"
-          }
-          alt={title}
-          fill
-          className="object-cover group-hover:scale-110 transition-transform duration-500 z-0"
-          onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = "/french-skill.png";
-          }}
-        />
-        <div className="absolute inset-0 bg-black/5 z-10" />
+        <NextLink href={`/course/${slug}`} className="block h-full w-full relative z-20">
+          <Image
+            src={
+              image
+                ? image.startsWith("http") || image.startsWith("/")
+                  ? image
+                  : `/uploads/${image}`
+                : "/french-skill.png"
+            }
+            alt={title}
+            fill
+            className="object-cover group-hover:scale-110 transition-transform duration-500 z-0"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = "/french-skill.png";
+            }}
+          />
+          <div className="absolute inset-0 bg-black/5 z-10" />
 
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent" />
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-10" />
 
-
-
-        {/* Rating */}
-        {rating ? (
-          <div className="absolute bottom-4 left-4 rounded-md shadow-lg flex items-center bg-white/90 backdrop-blur-sm px-2 py-1">
-            <div className="text-yellow-400 text-sm flex">★★★★★</div>
-            <span className="text-sm font-bold text-gray-800 ml-1">
-              {rating}
-            </span>
-          </div>
-        ) : null}
+          {/* Rating */}
+          {rating ? (
+            <div className="absolute bottom-4 left-4 rounded-md shadow-lg flex items-center bg-white/90 backdrop-blur-sm px-2 py-1 z-20">
+              <div className="text-yellow-400 text-sm flex">★★★★★</div>
+              <span className="text-sm font-bold text-gray-800 ml-1">
+                {rating}
+              </span>
+            </div>
+          ) : null}
+        </NextLink>
       </div>
 
       <div className="p-5">
