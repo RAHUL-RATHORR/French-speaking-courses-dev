@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     const { id } = await params;
-    const cityPage = await (prisma.cityPage as any).findUnique({
+    const cityPage = await prisma.cityPage.findUnique({
       where: { id },
       select: {
         id: true,
@@ -59,7 +59,7 @@ export async function PATCH(
     delete updateData.section4Content; // Forcefully remove Section 4 to avoid DB errors
 
     try {
-      const cityPage = await (prisma.cityPage as any).update({
+      const cityPage = await prisma.cityPage.update({
         where: { id },
         data: updateData,
         select: {

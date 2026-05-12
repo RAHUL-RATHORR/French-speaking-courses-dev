@@ -6,7 +6,7 @@ export async function GET() {
   try {
     console.log("Fetching city pages from database...");
     
-    const cityPages = await (prisma.cityPage as any).findMany({
+    const cityPages = await prisma.cityPage.findMany({
       orderBy: { createdAt: 'desc' },
       select: {
         id: true,
@@ -56,7 +56,7 @@ export async function POST(request: NextRequest) {
     }
 
     try {
-      const cityPage = await (prisma.cityPage as any).create({
+      const cityPage = await prisma.cityPage.create({
         data: {
           cityName,
           slug,

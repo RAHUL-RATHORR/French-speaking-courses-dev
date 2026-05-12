@@ -22,7 +22,7 @@ interface TestimonialData {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const cityPage = await (prisma.cityPage as any).findUnique({ 
+  const cityPage = await prisma.cityPage.findUnique({ 
     where: { slug },
     select: {
       cityName: true,
@@ -42,7 +42,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function PublicCityPage({ params }: PageProps) {
   const { slug } = await params;
   
-  let cityPage = await (prisma.cityPage as any).findUnique({
+  const cityPage = await prisma.cityPage.findUnique({
     where: { slug },
     select: {
       id: true,

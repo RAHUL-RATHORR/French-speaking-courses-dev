@@ -136,7 +136,7 @@ export default function CityPageRedesign({
 
   const nextTestimonial = useCallback(() => {
     setTestimonialIndex((prev) => (prev + 1) % (testimonials.length - (testimonialsPerPage - 1)));
-  }, [testimonials.length]);
+  }, [testimonials.length, testimonialsPerPage]);
 
   useEffect(() => {
     const interval = setInterval(() => {
