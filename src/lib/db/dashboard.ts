@@ -10,7 +10,7 @@ export async function getDashboardData() {
     recentTestimonials,
     courseStats,
     testimonialStats
-  ] = await Promise.all([
+  ] = await prisma.$transaction([
     prisma.course.count(),
     prisma.blogPost.count(),
     prisma.testimonial.count(),
