@@ -61,6 +61,24 @@ export default function CityPageManagement() {
     fetchCityPages();
   }, []);
 
+  const slugify = (text: string) => {
+    return text
+      .toString()
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-')     // Replace spaces with -
+      .replace(/[^\w-]+/g, '')  // Remove all non-word chars
+      .replace(/--+/g, '-');    // Replace multiple - with single -
+  };
+
+  const handleCityNameChange = (name: string) => {
+    setFormData(prev => ({
+      ...prev,
+      cityName: name,
+      slug: slugify(name)
+    }));
+  };
+
   const fetchCityPages = async () => {
     try {
       const res = await fetch("/api/admin/city-pages");
@@ -201,8 +219,9 @@ export default function CityPageManagement() {
                     type="text"
                     required
                     value={formData.cityName}
-                    onChange={(e) => setFormData({ ...formData, cityName: e.target.value })}
+                    onChange={(e) => handleCityNameChange(e.target.value)}
                     className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                    placeholder="e.g. French classes in Mumbai"
                   />
                 </div>
                 <div>
@@ -229,10 +248,10 @@ export default function CityPageManagement() {
                 <h3 className="text-sm font-bold text-french-blue uppercase tracking-wider">Section 1 (Hero Title)</h3>
               </div>
               <div className="p-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Main Heading of the Page:</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">Main Heading Text (Top Line)</label>
                 <input
                   type="text"
-                  value={formData.title}
+                  value={formData.title || ""}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                   className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
                   placeholder="e.g. French Classes in Mumbai"
@@ -262,29 +281,32 @@ export default function CityPageManagement() {
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Main Heading: (e.g. Unlock Fluency in Mumbai)</label>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Vision Subheading Text</label>
                     <input
                       type="text"
-                      value={formData.middleContent?.split('|||')[1] || ""}
+                      value={formData.middleContent?.includes('|||') ? formData.middleContent.split('|||')[1] : ""}
                       onChange={(e) => {
-                        const parts = formData.middleContent?.split('|||') || ["", "", ""];
-                        setFormData({ ...formData, middleContent: `${parts[0] || ""}|||${e.target.value}|||${parts[2] || ""}` });
+                        const raw = formData.middleContent || "";
+                        const parts = raw.includes('|||') ? raw.split('|||') : ["", "", raw];
+                        setFormData({ ...formData, middleContent: `${parts[0]}|||${e.target.value}|||${parts[2]}` });
                       }}
                       className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
-                      placeholder="e.g. Unlock Fluency in Mumbai"
+                      placeholder="e.g. Unlock Fluency in Your City"
                     />
                   </div>
                   
                   <div>
-                    <label className="block text-sm font-semibold text-gray-700 mb-2">Description:</label>
-                    <Editor
-                      apiKey={editorConfig.apiKey}
-                      init={editorConfig as Record<string, unknown>}
-                      value={formData.middleContent?.split('|||')[2] || formData.middleContent || ""}
-                      onEditorChange={(content) => {
-                        const parts = formData.middleContent?.split('|||') || ["", "", ""];
-                        setFormData({ ...formData, middleContent: `${parts[0] || ""}|||${parts[1] || ""}|||${content}` });
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">Vision Description Text</label>
+                    <textarea
+                      value={formData.middleContent?.includes('|||') ? formData.middleContent.split('|||')[2] : (formData.middleContent || "")}
+                      onChange={(e) => {
+                        const raw = formData.middleContent || "";
+                        const parts = raw.includes('|||') ? raw.split('|||') : ["Our Vision", "Unlock Fluency", raw];
+                        setFormData({ ...formData, middleContent: `${parts[0]}|||${parts[1]}|||${e.target.value}` });
                       }}
+                      rows={4}
+                      className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                      placeholder="Detailed vision text..."
                     />
                   </div>
                 </div>
@@ -298,9 +320,8 @@ export default function CityPageManagement() {
               </div>
               <div className="p-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Section 3 Heading: (e.g. Self-Paced & Structured)</label>
-                  <input
-                    type="text"
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Lessons Heading (Raw HTML - H2)</label>
+                  <textarea
                     value={formData.afterCourseContent?.includes('|||') ? formData.afterCourseContent.split('|||')[0] : ""}
                     onChange={(e) => {
                       const raw = formData.afterCourseContent || "";
@@ -308,24 +329,26 @@ export default function CityPageManagement() {
                       while(parts.length < 3) parts.push("");
                       setFormData({ ...formData, afterCourseContent: `${e.target.value}|||${parts[1]}|||${parts[2]}` });
                     }}
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
-                    placeholder="Section 3 Title"
+                    rows={2}
+                    className="w-full p-3 font-mono text-sm border rounded-lg bg-gray-50 focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                    placeholder="e.g. <h2 class='...'>Self-Paced Lessons</h2>"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Section 3 Description:</label>
-                  <Editor
-                    apiKey={editorConfig.apiKey}
-                    init={editorConfig as Record<string, unknown>}
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Lessons Description (Raw HTML - P)</label>
+                  <textarea
                     value={formData.afterCourseContent?.includes('|||') ? formData.afterCourseContent.split('|||')[1] : formData.afterCourseContent || ""}
-                    onEditorChange={(content) => {
+                    onChange={(e) => {
                       const raw = formData.afterCourseContent || "";
                       const parts = raw.includes('|||') ? raw.split('|||') : ["", raw, ""];
                       // Ensure at least 3 parts
                       while(parts.length < 3) parts.push("");
-                      setFormData({ ...formData, afterCourseContent: `${parts[0]}|||${content}|||${parts[2]}` });
+                      setFormData({ ...formData, afterCourseContent: `${parts[0]}|||${e.target.value}|||${parts[2]}` });
                     }}
+                    rows={6}
+                    className="w-full p-3 font-mono text-sm border rounded-lg bg-gray-50 focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                    placeholder="e.g. <p>Description about lessons...</p>"
                   />
                 </div>
               </div>
@@ -337,7 +360,7 @@ export default function CityPageManagement() {
                 <h3 className="text-sm font-bold text-french-blue uppercase tracking-wider">Section 4 (Start Your Journey Now)</h3>
               </div>
               <div className="p-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Paragraph Text: (Inside the blue box)</label>
+                <label className="block text-sm font-semibold text-gray-700 mb-2">CTA Message (Inside Blue Box)</label>
                 <textarea
                   value={formData.afterCourseContent?.includes('|||') ? formData.afterCourseContent.split('|||')[2] : ""}
                   onChange={(e) => {
@@ -349,21 +372,12 @@ export default function CityPageManagement() {
                   }}
                   rows={4}
                   className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
-                  placeholder="Paste your CTA paragraph here..."
+                  placeholder="Paste your CTA text here..."
                 />
               </div>
             </div>
 
-            {/* Header Image Section */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">Page Header Image:</label>
-              <ImageUpload
-                onImageUploaded={(url) => setFormData({ ...formData, headerImage: url })}
-                currentImage={formData.headerImage}
-                label="Header Image"
-              />
-              <p className="text-[10px] text-gray-400 mt-2">Accepted: webp, jpeg, png, jpg. Max file size 2Mb</p>
-            </div>
+            {/* Image upload section removed - using fixed premium India hero image globally */}
 
             {/* SEO Section */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">

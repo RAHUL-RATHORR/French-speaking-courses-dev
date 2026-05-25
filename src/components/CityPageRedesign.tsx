@@ -191,14 +191,14 @@ export default function CityPageRedesign({
               <span className="text-xs font-black text-[#1A3260] uppercase tracking-wider">#1 French Academy in {cityPage.title || cityPage.cityName}</span>
             </motion.div>
 
-            <h1 className="text-4xl md:text-7xl font-black text-[#1A3260] leading-[1.05] mb-8 tracking-tighter">
+            <div className="text-4xl md:text-7xl font-black text-[#1A3260] leading-[1.05] mb-8 tracking-tighter">
               {cityPage.title ? (
-                <span>{cityPage.title}</span>
+                <div dangerouslySetInnerHTML={{ __html: cityPage.title }} />
               ) : (
                 <div dangerouslySetInnerHTML={{ __html: cityPage.content || cityPage.cityName }} />
               )}
               <span className="text-red-600 block">Unlock Your Future.</span>
-            </h1>
+            </div>
 
             <p className="text-gray-600 text-xl mb-10 max-w-xl leading-relaxed font-medium">
               Join 11,000+ students mastering French with expert guidance. Personalized learning paths from A1 to B2 levels.
@@ -258,7 +258,7 @@ export default function CityPageRedesign({
             >
               <div className="relative h-[400px] md:h-[550px] w-full rounded-[32px] md:rounded-[48px] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] border-8 md:border-[12px] border-white">
                 <Image
-                  src={cityPage.headerImage || "/french-icon.jpeg"}
+                  src={cityPage.headerImage || "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop"}
                   alt="French Learning"
                   fill
                   className="object-cover"
@@ -409,17 +409,25 @@ export default function CityPageRedesign({
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
             >
-              <span className="bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-6 inline-block">
+              <span 
+                className="bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-6 inline-block"
+                dangerouslySetInnerHTML={{ 
+                  __html: cityPage.middleContent?.includes('|||')
+                    ? cityPage.middleContent.split('|||')[0].replace(/French/gi, '<span class="text-red-600">French</span>')
+                    : "Our Vision"
+                }}
+              />
+              <div className="mb-8">
                 {cityPage.middleContent?.includes('|||')
-                  ? cityPage.middleContent.split('|||')[0]
-                  : "Our Vision"}
-              </span>
-              <h2 className="text-4xl md:text-5xl font-black text-[#1A3260] mb-8 leading-[1.1] tracking-tighter">
-                {cityPage.middleContent?.includes('|||')
-                  ? cityPage.middleContent.split('|||')[1]
-                  : <>Unlock Fluency in <span className="text-red-600">{cityPage.cityName}</span></>}
-              </h2>
-              <div className="space-y-6 text-gray-600 font-medium leading-relaxed text-lg">
+                  ? <div 
+                      className="text-4xl md:text-5xl font-black text-[#1A3260] leading-[1.1] tracking-tighter"
+                      dangerouslySetInnerHTML={{ 
+                        __html: cityPage.middleContent.split('|||')[1].replace(/French/gi, (match) => `<span class="text-red-600">${match}</span>`) 
+                      }} 
+                    />
+                  : <h2 className="text-4xl md:text-5xl font-black text-[#1A3260] leading-[1.1] tracking-tighter">Unlock Fluency in <span className="text-red-600">French</span> Classes in {cityPage.cityName}</h2>}
+              </div>
+              <div className="space-y-6 text-gray-600 font-medium leading-relaxed text-lg whitespace-pre-line">
                 {cityPage.middleContent ? (
                   <div dangerouslySetInnerHTML={{
                     __html: cityPage.middleContent.includes('|||')
@@ -451,34 +459,6 @@ export default function CityPageRedesign({
           </div>
         </div>
       </section>
-
-      {/* --- POPULAR COURSES ---
-      <section className="py-24 bg-white px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-black text-[#1A3260] tracking-tighter mb-4">Elite Programs</h2>
-              <p className="text-gray-500 font-bold text-lg">Choose the path that fits your goals.</p>
-            </div>
-            <Link href="/courses" className="text-red-600 font-black flex items-center gap-2 hover:gap-3 transition-all">
-              View All Courses <ArrowRight className="w-5 h-5" />
-            </Link>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {courses.map((course, i) => (
-              <motion.div 
-                key={course.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.1 }}
-              >
-                <CourseCard {...(course as any)} />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section> */}
 
       {/* --- CERTIFICATION SHOWCASE --- */}
       <section className="py-16 px-4 relative overflow-hidden bg-[#1A3260]"
@@ -563,12 +543,17 @@ export default function CityPageRedesign({
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
             >
-              <h2 className="text-4xl font-black text-[#1A3260] mb-8 tracking-tighter leading-[1.1]">
+              <div className="mb-8">
                 {cityPage.afterCourseContent?.includes('|||')
-                  ? cityPage.afterCourseContent.split('|||')[0]
-                  : <>Self-Paced & Structured <span className="text-red-600">Lessons</span> in {cityPage.title || cityPage.cityName}</>}
-              </h2>
-              <div className="space-y-6 text-gray-600 font-medium leading-relaxed text-lg">
+                  ? <div 
+                      className="text-4xl font-black text-[#1A3260] tracking-tighter leading-[1.1]"
+                      dangerouslySetInnerHTML={{ 
+                        __html: cityPage.afterCourseContent.split('|||')[0].replace(/classes/gi, (match) => `<span class="text-red-600">${match}</span>`) 
+                      }} 
+                    />
+                  : <h2 className="text-4xl font-black text-[#1A3260] tracking-tighter leading-[1.1]">Self-Paced & Structured <span className="text-red-600">Classes</span> in {cityPage.title || cityPage.cityName}</h2>}
+              </div>
+              <div className="space-y-6 text-gray-600 font-medium leading-relaxed text-lg whitespace-pre-line">
                 {cityPage.afterCourseContent ? (
                   <div dangerouslySetInnerHTML={{
                     __html: cityPage.afterCourseContent.includes('|||')
@@ -667,7 +652,7 @@ export default function CityPageRedesign({
       {cityPage.afterCourseContent?.includes('|||') && cityPage.afterCourseContent.split('|||')[2] && (
         <section className="py-12 px-4 sm:px-6 lg:px-8">
           <div className="max-w-6xl mx-auto">
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
@@ -677,10 +662,11 @@ export default function CityPageRedesign({
               <div className="absolute bottom-0 left-0 w-64 h-64 bg-purple-400/10 rounded-full blur-3xl -ml-32 -mb-32"></div>
 
               <div className="relative z-10">
-                <p className="text-white text-lg md:text-2xl font-medium leading-relaxed max-w-4xl mx-auto mb-10 italic">
-                  &quot;{cityPage.afterCourseContent.split('|||')[2]}&quot;
-                </p>
-                
+                <div
+                  className="text-white text-lg md:text-2xl font-medium leading-relaxed max-w-4xl mx-auto mb-10 italic whitespace-pre-line"
+                  dangerouslySetInnerHTML={{ __html: cityPage.afterCourseContent.split('|||')[2] }}
+                />
+
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
