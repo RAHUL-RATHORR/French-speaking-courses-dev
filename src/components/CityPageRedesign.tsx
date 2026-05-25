@@ -150,7 +150,7 @@ export default function CityPageRedesign({
       <Header />
 
       {/* --- HERO SECTION --- */}
-      <section className="relative pt-20 pb-24 px-4 overflow-hidden">
+      <section className="relative pt-20 pb-40 px-4 overflow-hidden">
         {/* Modern Background */}
         <div className="absolute top-0 left-0 w-full h-full -z-10 bg-white">
           <motion.div
