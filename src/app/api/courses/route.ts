@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 
-export const dynamic = 'force-dynamic';
+export const revalidate = 60;
 // GET all courses for public consumption
 export async function GET(request: NextRequest) {
   try {
@@ -29,19 +29,10 @@ export async function GET(request: NextRequest) {
     });
     console.log(`Found ${courses.length} courses`);
 
-    const origin = request.nextUrl.origin;
     const normalize = (value: unknown) => {
       if (typeof value !== "string") return value;
       const trimmed = value.trim();
       if (!trimmed) return null;
-      if (trimmed.startsWith("/")) return trimmed;
-      try {
-        const url = new URL(trimmed);
-        const originUrl = new URL(origin);
-        if (url.host === originUrl.host) return `${url.pathname}${url.search}`;
-      } catch {
-        // ignore
-      }
       return trimmed;
     };
 
