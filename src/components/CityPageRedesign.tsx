@@ -698,8 +698,8 @@ export default function CityPageRedesign({
               </thead>
               <tbody>
                 {[
-                  "100% Refund Policy",
-                  "Expert Native Tutors",
+                  "Personal Mentorship",
+                  "Learning Flexibility",
                   "Personalized Learning Path",
                   "Lifetime Access",
                   "24/7 Doubt Support"
