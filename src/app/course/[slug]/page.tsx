@@ -116,9 +116,18 @@ export async function generateMetadata({ params }: CourseParams): Promise<Metada
 
 // Generate static params for static generation (optional)
 export async function generateStaticParams() {
-  // Return empty array to generate pages on-demand instead of at build time
-  // This drastically speeds up Vercel deployments
-  return [];
+  try {
+    const courses = await prisma.course.findMany({
+      select: { slug: true },
+    });
+
+    return courses.map((course) => ({
+      slug: course.slug,
+    }));
+  } catch (error) {
+    console.error("Error generating static params:", error);
+    return [];
+  }
 }
 
 // Server Component
