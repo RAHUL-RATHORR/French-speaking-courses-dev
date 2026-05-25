@@ -6,7 +6,7 @@ import { motion, useScroll, useTransform, AnimatePresence, Variants } from "fram
 import {
   GraduationCap, Users, Award, BookOpen, Clock,
   ArrowRight, Star, Check, Globe, Zap, ShieldCheck,
-  ChevronDown
+  ChevronDown, X
 } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -711,9 +711,9 @@ export default function CityPageRedesign({
                         <Check className="text-green-600 w-4 h-4 md:w-6 md:h-6" />
                       </div>
                     </td>
-                    <td className="px-6 md:px-10 py-4 md:py-6 text-center opacity-20">
-                      <div className="w-8 h-8 md:w-10 md:h-10 bg-gray-100 rounded-full flex items-center justify-center mx-auto">
-                        <div className="w-3 md:w-4 h-0.5 bg-gray-400"></div>
+                    <td className="px-6 md:px-10 py-4 md:py-6 text-center">
+                      <div className="w-8 h-8 md:w-10 md:h-10 bg-red-400 rounded-full flex items-center justify-center mx-auto">
+                        <X strokeWidth={3} className="text-white w-4 h-4 md:w-5 md:h-5" />
                       </div>
                     </td>
                   </tr>
