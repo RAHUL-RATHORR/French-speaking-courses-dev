@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
 // GET all blog posts for public consumption
 export async function GET(request: NextRequest) {
   try {
