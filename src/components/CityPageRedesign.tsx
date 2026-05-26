@@ -510,7 +510,7 @@ export default function CityPageRedesign({
             <div className="bg-white p-8 rounded-[40px] shadow-2xl relative overflow-hidden group">
               <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <Image
-                src="/french-skill.png"
+                src="/french-skill-certificate.png"
                 alt="Certification"
                 width={800}
                 height={600}
