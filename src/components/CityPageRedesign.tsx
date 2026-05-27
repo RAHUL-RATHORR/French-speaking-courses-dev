@@ -784,36 +784,36 @@ export default function CityPageRedesign({
                     {/* Content Area */}
                     <div className="absolute inset-0 p-8 flex flex-col justify-end z-20 text-left">
                       <div className="mb-0">
-                        <div className="flex items-center gap-3">
-                          <h4 className="text-xl font-bold text-white tracking-tight">
+                        <div className="flex flex-col gap-1 mb-2">
+                          <h4 className="text-xl font-bold text-white tracking-tight whitespace-nowrap">
                             {testimonial.name}
                           </h4>
-                          <div className="flex items-center gap-0.5">
-                            {[1, 2, 3, 4, 5].map((star) => {
-                              const rating = testimonial.rating ?? 5;
-                              const isFull = star <= Math.floor(rating);
-                              const isHalf = !isFull && star === Math.floor(rating) + 1 && rating % 1 >= 0.5;
-
-                              if (isFull) {
-                                return <Star key={star} className="w-3.5 h-3.5 text-yellow-400 fill-current" />;
-                              } else if (isHalf) {
-                                return (
-                                  <div key={star} className="relative w-3.5 h-3.5">
-                                    <Star className="absolute inset-0 w-3.5 h-3.5 text-gray-500" />
-                                    <div className="absolute inset-0 overflow-hidden w-[50%] z-10">
-                                      <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
-                                    </div>
-                                  </div>
-                                );
-                              } else {
-                                return <Star key={star} className="w-3.5 h-3.5 text-gray-500" />;
-                              }
-                            })}
-                          </div>
+                          <p className="text-gray-300 text-xs font-medium">
+                            {testimonial.role}
+                          </p>
                         </div>
-                        <p className="text-gray-300 text-xs font-medium">
-                          {testimonial.role}
-                        </p>
+                        <div className="flex items-center gap-0.5">
+                          {[1, 2, 3, 4, 5].map((star) => {
+                            const rating = testimonial.rating ?? 5;
+                            const isFull = star <= Math.floor(rating);
+                            const isHalf = !isFull && star === Math.floor(rating) + 1 && rating % 1 >= 0.5;
+
+                            if (isFull) {
+                              return <Star key={star} className="w-3.5 h-3.5 text-yellow-400 fill-current" />;
+                            } else if (isHalf) {
+                              return (
+                                <div key={star} className="relative w-3.5 h-3.5">
+                                  <Star className="absolute inset-0 w-3.5 h-3.5 text-gray-500" />
+                                  <div className="absolute inset-0 overflow-hidden w-[50%] z-10">
+                                    <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
+                                  </div>
+                                </div>
+                              );
+                            } else {
+                              return <Star key={star} className="w-3.5 h-3.5 text-gray-500" />;
+                            }
+                          })}
+                        </div>
                       </div>
 
                       {/* Hover Reveal: Testimonial Content */}
