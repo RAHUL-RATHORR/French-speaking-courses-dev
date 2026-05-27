@@ -788,31 +788,31 @@ export default function CityPageRedesign({
                           <h4 className="text-xl font-bold text-white tracking-tight whitespace-nowrap">
                             {testimonial.name}
                           </h4>
-                          <p className="text-gray-300 text-xs font-medium">
+                          <div className="flex items-center gap-0.5 mt-1">
+                            {[1, 2, 3, 4, 5].map((star) => {
+                              const rating = testimonial.rating ?? 5;
+                              const isFull = star <= Math.floor(rating);
+                              const isHalf = !isFull && star === Math.floor(rating) + 1 && rating % 1 >= 0.5;
+
+                              if (isFull) {
+                                return <Star key={star} className="w-3.5 h-3.5 text-yellow-400 fill-current" />;
+                              } else if (isHalf) {
+                                return (
+                                  <div key={star} className="relative w-3.5 h-3.5">
+                                    <Star className="absolute inset-0 w-3.5 h-3.5 text-gray-500" />
+                                    <div className="absolute inset-0 overflow-hidden w-[50%] z-10">
+                                      <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
+                                    </div>
+                                  </div>
+                                );
+                              } else {
+                                return <Star key={star} className="w-3.5 h-3.5 text-gray-500" />;
+                              }
+                            })}
+                          </div>
+                          <p className="text-gray-300 text-xs font-medium mt-1">
                             {testimonial.role}
                           </p>
-                        </div>
-                        <div className="flex items-center gap-0.5">
-                          {[1, 2, 3, 4, 5].map((star) => {
-                            const rating = testimonial.rating ?? 5;
-                            const isFull = star <= Math.floor(rating);
-                            const isHalf = !isFull && star === Math.floor(rating) + 1 && rating % 1 >= 0.5;
-
-                            if (isFull) {
-                              return <Star key={star} className="w-3.5 h-3.5 text-yellow-400 fill-current" />;
-                            } else if (isHalf) {
-                              return (
-                                <div key={star} className="relative w-3.5 h-3.5">
-                                  <Star className="absolute inset-0 w-3.5 h-3.5 text-gray-500" />
-                                  <div className="absolute inset-0 overflow-hidden w-[50%] z-10">
-                                    <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
-                                  </div>
-                                </div>
-                              );
-                            } else {
-                              return <Star key={star} className="w-3.5 h-3.5 text-gray-500" />;
-                            }
-                          })}
                         </div>
                       </div>
 
@@ -824,7 +824,7 @@ export default function CityPageRedesign({
                       </div>
 
                       {/* Arrow Icon (Bottom Right) */}
-                      <div className="absolute bottom-8 right-8 text-white/70 group-hover:text-red-500 transition-colors">
+                      <div className="absolute bottom-8 right-8 text-white/70 group-hover:opacity-0 transition-all duration-300">
                         <ArrowRight className="w-6 h-6 transform -rotate-45" />
                       </div>
                     </div>
