@@ -3,6 +3,9 @@ import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db/prisma";
 import CityPageRedesign from "@/components/CityPageRedesign";
 
+export const revalidate = 0; // Always fetch fresh data from DB
+
+
 interface FAQ {
   question: string;
   answer: string;

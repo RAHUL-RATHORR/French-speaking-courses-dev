@@ -220,20 +220,20 @@ export default function CityPageManagement() {
                     required
                     value={formData.cityName}
                     onChange={(e) => handleCityNameChange(e.target.value)}
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
                     placeholder="e.g. French classes in Mumbai"
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Page Url: *</label>
                   <div className="flex items-center">
-                    <span className="bg-gray-100 border border-r-0 px-4 py-3 rounded-l-lg text-gray-500 text-sm">https://frenchskill.com/</span>
+                    <span className="bg-gray-100 border border-gray-200 border-r-0 px-4 py-3 rounded-l-lg text-gray-500 text-sm">https://frenchskill.com/</span>
                     <input
                       type="text"
                       required
                       value={formData.slug}
                       onChange={(e) => setFormData({ ...formData, slug: e.target.value })}
-                      className="flex-1 p-3 border rounded-r-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                      className="flex-1 p-3 border border-gray-200 rounded-r-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
                       placeholder="city-name"
                     />
                   </div>
@@ -248,14 +248,17 @@ export default function CityPageManagement() {
                 <h3 className="text-sm font-bold text-french-blue uppercase tracking-wider">Section 1 (Hero Title)</h3>
               </div>
               <div className="p-6">
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Main Heading Text (Top Line)</label>
-                <input
-                  type="text"
-                  value={formData.title || ""}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
-                  placeholder="e.g. French Classes in Mumbai"
-                />
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Badge Text (Small label above heading)</label>
+                  <input
+                    type="text"
+                    value={formData.content || ""}
+                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                    placeholder="e.g. #1 French Academy in Pune  (leave empty for auto)"
+                  />
+                  <p className="text-[10px] text-gray-400 mt-1">This is the small highlighted text shown above the main heading on the city page.</p>
+                </div>
               </div>
             </div>
 
@@ -275,7 +278,7 @@ export default function CityPageManagement() {
                         const parts = formData.middleContent?.split('|||') || ["", "", ""];
                         setFormData({ ...formData, middleContent: `${e.target.value}|||${parts[1] || ""}|||${parts[2] || ""}` });
                       }}
-                      className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                      className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
                       placeholder="e.g. OUR VISION"
                     />
                   </div>
@@ -290,7 +293,7 @@ export default function CityPageManagement() {
                         const parts = raw.includes('|||') ? raw.split('|||') : ["", "", raw];
                         setFormData({ ...formData, middleContent: `${parts[0]}|||${e.target.value}|||${parts[2]}` });
                       }}
-                      className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                      className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
                       placeholder="e.g. Unlock Fluency in Your City"
                     />
                   </div>
@@ -305,7 +308,7 @@ export default function CityPageManagement() {
                         setFormData({ ...formData, middleContent: `${parts[0]}|||${parts[1]}|||${e.target.value}` });
                       }}
                       rows={4}
-                      className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                      className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
                       placeholder="Detailed vision text..."
                     />
                   </div>
@@ -320,7 +323,7 @@ export default function CityPageManagement() {
               </div>
               <div className="p-6 space-y-4">
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Lessons Heading (Raw HTML - H2)</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Lessons Heading</label>
                   <textarea
                     value={formData.afterCourseContent?.includes('|||') ? formData.afterCourseContent.split('|||')[0] : ""}
                     onChange={(e) => {
@@ -330,13 +333,13 @@ export default function CityPageManagement() {
                       setFormData({ ...formData, afterCourseContent: `${e.target.value}|||${parts[1]}|||${parts[2]}` });
                     }}
                     rows={2}
-                    className="w-full p-3 font-mono text-sm border rounded-lg bg-gray-50 focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
                     placeholder="e.g. <h2 class='...'>Self-Paced Lessons</h2>"
                   />
                 </div>
                 
                 <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Lessons Description (Raw HTML - P)</label>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Lessons Description</label>
                   <textarea
                     value={formData.afterCourseContent?.includes('|||') ? formData.afterCourseContent.split('|||')[1] : formData.afterCourseContent || ""}
                     onChange={(e) => {
@@ -347,7 +350,7 @@ export default function CityPageManagement() {
                       setFormData({ ...formData, afterCourseContent: `${parts[0]}|||${e.target.value}|||${parts[2]}` });
                     }}
                     rows={6}
-                    className="w-full p-3 font-mono text-sm border rounded-lg bg-gray-50 focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
                     placeholder="e.g. <p>Description about lessons...</p>"
                   />
                 </div>
@@ -371,7 +374,7 @@ export default function CityPageManagement() {
                     setFormData({ ...formData, afterCourseContent: `${parts[0]}|||${parts[1]}|||${e.target.value}` });
                   }}
                   rows={4}
-                  className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                  className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
                   placeholder="Paste your CTA text here..."
                 />
               </div>
@@ -392,7 +395,7 @@ export default function CityPageManagement() {
                     type="text"
                     value={formData.metaTitle}
                     onChange={(e) => setFormData({ ...formData, metaTitle: e.target.value })}
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
                     maxLength={70}
                   />
                   <p className="text-[10px] text-gray-400 mt-1 text-right">Max length 70 characters</p>
@@ -402,7 +405,7 @@ export default function CityPageManagement() {
                   <textarea
                     value={formData.keywords}
                     onChange={(e) => setFormData({ ...formData, keywords: e.target.value })}
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all h-20"
+                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all h-20"
                     maxLength={160}
                   />
                   <p className="text-[10px] text-gray-400 mt-1 text-right">Max length 160 characters</p>
@@ -412,7 +415,7 @@ export default function CityPageManagement() {
                   <textarea
                     value={formData.metaDescription}
                     onChange={(e) => setFormData({ ...formData, metaDescription: e.target.value })}
-                    className="w-full p-3 border rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all h-24"
+                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all h-24"
                     maxLength={250}
                   />
                   <p className="text-[10px] text-gray-400 mt-1 text-right">Max length 250 characters</p>
@@ -436,13 +439,13 @@ export default function CityPageManagement() {
                         placeholder="Question"
                         value={faq.question}
                         onChange={(e) => updateFaq(idx, "question", e.target.value)}
-                        className="w-full p-2 border rounded-lg text-sm"
+                        className="w-full p-2 border border-gray-200 rounded-lg text-sm"
                       />
                       <textarea
                         placeholder="Answer"
                         value={faq.answer}
                         onChange={(e) => updateFaq(idx, "answer", e.target.value)}
-                        className="w-full p-2 border rounded-lg text-sm h-20"
+                        className="w-full p-2 border border-gray-200 rounded-lg text-sm h-20"
                       />
                     </div>
                     <button type="button" onClick={() => removeFaq(idx)} className="text-red-400 hover:text-red-600 p-1">
@@ -470,17 +473,17 @@ export default function CityPageManagement() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-xs font-semibold text-gray-500 mb-1">Name: *</label>
-                        <input value={t.name} onChange={(e) => updateTestimonial(idx, "name", e.target.value)} className="w-full p-2 border rounded-lg text-sm" />
+                        <input value={t.name} onChange={(e) => updateTestimonial(idx, "name", e.target.value)} className="w-full p-2 border border-gray-200 rounded-lg text-sm" />
                       </div>
                       <div>
                         <label className="block text-xs font-semibold text-gray-500 mb-1">Ratings:</label>
-                        <select value={t.rating} onChange={(e) => updateTestimonial(idx, "rating", parseInt(e.target.value))} className="w-full p-2 border rounded-lg text-sm">
-                          {[5, 4, 3, 2, 1].map(v => <option key={v} value={v}>{v}</option>)}
+                        <select value={t.rating} onChange={(e) => updateTestimonial(idx, "rating", parseFloat(e.target.value))} className="w-full p-2 border border-gray-200 rounded-lg text-sm">
+                          {[5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1].map(v => <option key={v} value={v}>{v}</option>)}
                         </select>
                       </div>
                       <div>
                         <label className="block text-xs font-semibold text-gray-500 mb-1">Designation:</label>
-                        <input value={t.designation} onChange={(e) => updateTestimonial(idx, "designation", e.target.value)} className="w-full p-2 border rounded-lg text-sm" />
+                        <input value={t.designation} onChange={(e) => updateTestimonial(idx, "designation", e.target.value)} className="w-full p-2 border border-gray-200 rounded-lg text-sm" />
                       </div>
                       <div>
                         <ImageUpload onImageUploaded={(url) => updateTestimonial(idx, "profile", url)} currentImage={t.profile} label="Profile Image" />
@@ -488,7 +491,7 @@ export default function CityPageManagement() {
                     </div>
                     <div>
                       <label className="block text-xs font-semibold text-gray-500 mb-1">Description:</label>
-                      <textarea value={t.description} onChange={(e) => updateTestimonial(idx, "description", e.target.value)} className="w-full p-2 border rounded-lg text-sm h-20" />
+                      <textarea value={t.description} onChange={(e) => updateTestimonial(idx, "description", e.target.value)} className="w-full p-2 border border-gray-200 rounded-lg text-sm h-20" />
                     </div>
                   </div>
                 ))}

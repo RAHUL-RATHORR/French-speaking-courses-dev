@@ -98,43 +98,12 @@ export default function CityPageRedesign({
   }, []);
 
   const testimonialsPerPage = visibleCards;
-  const fallbackTestimonials = [
-    {
-      name: "Rahul Mehra",
-      role: "STUDENT",
-      rating: 4.5,
-      content: "The teachers at FrenchSkill explain everything clearly. I actually look forward to every class! The interactive sessions make learning complex grammar very easy.",
-      image: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      name: "Sumit Vats",
-      role: "STUDENT",
-      rating: 4.5,
-      content: "Great platform for beginners! I started speaking basic French in just a few weeks. The personalized attention from tutors is what sets them apart.",
-      image: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      name: "Rohan Khanna",
-      role: "STUDENT",
-      rating: 4.5,
-      content: "The weekend batches are a lifesaver for working professionals like me. The instructors are patient and the study material is very comprehensive. Highly recommended!",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=800"
-    },
-    {
-      name: "Anjali Sharma",
-      role: "STUDENT",
-      rating: 4.5,
-      content: "I joined for TEF preparation and the results were amazing. The mock tests and speaking practice sessions gave me the confidence I needed to clear my exams.",
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=800"
-    }
-  ];
 
-  // Merge DB testimonials with fallbacks to ensure we always have a good number of them
-  const testimonials = formattedTestimonials && formattedTestimonials.length > 0
-    ? [...formattedTestimonials, ...fallbackTestimonials.slice(formattedTestimonials.length)]
-    : fallbackTestimonials;
+  // Only show testimonials added by admin from the database
+  const testimonials = formattedTestimonials ?? [];
 
   const nextTestimonial = useCallback(() => {
+    if (testimonials.length <= testimonialsPerPage) return;
     setTestimonialIndex((prev) => (prev + 1) % (testimonials.length - (testimonialsPerPage - 1)));
   }, [testimonials.length, testimonialsPerPage]);
 
@@ -159,7 +128,7 @@ export default function CityPageRedesign({
               opacity: [0.3, 0.5, 0.3],
             }}
             transition={{ duration: 10, repeat: Infinity }}
-            className="absolute top-[-10%] right-[-10%] w-[800px] h-[800px] bg-red-50 rounded-full blur-[120px]"
+            className="absolute top-[-10%] right-[-10%] w-200 h-200 bg-red-50 rounded-full blur-[120px]"
           />
           <motion.div
             animate={{
@@ -167,7 +136,7 @@ export default function CityPageRedesign({
               opacity: [0.2, 0.4, 0.2],
             }}
             transition={{ duration: 15, repeat: Infinity }}
-            className="absolute bottom-[-10%] left-[-10%] w-[600px] h-[600px] bg-blue-50 rounded-full blur-[100px]"
+            className="absolute bottom-[-10%] left-[-10%] w-150 h-150 bg-blue-50 rounded-full blur-[100px]"
           />
           <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#1A3260 1px, transparent 1px)', backgroundSize: '30px 30px' }}></div>
         </div>
@@ -188,7 +157,7 @@ export default function CityPageRedesign({
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
               </span>
-              <span className="text-xs font-black text-[#1A3260] uppercase tracking-wider">#1 French Academy in {cityPage.title || cityPage.cityName}</span>
+              <span className="text-xs font-black text-[#1A3260] uppercase tracking-wider">{cityPage.content || `#1 French Academy in ${cityPage.title || cityPage.cityName}`}</span>
             </motion.div>
 
             <div className="text-4xl md:text-7xl font-black text-[#1A3260] leading-[1.05] mb-8 tracking-tighter">
@@ -256,7 +225,7 @@ export default function CityPageRedesign({
               style={{ y: y1 }}
               className="relative z-10"
             >
-              <div className="relative h-[400px] md:h-[550px] w-full rounded-[32px] md:rounded-[48px] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] border-8 md:border-[12px] border-white">
+              <div className="relative h-100 md:h-137.5 w-full rounded-4xl md:rounded-[48px] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.2)] border-8 md:border-12 border-white">
                 <Image
                   src={cityPage.headerImage || "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop"}
                   alt="French Learning"
@@ -264,7 +233,7 @@ export default function CityPageRedesign({
                   className="object-cover"
                   priority
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1A3260]/40 to-transparent"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-[#1A3260]/40 to-transparent"></div>
               </div>
 
               {/* Floating Cards */}
@@ -304,7 +273,7 @@ export default function CityPageRedesign({
             </motion.div>
 
             {/* Decorative shape */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] -z-10 bg-gradient-to-br from-red-50 to-blue-50 rounded-[60px] rotate-6 opacity-50"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] -z-10 bg-linear-to-br from-red-50 to-blue-50 rounded-[60px] rotate-6 opacity-50"></div>
           </div>
         </div>
       </section>
@@ -395,9 +364,9 @@ export default function CityPageRedesign({
               whileInView={{ opacity: 1, x: 0 }}
               className="relative group"
             >
-              <div className="relative h-[400px] md:h-[650px] rounded-[32px] md:rounded-[56px] overflow-hidden shadow-2xl">
+              <div className="relative h-100 md:h-162.5 rounded-4xl md:rounded-[56px] overflow-hidden shadow-2xl">
                 <Image src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2071&auto=format&fit=crop" alt="Vision" fill className="object-cover group-hover:scale-105 transition-transform duration-1000" />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1A3260]/60 to-transparent"></div>
+                <div className="absolute inset-0 bg-linear-to-t from-[#1A3260]/60 to-transparent"></div>
               </div>
               <div className="absolute -bottom-10 -right-10 bg-[#E4222A] p-12 rounded-[40px] shadow-2xl hidden md:block">
                 <h4 className="text-white text-4xl font-black mb-2">98%</h4>
@@ -467,7 +436,7 @@ export default function CityPageRedesign({
           background: "linear-gradient(135deg, #0d1b3a 0%, #1A3260 50%, #152a50 100%)"
         }}>
         <div className="absolute top-0 left-0 w-full h-full opacity-10 pointer-events-none">
-          <div className="absolute top-[-50%] left-[-20%] w-[1000px] h-[1000px] bg-white rounded-full blur-[150px]"></div>
+          <div className="absolute top-[-50%] left-[-20%] w-250 h-250 bg-white rounded-full blur-[150px]"></div>
         </div>
 
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center relative z-10">
@@ -490,7 +459,7 @@ export default function CityPageRedesign({
                 { title: "Verifiable", desc: "Secure QR code for instant employer verification." }
               ].map((item, i) => (
                 <div key={i} className="flex gap-4">
-                  <div className="w-6 h-6 bg-red-500 rounded-full flex-shrink-0 mt-1 flex items-center justify-center">
+                  <div className="w-6 h-6 bg-red-500 rounded-full shrink-0 mt-1 flex items-center justify-center">
                     <Check className="w-4 h-4 text-white" />
                   </div>
                   <div>
@@ -508,7 +477,7 @@ export default function CityPageRedesign({
             className="relative"
           >
             <div className="bg-white p-8 rounded-[40px] shadow-2xl relative overflow-hidden group">
-              <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div className="absolute inset-0 bg-linear-to-br from-amber-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
               <Image
                 src="/french-skill-certificate.png"
                 alt="Certification"
@@ -687,13 +656,13 @@ export default function CityPageRedesign({
             <h2 className="text-4xl font-black text-[#1A3260] tracking-tighter">The French Skill Advantage</h2>
           </div>
 
-          <div className="overflow-x-auto rounded-[32px] md:rounded-[40px] border border-gray-100 shadow-2xl">
-            <table className="w-full text-left border-collapse min-w-[600px]">
+          <div className="overflow-x-auto rounded-4xl md:rounded-[40px] border border-gray-100 shadow-2xl">
+            <table className="w-full text-left border-collapse min-w-150">
               <thead>
                 <tr className="bg-[#1A3260]">
-                  <th className="px-6 md:px-10 py-6 md:py-8 font-black text-white uppercase tracking-[0.2em] text-xs">Benefit</th>
-                  <th className="px-6 md:px-10 py-6 md:py-8 text-center bg-[#E4222A] text-white font-black italic text-xl">French Skill</th>
-                  <th className="px-6 md:px-10 py-6 md:py-8 text-center text-blue-200 font-bold opacity-50 uppercase tracking-widest text-[10px]">Others</th>
+                  <th className="px-6 md:px-10 py-6 md:py-8 font-black text-white text-base">Benefit</th>
+                  <th className="px-6 md:px-10 py-6 md:py-8 text-center bg-[#E4222A] text-white font-black text-base">French Skill</th>
+                  <th className="px-6 md:px-10 py-6 md:py-8 text-center text-white font-black text-base">Others</th>
                 </tr>
               </thead>
               <tbody>
@@ -797,7 +766,7 @@ export default function CityPageRedesign({
                 {testimonials.map((testimonial, i) => (
                   <motion.div
                     key={i}
-                    className="min-w-full md:min-w-[calc(50%-0.25rem)] lg:min-w-[calc(33.333%-0.25rem)] group relative h-[380px] rounded-[32px] overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.1)] cursor-pointer"
+                    className="min-w-full md:min-w-[calc(50%-0.25rem)] lg:min-w-[calc(33.333%-0.25rem)] group relative h-95 rounded-4xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.1)] cursor-pointer"
                   >
                     {/* Full Card Image Background */}
                     <div className="absolute inset-0 z-0 rounded-[5%] overflow-hidden">
@@ -810,7 +779,7 @@ export default function CityPageRedesign({
                     </div>
 
                     {/* Dark Bottom Gradient (Always Visible for readability) */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10" />
+                    <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent z-10" />
 
                     {/* Content Area */}
                     <div className="absolute inset-0 p-8 flex flex-col justify-end z-20 text-left">
@@ -821,10 +790,9 @@ export default function CityPageRedesign({
                           </h4>
                           <div className="flex items-center gap-0.5">
                             {[1, 2, 3, 4, 5].map((star) => {
-                              // FORCE 4.5 for testing
-                              const rating = 4.5;
-                              const isFull = star <= 4;
-                              const isHalf = star === 5;
+                              const rating = testimonial.rating ?? 5;
+                              const isFull = star <= Math.floor(rating);
+                              const isHalf = !isFull && star === Math.floor(rating) + 1 && rating % 1 >= 0.5;
 
                               if (isFull) {
                                 return <Star key={star} className="w-3.5 h-3.5 text-yellow-400 fill-current" />;
@@ -849,7 +817,7 @@ export default function CityPageRedesign({
                       </div>
 
                       {/* Hover Reveal: Testimonial Content */}
-                      <div className="overflow-hidden max-h-0 group-hover:max-h-[200px] opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out">
+                      <div className="overflow-hidden max-h-0 group-hover:max-h-50 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out">
                         <p className="text-white text-[13px] leading-relaxed mt-4 font-medium border-t border-white/20 pt-4">
                           {testimonial.content}
                         </p>
@@ -872,7 +840,7 @@ export default function CityPageRedesign({
       <section className="py-16 md:py-0 bg-gray-50 px-4 relative overflow-hidden">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-12">
           {/* Left Content */}
-          <div className="flex-1 text-center lg:text-left lg:max-w-[400px]">
+          <div className="flex-1 text-center lg:text-left lg:max-w-100">
             <h2 className="text-3xl md:text-4xl font-black text-[#1A3260] leading-[1.1] mb-6 tracking-tighter">
               Start your Career with <span className="text-red-600">French Skill</span> Now!
             </h2>
@@ -882,7 +850,7 @@ export default function CityPageRedesign({
           </div>
 
           {/* Center Image */}
-          <div className="relative w-full lg:w-[450px] h-[300px] md:h-[400px] flex items-center justify-center order-first lg:order-none">
+          <div className="relative w-full lg:w-112.5 h-75 md:h-100 flex items-center justify-center order-first lg:order-0">
             <div className="absolute inset-0 bg-red-100/30 rounded-full blur-[80px] md:blur-[100px] -z-10"></div>
             <Image
               src="/female-student-cta.png"
@@ -894,7 +862,7 @@ export default function CityPageRedesign({
           </div>
 
           {/* Right Content */}
-          <div className="flex-1 w-full lg:max-w-[350px] space-y-6 md:space-y-8">
+          <div className="flex-1 w-full lg:max-w-87.5 space-y-6 md:space-y-8">
             <div className="text-center lg:text-left">
               <h3 className="text-xl md:text-2xl font-black text-[#1A3260] mb-3 md:mb-4">
                 Book a Free Session for career consultation
