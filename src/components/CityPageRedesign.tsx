@@ -792,7 +792,7 @@ export default function CityPageRedesign({
                             {[1, 2, 3, 4, 5].map((star) => {
                               const rating = testimonial.rating ?? 5;
                               const isFull = star <= Math.floor(rating);
-                              const isHalf = !isFull && star === Math.floor(rating) + 1 && rating % 1 >= 0.5;
+                              const isHalf = !isFull && star === Math.floor(rating) + 1 && rating % 1 > 0;
 
                               if (isFull) {
                                 return <Star key={star} className="w-3.5 h-3.5 text-yellow-400 fill-current" />;
@@ -800,7 +800,7 @@ export default function CityPageRedesign({
                                 return (
                                   <div key={star} className="relative w-3.5 h-3.5">
                                     <Star className="absolute inset-0 w-3.5 h-3.5 text-gray-500" />
-                                    <div className="absolute inset-0 overflow-hidden w-[50%] z-10">
+                                    <div className="absolute inset-0 overflow-hidden z-10" style={{ width: `${(rating % 1) * 100}%` }}>
                                       <Star className="w-3.5 h-3.5 text-yellow-400 fill-current" />
                                     </div>
                                   </div>
@@ -809,6 +809,7 @@ export default function CityPageRedesign({
                                 return <Star key={star} className="w-3.5 h-3.5 text-gray-500" />;
                               }
                             })}
+                            <span className="ml-1 text-gray-400 text-xs font-bold">{testimonial.rating ?? 5}</span>
                           </div>
                           <p className="text-gray-300 text-xs font-medium mt-1">
                             {testimonial.role}

@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     }
     
     // Validate rating is between 1 and 5
-    const rating = parseInt(data.rating);
+    const rating = parseFloat(data.rating);
     if (isNaN(rating) || rating < 1 || rating > 5) {
       return NextResponse.json({ error: "Rating must be between 1 and 5" }, { status: 400 });
     }

@@ -478,7 +478,7 @@ export default function CityPageManagement() {
                       <div>
                         <label className="block text-xs font-semibold text-gray-500 mb-1">Ratings:</label>
                         <select value={t.rating} onChange={(e) => updateTestimonial(idx, "rating", parseFloat(e.target.value))} className="w-full p-2 border border-gray-200 rounded-lg text-sm">
-                          {[5, 4.5, 4, 3.5, 3, 2.5, 2, 1.5, 1].map(v => <option key={v} value={v}>{v}</option>)}
+                          {[5, 4.8, 4.6, 4.2, 4, 3, 2, 1].map(v => <option key={v} value={v}>{v}</option>)}
                         </select>
                       </div>
                       <div>

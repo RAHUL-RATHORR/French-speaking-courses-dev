@@ -68,7 +68,7 @@ export default function TestimonialsManagement() {
     try {
       const testimonialData = {
         ...formData,
-        rating: parseInt(formData.rating),
+        rating: parseFloat(formData.rating),
       };
       
       const url = editingTestimonial 
@@ -226,6 +226,9 @@ export default function TestimonialsManagement() {
                   <option value="2">2 Stars</option>
                   <option value="3">3 Stars</option>
                   <option value="4">4 Stars</option>
+                  <option value="4.2">4.2 Stars</option>
+                  <option value="4.6">4.6 Stars</option>
+                  <option value="4.8">4.8 Stars</option>
                   <option value="5">5 Stars</option>
                 </select>
               </div>
