@@ -378,9 +378,9 @@ export default function CityPageRedesign({
               initial={{ opacity: 0, x: 50 }}
               whileInView={{ opacity: 1, x: 0 }}
             >
-              <span 
+              <span
                 className="bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-6 inline-block"
-                dangerouslySetInnerHTML={{ 
+                dangerouslySetInnerHTML={{
                   __html: cityPage.middleContent?.includes('|||')
                     ? cityPage.middleContent.split('|||')[0].replace(/French/gi, '<span class="text-red-600">French</span>')
                     : "Our Vision"
@@ -388,12 +388,12 @@ export default function CityPageRedesign({
               />
               <div className="mb-8">
                 {cityPage.middleContent?.includes('|||')
-                  ? <div 
-                      className="text-4xl md:text-5xl font-black text-[#1A3260] leading-[1.1] tracking-tighter"
-                      dangerouslySetInnerHTML={{ 
-                        __html: cityPage.middleContent.split('|||')[1].replace(/French/gi, (match) => `<span class="text-red-600">${match}</span>`) 
-                      }} 
-                    />
+                  ? <div
+                    className="text-4xl md:text-5xl font-black text-[#1A3260] leading-[1.1] tracking-tighter"
+                    dangerouslySetInnerHTML={{
+                      __html: cityPage.middleContent.split('|||')[1].replace(/French/gi, (match) => `<span class="text-red-600">${match}</span>`)
+                    }}
+                  />
                   : <h2 className="text-4xl md:text-5xl font-black text-[#1A3260] leading-[1.1] tracking-tighter">Unlock Fluency in <span className="text-red-600">French</span> Classes in {cityPage.cityName}</h2>}
               </div>
               <div className="space-y-6 text-gray-600 font-medium leading-relaxed text-lg whitespace-pre-line">
@@ -514,12 +514,12 @@ export default function CityPageRedesign({
             >
               <div className="mb-8">
                 {cityPage.afterCourseContent?.includes('|||')
-                  ? <div 
-                      className="text-4xl font-black text-[#1A3260] tracking-tighter leading-[1.1]"
-                      dangerouslySetInnerHTML={{ 
-                        __html: cityPage.afterCourseContent.split('|||')[0].replace(/classes/gi, (match) => `<span class="text-red-600">${match}</span>`) 
-                      }} 
-                    />
+                  ? <div
+                    className="text-4xl font-black text-[#1A3260] tracking-tighter leading-[1.1]"
+                    dangerouslySetInnerHTML={{
+                      __html: cityPage.afterCourseContent.split('|||')[0].replace(/classes/gi, (match) => `<span class="text-red-600">${match}</span>`)
+                    }}
+                  />
                   : <h2 className="text-4xl font-black text-[#1A3260] tracking-tighter leading-[1.1]">Self-Paced & Structured <span className="text-red-600">Classes</span> in {cityPage.title || cityPage.cityName}</h2>}
               </div>
               <div className="space-y-6 text-gray-600 font-medium leading-relaxed text-lg whitespace-pre-line">
@@ -650,7 +650,7 @@ export default function CityPageRedesign({
         </section>
       )}
 
-      <section className="py-24 bg-white px-4">
+      <section className="pt-12 pb-12 bg-white px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-black text-[#1A3260] tracking-tighter">The French Skill Advantage</h2>
@@ -674,7 +674,7 @@ export default function CityPageRedesign({
                   "24/7 Doubt Support"
                 ].map((feature, i) => (
                   <tr key={i} className={i % 2 === 0 ? "bg-white" : "bg-gray-50/50"}>
-                    <td className="px-6 md:px-10 py-4 md:py-6 font-black text-[#1A3260] border-r border-gray-100">{feature}</td>
+                    <td className="px-6 md:px-10 py-4 md:py-6 font-medium text-[#1A3260] border-r border-gray-100">{feature}</td>
                     <td className="px-6 md:px-10 py-4 md:py-6 text-center border-r border-gray-100">
                       <div className="w-8 h-8 md:w-10 md:h-10 bg-green-100 rounded-full flex items-center justify-center mx-auto">
                         <Check className="text-green-600 w-4 h-4 md:w-6 md:h-6" />
@@ -694,7 +694,7 @@ export default function CityPageRedesign({
       </section>
 
       {/* --- FAQ SECTION (BOXED STYLE) --- */}
-      <section className="py-24 px-4 bg-white">
+      <section className="pt-16 pb-24 px-4 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-black text-[#1A3260] tracking-tighter">Frequently Asked Questions</h2>
