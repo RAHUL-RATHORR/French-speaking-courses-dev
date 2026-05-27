@@ -36,7 +36,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   });
   if (!cityPage) return { title: "Page Not Found" };
   return {
-    title: cityPage.metaTitle || `${cityPage.cityName} - French Skill Academy`,
+    title: {
+      absolute: cityPage.metaTitle || `${cityPage.cityName} - French Skill Academy`,
+    },
     description: cityPage.metaDescription,
     keywords: cityPage.keywords,
   };
