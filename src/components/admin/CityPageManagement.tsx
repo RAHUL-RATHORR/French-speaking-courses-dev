@@ -300,17 +300,18 @@ export default function CityPageManagement() {
                   
                   <div>
                     <label className="block text-sm font-semibold text-gray-700 mb-2">Vision Description Text</label>
-                    <textarea
-                      value={formData.middleContent?.includes('|||') ? formData.middleContent.split('|||')[2] : (formData.middleContent || "")}
-                      onChange={(e) => {
-                        const raw = formData.middleContent || "";
-                        const parts = raw.includes('|||') ? raw.split('|||') : ["Our Vision", "Unlock Fluency", raw];
-                        setFormData({ ...formData, middleContent: `${parts[0]}|||${parts[1]}|||${e.target.value}` });
-                      }}
-                      rows={4}
-                      className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
-                      placeholder="Detailed vision text..."
-                    />
+                    <div className="border border-gray-200 rounded-lg overflow-hidden">
+                      <Editor
+                        apiKey={editorConfig.apiKey}
+                        init={{ ...editorConfig, height: 300 }}
+                        value={formData.middleContent?.includes('|||') ? formData.middleContent.split('|||')[2] : (formData.middleContent || "")}
+                        onEditorChange={(content) => {
+                          const raw = formData.middleContent || "";
+                          const parts = raw.includes('|||') ? raw.split('|||') : ["Our Vision", "Unlock Fluency", raw];
+                          setFormData({ ...formData, middleContent: `${parts[0]}|||${parts[1]}|||${content}` });
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -340,19 +341,20 @@ export default function CityPageManagement() {
                 
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Lessons Description</label>
-                  <textarea
-                    value={formData.afterCourseContent?.includes('|||') ? formData.afterCourseContent.split('|||')[1] : formData.afterCourseContent || ""}
-                    onChange={(e) => {
-                      const raw = formData.afterCourseContent || "";
-                      const parts = raw.includes('|||') ? raw.split('|||') : ["", raw, ""];
-                      // Ensure at least 3 parts
-                      while(parts.length < 3) parts.push("");
-                      setFormData({ ...formData, afterCourseContent: `${parts[0]}|||${e.target.value}|||${parts[2]}` });
-                    }}
-                    rows={6}
-                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
-                    placeholder="e.g. <p>Description about lessons...</p>"
-                  />
+                  <div className="border border-gray-200 rounded-lg overflow-hidden">
+                    <Editor
+                      apiKey={editorConfig.apiKey}
+                      init={{ ...editorConfig, height: 300 }}
+                      value={formData.afterCourseContent?.includes('|||') ? formData.afterCourseContent.split('|||')[1] : formData.afterCourseContent || ""}
+                      onEditorChange={(content) => {
+                        const raw = formData.afterCourseContent || "";
+                        const parts = raw.includes('|||') ? raw.split('|||') : ["", raw, ""];
+                        // Ensure at least 3 parts
+                        while(parts.length < 3) parts.push("");
+                        setFormData({ ...formData, afterCourseContent: `${parts[0]}|||${content}|||${parts[2]}` });
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
