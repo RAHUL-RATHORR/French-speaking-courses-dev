@@ -30,6 +30,7 @@ interface CityPage {
   metaTitle: string;
   metaDescription: string;
   keywords: string;
+  menuUrl?: string;
   faqs: FAQ[];
   testimonials: Testimonial[];
   isActive: boolean;
@@ -52,6 +53,7 @@ export default function CityPageManagement() {
     metaTitle: "",
     metaDescription: "",
     keywords: "",
+    menuUrl: "",
     faqs: [{ question: "", answer: "" }],
     testimonials: [{ name: "", rating: 5, designation: "", profile: "", description: "" }],
     isActive: true,
@@ -75,6 +77,7 @@ export default function CityPageManagement() {
     setFormData(prev => ({
       ...prev,
       cityName: name,
+      title: name,
       slug: slugify(name)
     }));
   };
@@ -85,11 +88,16 @@ export default function CityPageManagement() {
       const data = await res.json();
       if (Array.isArray(data)) {
         setCityPages(data);
+        setError("");
+      } else if (!res.ok) {
+        setCityPages([]);
+        setError(data.error || "Failed to load city pages");
       } else {
         setCityPages([]);
       }
     } catch (error) {
       console.error("Failed to fetch city pages:", error);
+      setError("Failed to load city pages. Check your database connection.");
     } finally {
       setLoading(false);
     }
@@ -105,10 +113,15 @@ export default function CityPageManagement() {
         : "/api/admin/city-pages";
       const method = formData.id ? "PATCH" : "POST";
 
+      const payload = {
+        ...formData,
+        title: formData.cityName || formData.title,
+      };
+
       const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(payload),
       });
 
       const result = await res.json();
@@ -237,6 +250,17 @@ export default function CityPageManagement() {
                       placeholder="city-name"
                     />
                   </div>
+                </div>
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">Main Menu URL</label>
+                  <input
+                    type="url"
+                    value={formData.menuUrl || ""}
+                    onChange={(e) => setFormData({ ...formData, menuUrl: e.target.value })}
+                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
+                    placeholder="Paste the full URL to show on website"
+                  />
+                  <p className="text-[10px] text-gray-400 mt-1">This URL will be displayed in bold on the city page.</p>
                 </div>
 
               </div>
@@ -537,14 +561,17 @@ export default function CityPageManagement() {
               <th className="px-6 py-3 font-bold text-sm text-gray-700 w-20">S.No.</th>
               <th className="px-6 py-3 font-bold text-sm text-gray-700">Page Name</th>
               <th className="px-6 py-3 font-bold text-sm text-gray-700">Page Url</th>
+              <th className="px-6 py-3 font-bold text-sm text-gray-700">Menu Url</th>
               <th className="px-6 py-3 font-bold text-sm text-gray-700 text-center w-24">Action</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
             {cityPages.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-6 py-12 text-center text-gray-500 italic">
-                  {loading ? "Loading..." : "No records found."}
+                <td colSpan={5} className="px-6 py-12 text-center text-gray-500 italic">
+                  {loading ? "Loading..." : error ? (
+                    <span className="text-red-600 not-italic">{error}</span>
+                  ) : "No records found."}
                 </td>
               </tr>
             ) : (
@@ -557,10 +584,19 @@ export default function CityPageManagement() {
                       https://frenchskill.com/{page.slug}
                     </a>
                   </td>
+                  <td className="px-6 py-4 text-sm text-gray-700 break-all">
+                    {page.menuUrl ? (
+                      <a href={page.menuUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-[#1A3260] hover:text-red-600 underline">
+                        {page.menuUrl}
+                      </a>
+                    ) : (
+                      <span className="text-gray-400">-</span>
+                    )}
+                  </td>
                   <td className="px-6 py-4 text-center">
                     <div className="flex items-center justify-center space-x-2">
                       <button
-                        onClick={() => { setFormData(page); setIsEditing(true); }}
+                        onClick={() => { setFormData({ ...page, title: page.cityName }); setIsEditing(true); }}
                         className="p-1.5 bg-blue-50 text-blue-400 rounded hover:bg-blue-100 transition-colors"
                         title="Edit"
                       >

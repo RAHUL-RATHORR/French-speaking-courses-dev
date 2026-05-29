@@ -58,6 +58,7 @@ export default async function PublicCityPage({ params }: PageProps) {
       middleContent: true,
       afterCourseContent: true,
       headerImage: true,
+      menuUrl: true,
       faqs: true,
       testimonials: true,
       metaTitle: true,

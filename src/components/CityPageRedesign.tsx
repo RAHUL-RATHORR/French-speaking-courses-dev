@@ -27,6 +27,7 @@ interface CityPage {
   middleContent: string | null;
   afterCourseContent: string | null;
   headerImage: string | null;
+  menuUrl?: string | null;
   metaTitle?: string | null;
   metaDescription?: string | null;
   keywords?: string | null;
@@ -157,17 +158,28 @@ export default function CityPageRedesign({
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500"></span>
               </span>
-              <span className="text-xs font-black text-[#1A3260] uppercase tracking-wider">{cityPage.content || `#1 French Academy in ${cityPage.title || cityPage.cityName}`}</span>
+              <span className="text-xs font-black text-[#1A3260] uppercase tracking-wider">
+                {cityPage.content || `#1 French Academy in ${cityPage.cityName}`}
+              </span>
             </motion.div>
 
             <div className="text-4xl md:text-7xl font-black text-[#1A3260] leading-[1.05] mb-8 tracking-tighter">
-              {cityPage.title ? (
-                <div dangerouslySetInnerHTML={{ __html: cityPage.title }} />
-              ) : (
-                <div dangerouslySetInnerHTML={{ __html: cityPage.content || cityPage.cityName }} />
-              )}
+              <div dangerouslySetInnerHTML={{ __html: cityPage.cityName }} />
               <span className="text-red-600 block">Unlock Your Future.</span>
             </div>
+
+            {cityPage.menuUrl && (
+              <div className="mb-6">
+                <a
+                  href={cityPage.menuUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="inline-block text-lg font-black text-[#1A3260] underline decoration-red-600 hover:text-red-700"
+                >
+                  {cityPage.menuUrl}
+                </a>
+              </div>
+            )}
 
             <p className="text-gray-600 text-xl mb-10 max-w-xl leading-relaxed font-medium">
               Join 11,000+ students mastering French with expert guidance. Personalized learning paths from A1 to B2 levels.
@@ -520,7 +532,7 @@ export default function CityPageRedesign({
                       __html: cityPage.afterCourseContent.split('|||')[0].replace(/classes/gi, (match) => `<span class="text-red-600">${match}</span>`)
                     }}
                   />
-                  : <h2 className="text-4xl font-black text-[#1A3260] tracking-tighter leading-[1.1]">Self-Paced & Structured <span className="text-red-600">Classes</span> in {cityPage.title || cityPage.cityName}</h2>}
+                  : <h2 className="text-4xl font-black text-[#1A3260] tracking-tighter leading-[1.1]">Self-Paced & Structured <span className="text-red-600">Classes</span> in {cityPage.cityName}</h2>}
               </div>
               <div className="space-y-6 text-gray-600 font-medium leading-relaxed text-lg whitespace-pre-line">
                 {cityPage.afterCourseContent ? (
@@ -532,7 +544,7 @@ export default function CityPageRedesign({
                 ) : (
                   <>
                     <p>
-                      Looking for classes to help you prepare for the TEF French exam in {cityPage.title || cityPage.cityName}? French Skill is here to support you with professional, customized courses designed to match your learning goals. No matter which level you&apos;re aiming for (A1, A2, B1, or B2), we help you build a strong foundation in the French language so you can succeed.
+                      Looking for classes to help you prepare for the TEF French exam in {cityPage.cityName}? French Skill is here to support you with professional, customized courses designed to match your learning goals. No matter which level you&apos;re aiming for (A1, A2, B1, or B2), we help you build a strong foundation in the French language so you can succeed.
                     </p>
                     <p>
                       Our courses are self-paced, allowing you to learn French without worrying about strict schedules or timing conflicts. We offer lessons for both beginners and advanced learners, making sure your learning experience is smooth, engaging, and confidence-building.
@@ -581,7 +593,7 @@ export default function CityPageRedesign({
             {[
               {
                 title: "Excellence Center",
-                text: "Studying French in " + (cityPage.title || cityPage.cityName) + " has been made very easy with top-notch and qualified linguistic experts. Get enrolled in meticulously crafted courses that offer unparalleled guidance.",
+                text: "Studying French in " + cityPage.cityName + " has been made very easy with top-notch and qualified linguistic experts. Get enrolled in meticulously crafted courses that offer unparalleled guidance.",
                 icon: "🌟"
               },
               {
@@ -596,7 +608,7 @@ export default function CityPageRedesign({
               },
               {
                 title: "Learner-Centric",
-                text: "Personalized French classes " + (cityPage.title || cityPage.cityName) + " immigration training from industry experts who utilize a method to offer a deep understanding of language.",
+                text: "Personalized French classes " + cityPage.cityName + " immigration training from industry experts who utilize a method to offer a deep understanding of language.",
                 icon: "🎯"
               }
             ].map((item, i) => (
