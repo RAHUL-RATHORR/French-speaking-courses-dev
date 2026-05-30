@@ -12,6 +12,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import CourseCard from "@/components/CourseCard";
 import React, { useState, useCallback, useEffect } from "react";
+import { openLinksInNewTab } from "@/lib/utils";
 
 interface FAQ {
   question: string;
@@ -27,7 +28,6 @@ interface CityPage {
   middleContent: string | null;
   afterCourseContent: string | null;
   headerImage: string | null;
-  menuUrl?: string | null;
   metaTitle?: string | null;
   metaDescription?: string | null;
   keywords?: string | null;
@@ -167,19 +167,6 @@ export default function CityPageRedesign({
               <div dangerouslySetInnerHTML={{ __html: cityPage.cityName }} />
               <span className="text-red-600 block">Unlock Your Future.</span>
             </div>
-
-            {cityPage.menuUrl && (
-              <div className="mb-6">
-                <a
-                  href={cityPage.menuUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-block text-lg font-black text-[#1A3260] underline decoration-red-600 hover:text-red-700"
-                >
-                  {cityPage.menuUrl}
-                </a>
-              </div>
-            )}
 
             <p className="text-gray-600 text-xl mb-10 max-w-xl leading-relaxed font-medium">
               Join 11,000+ students mastering French with expert guidance. Personalized learning paths from A1 to B2 levels.
@@ -393,9 +380,11 @@ export default function CityPageRedesign({
               <span
                 className="bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-6 inline-block"
                 dangerouslySetInnerHTML={{
-                  __html: cityPage.middleContent?.includes('|||')
-                    ? cityPage.middleContent.split('|||')[0].replace(/French/gi, '<span class="text-red-600">French</span>')
-                    : "Our Vision"
+                  __html: openLinksInNewTab(
+                    cityPage.middleContent?.includes('|||')
+                      ? cityPage.middleContent.split('|||')[0].replace(/French/gi, '<span class="text-red-600">French</span>')
+                      : "Our Vision"
+                  ),
                 }}
               />
               <div className="mb-8">
@@ -403,7 +392,9 @@ export default function CityPageRedesign({
                   ? <div
                     className="text-4xl md:text-5xl font-black text-[#1A3260] leading-[1.1] tracking-tighter"
                     dangerouslySetInnerHTML={{
-                      __html: cityPage.middleContent.split('|||')[1].replace(/French/gi, (match) => `<span class="text-red-600">${match}</span>`)
+                      __html: openLinksInNewTab(
+                        cityPage.middleContent.split('|||')[1].replace(/French/gi, (match) => `<span class="text-red-600">${match}</span>`)
+                      ),
                     }}
                   />
                   : <h2 className="text-4xl md:text-5xl font-black text-[#1A3260] leading-[1.1] tracking-tighter">Unlock Fluency in <span className="text-red-600">French</span> Classes in {cityPage.cityName}</h2>}
@@ -411,9 +402,11 @@ export default function CityPageRedesign({
               <div className="space-y-6 text-gray-600 font-medium leading-relaxed text-lg whitespace-pre-line">
                 {cityPage.middleContent ? (
                   <div dangerouslySetInnerHTML={{
-                    __html: cityPage.middleContent.includes('|||')
-                      ? cityPage.middleContent.split('|||')[2]
-                      : cityPage.middleContent
+                    __html: openLinksInNewTab(
+                      cityPage.middleContent.includes('|||')
+                        ? cityPage.middleContent.split('|||')[2]
+                        : cityPage.middleContent
+                    ),
                   }} />
                 ) : (
                   <>
@@ -529,7 +522,9 @@ export default function CityPageRedesign({
                   ? <div
                     className="text-4xl font-black text-[#1A3260] tracking-tighter leading-[1.1]"
                     dangerouslySetInnerHTML={{
-                      __html: cityPage.afterCourseContent.split('|||')[0].replace(/classes/gi, (match) => `<span class="text-red-600">${match}</span>`)
+                      __html: openLinksInNewTab(
+                        cityPage.afterCourseContent.split('|||')[0].replace(/classes/gi, (match) => `<span class="text-red-600">${match}</span>`)
+                      ),
                     }}
                   />
                   : <h2 className="text-4xl font-black text-[#1A3260] tracking-tighter leading-[1.1]">Self-Paced & Structured <span className="text-red-600">Classes</span> in {cityPage.cityName}</h2>}
@@ -537,9 +532,11 @@ export default function CityPageRedesign({
               <div className="space-y-6 text-gray-600 font-medium leading-relaxed text-lg whitespace-pre-line">
                 {cityPage.afterCourseContent ? (
                   <div dangerouslySetInnerHTML={{
-                    __html: cityPage.afterCourseContent.includes('|||')
-                      ? cityPage.afterCourseContent.split('|||')[1]
-                      : cityPage.afterCourseContent
+                    __html: openLinksInNewTab(
+                      cityPage.afterCourseContent.includes('|||')
+                        ? cityPage.afterCourseContent.split('|||')[1]
+                        : cityPage.afterCourseContent
+                    ),
                   }} />
                 ) : (
                   <>
@@ -645,7 +642,7 @@ export default function CityPageRedesign({
               <div className="relative z-10">
                 <div
                   className="text-white text-lg md:text-2xl font-medium leading-relaxed max-w-4xl mx-auto mb-10 italic whitespace-pre-line"
-                  dangerouslySetInnerHTML={{ __html: cityPage.afterCourseContent.split('|||')[2] }}
+                  dangerouslySetInnerHTML={{ __html: openLinksInNewTab(cityPage.afterCourseContent.split('|||')[2]) }}
                 />
 
                 <motion.button
@@ -735,9 +732,10 @@ export default function CityPageRedesign({
                       exit={{ height: 0, opacity: 0 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <div className="px-8 pb-8 text-gray-600 font-medium leading-relaxed">
-                        {faq.answer}
-                      </div>
+                      <div
+                        className="px-8 pb-8 text-gray-600 font-medium leading-relaxed prose prose-sm max-w-none [&_a]:text-red-600 [&_a]:font-semibold [&_a]:underline hover:[&_a]:text-red-700 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+                        dangerouslySetInnerHTML={{ __html: openLinksInNewTab(faq.answer) }}
+                      />
                     </motion.div>
                   )}
                 </AnimatePresence>

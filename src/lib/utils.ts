@@ -81,6 +81,36 @@ export function formatRupee(value: string | number | null | undefined): string {
  * Extracts a numeric price from a value like "₹2,999" / "INR 299" / "299".
  * Returns 0 when parsing fails.
  */
+/**
+ * Ensures all anchor tags in HTML open in a new tab (for admin rich-text content).
+ */
+export function openLinksInNewTab(html: string): string {
+  if (!html) return "";
+
+  return html.replace(/<a\b([^>]*)>/gi, (_, attrs: string) => {
+    let next = attrs;
+
+    if (/\btarget\s*=/i.test(next)) {
+      next = next.replace(/\btarget\s*=\s*(['"])?[^'">\s]*\1?/i, 'target="_blank"');
+    } else {
+      next += ' target="_blank"';
+    }
+
+    if (/\brel\s*=/i.test(next)) {
+      if (!/noopener/i.test(next)) {
+        next = next.replace(
+          /\brel\s*=\s*(['"])([^'"]*)\1/i,
+          (_m, quote: string, rel: string) => `rel=${quote}${rel} noopener noreferrer${quote}`
+        );
+      }
+    } else {
+      next += ' rel="noopener noreferrer"';
+    }
+
+    return `<a${next}>`;
+  });
+}
+
 export function parsePriceNumber(value: string | number | null | undefined): number {
   if (value === null || value === undefined) return 0;
   if (typeof value === 'number') return Number.isFinite(value) ? value : 0;

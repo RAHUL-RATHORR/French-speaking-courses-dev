@@ -108,7 +108,6 @@ model CityPage {
   content            String
   middleContent      String?
   afterCourseContent String?
-  menuUrl            String?
   metaTitle          String?
   metaDescription    String?
   keywords           String?

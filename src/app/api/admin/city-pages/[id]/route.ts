@@ -19,7 +19,6 @@ export async function GET(
         middleContent: true,
         afterCourseContent: true,
         headerImage: true,
-        menuUrl: true,
         faqs: true,
         testimonials: true,
         metaTitle: true,
@@ -58,6 +57,7 @@ export async function PATCH(
     delete updateData.createdAt;
     delete updateData.updatedAt;
     delete updateData.section4Content; // Forcefully remove Section 4 to avoid DB errors
+    delete updateData.menuUrl;
 
     try {
       const cityPage = await prisma.cityPage.update({
@@ -72,7 +72,6 @@ export async function PATCH(
           middleContent: true,
           afterCourseContent: true,
           headerImage: true,
-          menuUrl: true,
           faqs: true,
           testimonials: true,
           metaTitle: true,

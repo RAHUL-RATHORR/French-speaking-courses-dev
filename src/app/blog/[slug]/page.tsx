@@ -4,7 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { formatDate } from "@/lib/utils";
+import { formatDate, openLinksInNewTab } from "@/lib/utils";
 import { generateBreadcrumbStructuredData } from "@/lib/structured-data";
 import { blogPosts as staticBlogPosts } from "@/lib/blog-data";
 import { prisma } from "@/lib/db/prisma";
@@ -372,7 +372,7 @@ export default async function BlogPostPage({
 
           {/* HTML Content from API */}
           <article className="prose prose-lg prose-slate max-w-none">
-            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+            <div dangerouslySetInnerHTML={{ __html: openLinksInNewTab(post.content) }} />
           </article>
         </div>
 

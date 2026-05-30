@@ -22,7 +22,6 @@ export async function GET() {
         metaTitle: true,
         metaDescription: true,
         keywords: true,
-        menuUrl: true,
         isActive: true,
         createdAt: true,
         updatedAt: true
@@ -48,7 +47,7 @@ export async function POST(request: NextRequest) {
     const {
       cityName, slug, title, headerImage,
       content, middleContent, afterCourseContent,
-      menuUrl, metaTitle, metaDescription, keywords,
+      metaTitle, metaDescription, keywords,
       faqs, testimonials
     } = body;
 
@@ -66,7 +65,6 @@ export async function POST(request: NextRequest) {
           content: content || "",
           middleContent: middleContent || null,
           afterCourseContent: afterCourseContent || null,
-          menuUrl: menuUrl || null,
           metaTitle: metaTitle || null,
           metaDescription: metaDescription || null,
           keywords: keywords || null,
@@ -83,7 +81,6 @@ export async function POST(request: NextRequest) {
           middleContent: true,
           afterCourseContent: true,
           headerImage: true,
-          menuUrl: true,
           faqs: true,
           testimonials: true,
           metaTitle: true,

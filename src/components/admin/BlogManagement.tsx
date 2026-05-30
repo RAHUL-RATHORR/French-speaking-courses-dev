@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from "react";
 import { Editor } from '@tinymce/tinymce-react';
 import Image from 'next/image';
 import ImageUpload from "../ui/ImageUpload";
+import { openLinksInNewTab } from "@/lib/utils";
 
 interface BlogPost {
   id: string;
@@ -308,6 +309,10 @@ export default function BlogManagement() {
                       'code preview fullscreen | help',
                     table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
                     content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px; line-height: 1.6; }',
+                    default_link_target: '_blank',
+                    link_default_target: '_blank',
+                    link_default_rel: 'noopener noreferrer',
+                    link_assume_external_targets: 'https',
                     paste_data_images: true,
                     file_picker_types: 'image',
                     automatic_uploads: true,
@@ -416,7 +421,7 @@ export default function BlogManagement() {
             {/* Preview Content */}
             <div 
               className="prose prose-lg max-w-none"
-              dangerouslySetInnerHTML={{ __html: formData.content }}
+              dangerouslySetInnerHTML={{ __html: openLinksInNewTab(formData.content) }}
             />
           </div>
         </div>

@@ -30,7 +30,6 @@ interface CityPage {
   metaTitle: string;
   metaDescription: string;
   keywords: string;
-  menuUrl?: string;
   faqs: FAQ[];
   testimonials: Testimonial[];
   isActive: boolean;
@@ -53,7 +52,6 @@ export default function CityPageManagement() {
     metaTitle: "",
     metaDescription: "",
     keywords: "",
-    menuUrl: "",
     faqs: [{ question: "", answer: "" }],
     testimonials: [{ name: "", rating: 5, designation: "", profile: "", description: "" }],
     isActive: true,
@@ -195,7 +193,21 @@ export default function CityPageManagement() {
       'code preview fullscreen | ltr rtl help',
     table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
     content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px; line-height: 1.6; }',
+    default_link_target: '_blank',
+    link_default_target: '_blank',
+    link_default_rel: 'noopener noreferrer',
+    link_assume_external_targets: 'https',
+    target_list: [
+      { title: 'New window', value: '_blank' },
+      { title: 'Same window', value: '_self' },
+    ],
     apiKey: "6rgp3aqnerp62a7r0l5av9vb7bjq42nhcy6wmzcf01bd9cd2"
+  };
+
+  const faqEditorConfig = {
+    ...editorConfig,
+    height: 220,
+    menubar: "edit insert format tools",
   };
 
   if (isEditing) {
@@ -250,17 +262,6 @@ export default function CityPageManagement() {
                       placeholder="city-name"
                     />
                   </div>
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Main Menu URL</label>
-                  <input
-                    type="url"
-                    value={formData.menuUrl || ""}
-                    onChange={(e) => setFormData({ ...formData, menuUrl: e.target.value })}
-                    className="w-full p-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-french-blue/20 outline-none transition-all"
-                    placeholder="Paste the full URL to show on website"
-                  />
-                  <p className="text-[10px] text-gray-400 mt-1">This URL will be displayed in bold on the city page.</p>
                 </div>
 
               </div>
@@ -459,20 +460,28 @@ export default function CityPageManagement() {
               </div>
               <div className="p-6 space-y-4">
                 {formData.faqs?.map((faq, idx) => (
-                  <div key={idx} className="flex gap-4 items-start pb-4 border-b last:border-0">
-                    <div className="flex-1 space-y-2">
-                      <input
-                        placeholder="Question"
-                        value={faq.question}
-                        onChange={(e) => updateFaq(idx, "question", e.target.value)}
-                        className="w-full p-2 border border-gray-200 rounded-lg text-sm"
-                      />
-                      <textarea
-                        placeholder="Answer"
-                        value={faq.answer}
-                        onChange={(e) => updateFaq(idx, "answer", e.target.value)}
-                        className="w-full p-2 border border-gray-200 rounded-lg text-sm h-20"
-                      />
+                  <div key={idx} className="flex gap-4 items-start pb-6 border-b last:border-0">
+                    <div className="flex-1 space-y-3">
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-600 mb-1">Question</label>
+                        <input
+                          placeholder="Question"
+                          value={faq.question}
+                          onChange={(e) => updateFaq(idx, "question", e.target.value)}
+                          className="w-full p-2 border border-gray-200 rounded-lg text-sm"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-semibold text-gray-600 mb-1">Answer (links & formatting supported)</label>
+                        <Editor
+                          key={`faq-answer-${idx}-${formData.id ?? "new"}`}
+                          id={`faq-answer-editor-${idx}`}
+                          apiKey={faqEditorConfig.apiKey}
+                          value={faq.answer}
+                          onEditorChange={(content) => updateFaq(idx, "answer", content)}
+                          init={faqEditorConfig}
+                        />
+                      </div>
                     </div>
                     <button type="button" onClick={() => removeFaq(idx)} className="text-red-400 hover:text-red-600 p-1">
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
@@ -561,14 +570,13 @@ export default function CityPageManagement() {
               <th className="px-6 py-3 font-bold text-sm text-gray-700 w-20">S.No.</th>
               <th className="px-6 py-3 font-bold text-sm text-gray-700">Page Name</th>
               <th className="px-6 py-3 font-bold text-sm text-gray-700">Page Url</th>
-              <th className="px-6 py-3 font-bold text-sm text-gray-700">Menu Url</th>
               <th className="px-6 py-3 font-bold text-sm text-gray-700 text-center w-24">Action</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-100">
             {cityPages.length === 0 ? (
               <tr>
-                <td colSpan={5} className="px-6 py-12 text-center text-gray-500 italic">
+                <td colSpan={4} className="px-6 py-12 text-center text-gray-500 italic">
                   {loading ? "Loading..." : error ? (
                     <span className="text-red-600 not-italic">{error}</span>
                   ) : "No records found."}
@@ -583,15 +591,6 @@ export default function CityPageManagement() {
                     <a href={`/${page.slug}`} target="_blank" rel="noopener noreferrer">
                       https://frenchskill.com/{page.slug}
                     </a>
-                  </td>
-                  <td className="px-6 py-4 text-sm text-gray-700 break-all">
-                    {page.menuUrl ? (
-                      <a href={page.menuUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-[#1A3260] hover:text-red-600 underline">
-                        {page.menuUrl}
-                      </a>
-                    ) : (
-                      <span className="text-gray-400">-</span>
-                    )}
                   </td>
                   <td className="px-6 py-4 text-center">
                     <div className="flex items-center justify-center space-x-2">
