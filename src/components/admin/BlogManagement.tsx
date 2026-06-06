@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Editor } from '@tinymce/tinymce-react';
-import { tinymceEditorProps } from "./tinymceConfig";
+import { tinymceEditorProps, tinymceSelfHostedInit } from "./tinymceConfig";
 import Image from 'next/image';
 import ImageUpload from "../ui/ImageUpload";
 import { openLinksInNewTab } from "@/lib/utils";
@@ -294,6 +294,7 @@ export default function BlogManagement() {
                   value={formData.content}
                   onEditorChange={handleContentChange}
                   init={{
+                    ...tinymceSelfHostedInit,
                     height: 400,
                     menubar: false,
                     plugins: [

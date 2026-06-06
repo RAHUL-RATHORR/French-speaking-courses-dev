@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Editor } from '@tinymce/tinymce-react';
-import { tinymceEditorProps } from "./tinymceConfig";
+import { tinymceEditorProps, tinymceSelfHostedInit } from "./tinymceConfig";
 import Button from "@/components/ui/Button";
 import ImageUpload from "../ui/ImageUpload";
 
@@ -178,6 +178,7 @@ export default function CityPageManagement() {
   };
 
   const editorConfig = {
+    ...tinymceSelfHostedInit,
     height: 400,
     menubar: true,
     plugins: [
