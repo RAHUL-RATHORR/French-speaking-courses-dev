@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { Editor } from '@tinymce/tinymce-react';
-import { tinymceEditorProps } from "./tinymceConfig";
 import Button from "@/components/ui/Button";
 import ImageUpload from "../ui/ImageUpload";
 
@@ -202,6 +201,7 @@ export default function CityPageManagement() {
       { title: 'New window', value: '_blank' },
       { title: 'Same window', value: '_self' },
     ],
+    apiKey: "6rgp3aqnerp62a7r0l5av9vb7bjq42nhcy6wmzcf01bd9cd2"
   };
 
   const faqEditorConfig = {
@@ -327,7 +327,7 @@ export default function CityPageManagement() {
                     <label className="block text-sm font-semibold text-gray-700 mb-2">Vision Description Text</label>
                     <div className="border border-gray-200 rounded-lg overflow-hidden">
                       <Editor
-                        {...tinymceEditorProps}
+                        apiKey={editorConfig.apiKey}
                         init={{ ...editorConfig, height: 300 }}
                         value={formData.middleContent?.includes('|||') ? formData.middleContent.split('|||')[2] : (formData.middleContent || "")}
                         onEditorChange={(content) => {
@@ -368,7 +368,7 @@ export default function CityPageManagement() {
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Lessons Description</label>
                   <div className="border border-gray-200 rounded-lg overflow-hidden">
                     <Editor
-                      {...tinymceEditorProps}
+                      apiKey={editorConfig.apiKey}
                       init={{ ...editorConfig, height: 300 }}
                       value={formData.afterCourseContent?.includes('|||') ? formData.afterCourseContent.split('|||')[1] : formData.afterCourseContent || ""}
                       onEditorChange={(content) => {
@@ -476,7 +476,7 @@ export default function CityPageManagement() {
                         <Editor
                           key={`faq-answer-${idx}-${formData.id ?? "new"}`}
                           id={`faq-answer-editor-${idx}`}
-                          {...tinymceEditorProps}
+                          apiKey={faqEditorConfig.apiKey}
                           value={faq.answer}
                           onEditorChange={(content) => updateFaq(idx, "answer", content)}
                           init={faqEditorConfig}
