@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Editor } from '@tinymce/tinymce-react';
+import { tinymceEditorProps } from "./tinymceConfig";
 import Image from 'next/image';
 import ImageUpload from "../ui/ImageUpload";
 import { openLinksInNewTab } from "@/lib/utils";
@@ -288,7 +289,7 @@ export default function BlogManagement() {
               </label>
               <div className="border border-gray-300 rounded-md">
                 <Editor
-                  apiKey="6rgp3aqnerp62a7r0l5av9vb7bjq42nhcy6wmzcf01bd9cd2"
+                  {...tinymceEditorProps}
                   onInit={(evt, editor) => editorRef.current = editor}
                   value={formData.content}
                   onEditorChange={handleContentChange}
