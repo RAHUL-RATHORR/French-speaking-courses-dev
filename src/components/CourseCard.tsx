@@ -58,8 +58,8 @@ export default function CourseCard({
       >
         <span className="sr-only">{title}</span>
       </NextLink>
-      <div className="relative aspect-[16/9] w-full overflow-hidden bg-white">
-        <NextLink href={`/course/${slug}`} className="block h-full w-full relative z-20">
+      <div className="relative w-full overflow-hidden bg-white">
+        <NextLink href={`/course/${slug}`} className="block w-full relative z-20">
           <Image
             src={
               image
@@ -69,19 +69,19 @@ export default function CourseCard({
                 : "/french-skill.png"
             }
             alt={title}
-            fill
+            width={800}
+            height={500}
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-            className="object-contain object-center group-hover:scale-[1.02] transition-transform duration-500 z-0"
+            className="w-full h-auto block group-hover:scale-[1.02] transition-transform duration-500"
             onError={(e) => {
               const target = e.target as HTMLImageElement;
               target.src = "/french-skill.png";
             }}
           />
-          <div className="absolute inset-0 bg-black/[0.02] z-10 pointer-events-none" />
 
           {/* Rating */}
           {rating ? (
-            <div className="absolute bottom-4 left-4 rounded-md shadow-lg flex items-center bg-white/90 backdrop-blur-sm px-2 py-1 z-20">
+            <div className="absolute bottom-3 left-3 rounded-md shadow-lg flex items-center bg-white/90 backdrop-blur-sm px-2 py-1 z-20">
               <div className="text-yellow-400 text-sm flex">★★★★★</div>
               <span className="text-sm font-bold text-gray-800 ml-1">
                 {rating}
