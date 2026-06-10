@@ -244,7 +244,7 @@ export default function Home() {
         const response = await fetch("/api/courses");
         if (!response.ok) throw new Error("Failed to fetch courses");
         const data = await response.json();
-        setCourses(data);
+        setCourses(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching courses:", error);
       } finally {
@@ -258,7 +258,7 @@ export default function Home() {
         const response = await fetch("/api/blogs");
         if (!response.ok) throw new Error("Failed to fetch blogs");
         const data = await response.json();
-        setBlogPosts(data);
+        setBlogPosts(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching blogs:", error);
       } finally {
@@ -272,7 +272,7 @@ export default function Home() {
         const response = await fetch("/api/testimonials");
         if (!response.ok) throw new Error("Failed to fetch testimonials");
         const data = await response.json();
-        setTestimonials(data);
+        setTestimonials(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error("Error fetching testimonials:", error);
       } finally {

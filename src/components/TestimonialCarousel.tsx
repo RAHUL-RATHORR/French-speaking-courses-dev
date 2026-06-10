@@ -76,6 +76,10 @@ export default function TestimonialCarousel({ testimonials }: TestimonialCarouse
     return () => clearInterval(interval);
   }, [nextSlide]);
 
+  if (!testimonials.length) {
+    return null;
+  }
+
   return (
     <div className="relative px-4">
       {/* Multi-card responsive carousel */}

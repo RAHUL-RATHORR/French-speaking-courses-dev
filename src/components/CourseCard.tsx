@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import NextLink from "next/link";
 
 import { formatRupee } from "@/lib/utils";
@@ -44,10 +43,15 @@ export default function CourseCard({
     ? formatRupee(originalPrice)
     : "";
 
-  // const priceValue = parsePriceNumber(price);
-  // const originalPriceValue = parsePriceNumber(originalPrice);
+  const imageSrc = image
+    ? image.startsWith("http") || image.startsWith("/")
+      ? image
+      : `/uploads/${image}`
+    : "/french-skill.png";
 
-
+  const displayDuration = duration
+    ? duration.replace(/months?|weeks?/gi, "hours")
+    : "Flexible hours";
 
   return (
     <Card variant="hover" className="relative">
@@ -60,22 +64,14 @@ export default function CourseCard({
       </NextLink>
       <div className="relative w-full overflow-hidden bg-white">
         <NextLink href={`/course/${slug}`} className="block w-full relative z-20">
-          <Image
-            src={
-              image
-                ? image.startsWith("http") || image.startsWith("/")
-                  ? image
-                  : `/uploads/${image}`
-                : "/french-skill.png"
-            }
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={imageSrc}
             alt={title}
-            width={800}
-            height={500}
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             className="w-full h-auto block group-hover:scale-[1.02] transition-transform duration-500"
+            loading="lazy"
             onError={(e) => {
-              const target = e.target as HTMLImageElement;
-              target.src = "/french-skill.png";
+              e.currentTarget.src = "/french-skill.png";
             }}
           />
 
@@ -103,7 +99,7 @@ export default function CourseCard({
         <div className="flex items-center justify-start mb-3 text-xs text-gray-500">
           <div className="flex items-center">
             <span className="mr-1">⏱️</span>
-            <span>{duration.replace(/months?|weeks?/gi, 'hours')}</span>
+            <span>{displayDuration}</span>
           </div>
         </div>
 
