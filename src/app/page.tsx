@@ -894,7 +894,8 @@ export default function Home() {
                     slug={post.slug}
                     title={post.title}
                     excerpt={
-                      post.excerpt || post.content.substring(0, 120) + "..."
+                      post.excerpt ||
+                      (post.content ? `${post.content.substring(0, 120)}...` : "")
                     }
                     image={post?.image || "/french-skill.png"}
                     category="learning"
