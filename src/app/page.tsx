@@ -618,7 +618,7 @@ export default function Home() {
                   where its people come from and where they are going.&rdquo;
                 </p>
                 <p className="text-right text-french-blue font-medium mt-2">
-                  - Rita Mae Brown
+                  - Mr. Pradeep
                 </p>
               </div>
             </div>
