@@ -95,27 +95,26 @@ export default function CourseCard({
           {description}
         </p>
 
-        {/* Course Stats */}
-        <div className="flex items-center justify-start mb-3 text-xs text-gray-500">
-          <div className="flex items-center">
+        {/* Course Stats & Registration Status */}
+        <div className="flex flex-wrap items-center gap-4 mb-4">
+          <div className="flex items-center text-xs text-gray-500">
             <span className="mr-1">⏱️</span>
             <span>{displayDuration}</span>
           </div>
-        </div>
 
-        {/* Registration Status */}
-        <div className="flex items-center mb-4">
-          {registrationOpen !== false ? (
-            <span className="bg-green-100 text-green-700 px-2.5 py-1 rounded-full text-xs font-bold flex items-center shadow-sm">
-              <span className="w-2 h-2 bg-green-500 rounded-full mr-1.5 animate-pulse"></span>
-              REGISTRATION OPEN
-            </span>
-          ) : (
-            <span className="bg-red-100 text-red-700 px-2.5 py-1 rounded-full text-xs font-bold flex items-center shadow-sm">
-              <span className="w-2 h-2 bg-red-500 rounded-full mr-1.5"></span>
-              REGISTRATION CLOSED
-            </span>
-          )}
+          <div className="flex items-center">
+            {registrationOpen !== false ? (
+              <span className="bg-green-100 text-green-700 px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-bold flex items-center shadow-sm">
+                <span className="w-2 h-2 bg-green-500 rounded-full mr-1.5 animate-pulse"></span>
+                REGISTRATION OPEN
+              </span>
+            ) : (
+              <span className="bg-red-100 text-red-700 px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-bold flex items-center shadow-sm">
+                <span className="w-2 h-2 bg-red-500 rounded-full mr-1.5"></span>
+                REGISTRATION CLOSED
+              </span>
+            )}
+          </div>
         </div>
 
         {/* Price and CTA */}

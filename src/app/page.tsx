@@ -298,10 +298,10 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center">
             <div className="md:w-1/2 text-left md:pr-12">
               <h1 className="text-5xl md:text-6xl font-bold mb-6">
-                Bonjour to Live French Learning
+                Bonjour to Expert French Learning
               </h1>
               <p className="text-xl mb-8 text-gray-100">
-                Interactive live classes by expert instructors. Join from
+                Interactive French classes by expert instructors. Join from
                 anywhere, speak with confidence and master French faster online.{" "}
               </p>
               <div className="flex space-x-4">
@@ -345,7 +345,7 @@ export default function Home() {
                   className="object-cover"
                   priority
                 />
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6">
+                <div className="absolute bottom-0 left-0 right-0 bg-linear-to-t from-black/80 to-transparent p-6">
                   <div className="text-lg font-semibold">All French Courses</div>
                   <div className="text-2xl font-bold">Certified French Tutors</div>
                   {/* <Link
@@ -391,7 +391,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 text-center md:text-left">
             <div>
               <h3 className="text-xl md:text-3xl font-black tracking-tighter text-french-blue whitespace-nowrap">
-                ONE ON ONE <span className="text-black">SESSION</span>
+                Self-Paced <span className="text-black">SESSION</span>
               </h3>
             </div>
 
@@ -555,7 +555,7 @@ export default function Home() {
                       <p className="text-gray-600">{step.description}</p>
                     </div>
                     {index < learningSteps.length - 1 && (
-                      <div className="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-gradient-to-r from-french-blue to-transparent -translate-y-1/2 -z-0"></div>
+                      <div className="hidden md:block absolute top-1/2 left-full w-full h-0.5 bg-linear-to-r from-french-blue to-transparent -translate-y-1/2 z-0"></div>
                     )}
                   </div>
                 ))}
@@ -959,7 +959,7 @@ export default function Home() {
                     {faq.question}
                   </span>
                   <svg
-                    className={`w-5 h-5 text-french-blue transform transition-transform duration-200 flex-shrink-0 ${openFAQ === index ? "rotate-180" : ""
+                    className={`w-5 h-5 text-french-blue transform transition-transform duration-200 shrink-0 ${openFAQ === index ? "rotate-180" : ""
                       }`}
                     fill="none"
                     stroke="currentColor"
@@ -1014,7 +1014,7 @@ export default function Home() {
         </div>
       </section>
       {/* Call to Action */}
-      <section className="py-20 bg-gradient-to-r from-french-blue to-blue-700 text-white">
+      <section className="py-20 bg-linear-to-r from-french-blue to-blue-700 text-white">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-4xl font-bold mb-6">
             Ready to Start Your French Journey?
@@ -1033,7 +1033,7 @@ export default function Home() {
             <Button
               href="#contact"
               variant="outline"
-              className="border-2 border-white !text-white hover:bg-white/10 px-8 py-3 rounded-lg font-semibold transition duration-300"
+              className="border-2 border-white text-white! hover:bg-white/10 px-8 py-3 rounded-lg font-semibold transition duration-300"
             >
               {/* Force refresh */}
               <span>Contact Us</span>
