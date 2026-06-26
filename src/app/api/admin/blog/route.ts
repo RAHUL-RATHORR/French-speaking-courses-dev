@@ -39,7 +39,12 @@ export async function GET() {
         author: true,
         excerpt: true,
         image: true,
-        createdAt: true
+        createdAt: true,
+        categories: true,
+        tags: true,
+        metaTitle: true,
+        metaKeywords: true,
+        metaDescription: true
       }
     });
     
@@ -91,7 +96,12 @@ export async function POST(request: NextRequest) {
         slug: data.slug,
         image: normalizeSameOriginAssetUrl(data.image, origin),
         excerpt: data.excerpt,
-        author: data.author || "French Skill Academy"
+        author: data.author || "French Skill Academy",
+        metaTitle: data.metaTitle,
+        metaKeywords: data.metaKeywords,
+        metaDescription: data.metaDescription,
+        categories: data.categories || [],
+        tags: data.tags || []
       }
     });
 

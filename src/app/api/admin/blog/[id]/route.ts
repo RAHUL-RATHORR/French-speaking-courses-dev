@@ -91,7 +91,12 @@ export async function PUT(
         slug: data.slug,
         image: normalizeSameOriginAssetUrl(data.image, origin),
         excerpt: data.excerpt,
-        author: data.author
+        author: data.author,
+        metaTitle: data.metaTitle,
+        metaKeywords: data.metaKeywords,
+        metaDescription: data.metaDescription,
+        categories: data.categories || [],
+        tags: data.tags || []
       }
     });
 

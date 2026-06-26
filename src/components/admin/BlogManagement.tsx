@@ -15,9 +15,36 @@ interface BlogPost {
   image?: string | null;
   author: string;
   excerpt?: string | null;
+  metaTitle?: string | null;
+  metaKeywords?: string | null;
+  metaDescription?: string | null;
+  categories?: string[];
+  tags?: string[];
   createdAt: string;
   updatedAt: string;
 }
+
+const AVAILABLE_CATEGORIES = [
+  "DELF/DALF Prep",
+  "Learn French",
+  "French Grammar",
+  "Vocabulary",
+  "Study in France",
+  "French Culture",
+  "General"
+];
+
+const AVAILABLE_TAGS = [
+  "A1 exam preparation strategy",
+  "Learn French for A1 exam",
+  "B1 DELF tips",
+  "Study in France requirements",
+  "French Grammar rules",
+  "Top 10 French TV shows",
+  "French verbs to learn easily",
+  "Is Paris affordable for students",
+  "Advantages of learning French"
+];
 
 export default function BlogManagement() {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
@@ -34,6 +61,11 @@ export default function BlogManagement() {
     image: "",
     author: "French Skill Academy",
     excerpt: "",
+    metaTitle: "",
+    metaKeywords: "",
+    metaDescription: "",
+    categories: [] as string[],
+    tags: [] as string[],
   });
   
   useEffect(() => {
@@ -97,6 +129,28 @@ export default function BlogManagement() {
     });
   };
   
+  const handleCategoryChange = (category: string) => {
+    setFormData(prev => {
+      const current = prev.categories || [];
+      if (current.includes(category)) {
+        return { ...prev, categories: current.filter(c => c !== category) };
+      } else {
+        return { ...prev, categories: [...current, category] };
+      }
+    });
+  };
+
+  const handleTagChange = (tag: string) => {
+    setFormData(prev => {
+      const current = prev.tags || [];
+      if (current.includes(tag)) {
+        return { ...prev, tags: current.filter(t => t !== tag) };
+      } else {
+        return { ...prev, tags: [...current, tag] };
+      }
+    });
+  };
+  
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -139,6 +193,11 @@ export default function BlogManagement() {
       image: post?.image || "",
       author: post.author,
       excerpt: post.excerpt || "",
+      metaTitle: post.metaTitle || "",
+      metaKeywords: post.metaKeywords || "",
+      metaDescription: post.metaDescription || "",
+      categories: post.categories || [],
+      tags: post.tags || [],
     });
     setShowForm(true);
   };
@@ -172,6 +231,11 @@ export default function BlogManagement() {
       image: "",
       author: "French Skill Academy",
       excerpt: "",
+      metaTitle: "",
+      metaKeywords: "",
+      metaDescription: "",
+      categories: [],
+      tags: [],
     });
     setEditingPost(null);
     setShowForm(false);
@@ -349,6 +413,111 @@ export default function BlogManagement() {
                     }
                   }}
                 />
+              </div>
+            </div>
+            
+            {/* SEO Section */}
+            <div className="mb-6 p-4 border border-gray-200 rounded-md bg-gray-50">
+              <h3 className="text-lg font-semibold mb-4 text-gray-800">SEO - Meta Tags</h3>
+              <p className="text-sm text-gray-500 mb-4">Define page meta title, meta keywords and meta description to list your page in search engines</p>
+              
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Meta Title *
+                </label>
+                <input
+                  type="text"
+                  name="metaTitle"
+                  value={formData.metaTitle}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  maxLength={70}
+                />
+                <span className="text-xs text-gray-500">Max length 70 characters</span>
+              </div>
+              
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Meta Keyword
+                </label>
+                <textarea
+                  name="metaKeywords"
+                  value={formData.metaKeywords}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  rows={2}
+                  maxLength={160}
+                />
+                <span className="text-xs text-gray-500">Max length 160 characters</span>
+              </div>
+              
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Meta Description
+                </label>
+                <textarea
+                  name="metaDescription"
+                  value={formData.metaDescription}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  rows={3}
+                  maxLength={250}
+                />
+                <span className="text-xs text-gray-500">Max length 250 characters</span>
+              </div>
+            </div>
+            
+            {/* Categories & Tags Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+              {/* Categories */}
+              <div className="border border-gray-200 rounded-md overflow-hidden bg-gray-50">
+                <div className="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                  <h3 className="text-sm font-semibold text-gray-800">Categories *</h3>
+                </div>
+                <div className="p-4 space-y-2">
+                  {AVAILABLE_CATEGORIES.map(category => (
+                    <div key={category} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        id={`cat-${category}`}
+                        checked={(formData.categories || []).includes(category)}
+                        onChange={() => handleCategoryChange(category)}
+                        className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                      />
+                      <label htmlFor={`cat-${category}`} className="ml-2 text-sm text-gray-700">
+                        {category}
+                      </label>
+                    </div>
+                  ))}
+                  <div className="pt-2">
+                    <button type="button" className="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                      + Add New Category
+                    </button>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Tags */}
+              <div className="border border-gray-200 rounded-md overflow-hidden bg-gray-50">
+                <div className="bg-gray-100 px-4 py-3 border-b border-gray-200">
+                  <h3 className="text-sm font-semibold text-gray-800">Tags</h3>
+                </div>
+                <div className="p-4 space-y-2">
+                  {AVAILABLE_TAGS.map(tag => (
+                    <div key={tag} className="flex items-center">
+                      <input
+                        type="checkbox"
+                        id={`tag-${tag}`}
+                        checked={(formData.tags || []).includes(tag)}
+                        onChange={() => handleTagChange(tag)}
+                        className="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                      />
+                      <label htmlFor={`tag-${tag}`} className="ml-2 text-sm text-gray-700">
+                        {tag}
+                      </label>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
             

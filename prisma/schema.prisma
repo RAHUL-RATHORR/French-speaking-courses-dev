@@ -76,16 +76,21 @@ model Course {
 }
 
 model BlogPost {
-  id        String       @id @default(cuid())
-  title     String
-  content   String
-  slug      String       @unique
-  image     String?
-  author    String       @default("French Skill Academy")
-  excerpt   String?
-  category  BlogCategory @default(LEARNING)
-  createdAt DateTime     @default(now())
-  updatedAt DateTime     @updatedAt
+  id              String       @id @default(cuid())
+  title           String
+  content         String
+  slug            String       @unique
+  image           String?
+  author          String       @default("French Skill Academy")
+  excerpt         String?
+  category        BlogCategory @default(LEARNING)
+  categories      String[]     @default([])
+  tags            String[]     @default([])
+  metaTitle       String?
+  metaKeywords    String?
+  metaDescription String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
 }
 
 model Testimonial {
