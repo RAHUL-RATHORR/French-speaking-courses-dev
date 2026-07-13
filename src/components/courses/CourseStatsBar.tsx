@@ -1,7 +1,6 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { useEffect, useState } from "react";
 import { CourseWithSections } from "@/types/course";
 
 interface CourseStatsBarProps {
@@ -53,42 +52,15 @@ function StatCell({
 }
 
 export default function CourseStatsBar({ course, embedded = false }: CourseStatsBarProps) {
-  const [viewers, setViewers] = useState(42);
-
-  useEffect(() => {
-    const base = 20 + (course.id.charCodeAt(0) % 50);
-    setViewers(base);
-    const interval = setInterval(() => {
-      setViewers((v) => {
-        const delta = Math.floor(Math.random() * 7) - 3;
-        return Math.max(12, Math.min(120, v + delta));
-      });
-    }, 8000);
-    return () => clearInterval(interval);
-  }, [course.id]);
-
   const rating = course.rating ?? 4.7;
   const reviewCount =
     course.reviewsSection?.reviews?.length ?? course.testimonials?.length ?? 0;
 
-  const updatedAt = (course as CourseWithSections & { updatedAt?: string | Date }).updatedAt;
-  const lastUpdated = updatedAt
-    ? new Date(updatedAt).toLocaleDateString("en-US", {
-        month: "short",
-        day: "2-digit",
-        year: "numeric",
-      })
-    : new Date().toLocaleDateString("en-US", {
-        month: "short",
-        day: "2-digit",
-        year: "numeric",
-      });
-
   const iconClass = "w-4 h-4";
 
   const grid = (
-    <div className="grid grid-cols-2 sm:grid-cols-4 border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
-      <div className="border-b sm:border-b-0 border-r border-slate-200">
+    <div className="grid grid-cols-3 border border-slate-200 rounded-lg overflow-hidden bg-white shadow-sm">
+      <div className="border-r border-slate-200">
         <StatCell
           icon={<StarRating rating={rating} />}
           value={rating.toFixed(1)}
@@ -96,7 +68,7 @@ export default function CourseStatsBar({ course, embedded = false }: CourseStats
         />
       </div>
 
-      <div className="border-b sm:border-b-0 sm:border-r border-slate-200">
+      <div className="border-r border-slate-200">
         <StatCell
           icon={
             <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -113,29 +85,6 @@ export default function CourseStatsBar({ course, embedded = false }: CourseStats
         />
       </div>
 
-      <div className="border-r border-slate-200">
-        <StatCell
-          icon={
-            <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={1.5}
-                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-              />
-            </svg>
-          }
-          value={String(viewers)}
-          label="Viewing right now"
-        />
-      </div>
-
       <div>
         <StatCell
           icon={
@@ -144,12 +93,24 @@ export default function CourseStatsBar({ course, embedded = false }: CourseStats
                 strokeLinecap="round"
                 strokeLinejoin="round"
                 strokeWidth={1.5}
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                d="M12 14l9-5-9-5-9 5 9 5z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={1.5}
+                d="M12 14v7M5 8.5V17a2 2 0 002 2h10a2 2 0 002-2V8.5"
               />
             </svg>
           }
-          value={lastUpdated}
-          label="Last updated"
+          value={course.instructor?.split(" ")[0] || "Expert"}
+          label="Certified Teachers"
         />
       </div>
     </div>

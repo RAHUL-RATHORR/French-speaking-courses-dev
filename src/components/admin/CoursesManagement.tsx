@@ -17,6 +17,7 @@ interface Course {
   originalPrice?: string | null;
   rating?: number | null;
   students: number;
+  sortOrder?: number;
   image?: string | null;
   instructorImage?: string | null;
   brochureUrl?: string | null; // URL to the uploaded brochure PDF
@@ -40,6 +41,8 @@ export default function CoursesManagement() {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [draggingId, setDraggingId] = useState<string | null>(null);
+  const [savingOrder, setSavingOrder] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [editingCourse, setEditingCourse] = useState<Course | null>(null);
   const [dynamicSections, setDynamicSections] = useState<Record<string, unknown>>({});
@@ -91,7 +94,54 @@ export default function CoursesManagement() {
       setLoading(false);
     }
   };
-  
+
+  const saveCourseOrder = async (orderedCourses: Course[]) => {
+    setCourses(orderedCourses);
+    setSavingOrder(true);
+    try {
+      const res = await fetch("/api/admin/courses/reorder", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ orderedIds: orderedCourses.map((c) => c.id) }),
+      });
+      if (!res.ok) throw new Error("Failed to save order");
+    } catch (err) {
+      console.error("Error saving course order:", err);
+      setError("Failed to save course order");
+      await fetchCourses();
+    } finally {
+      setSavingOrder(false);
+    }
+  };
+
+  const handleDragStart = (courseId: string) => {
+    setDraggingId(courseId);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+  };
+
+  const handleDrop = (targetId: string) => {
+    if (!draggingId || draggingId === targetId) {
+      setDraggingId(null);
+      return;
+    }
+
+    const fromIndex = courses.findIndex((c) => c.id === draggingId);
+    const toIndex = courses.findIndex((c) => c.id === targetId);
+    if (fromIndex < 0 || toIndex < 0) {
+      setDraggingId(null);
+      return;
+    }
+
+    const next = [...courses];
+    const [moved] = next.splice(fromIndex, 1);
+    next.splice(toIndex, 0, moved);
+    setDraggingId(null);
+    saveCourseOrder(next);
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type } = e.target;
     
@@ -686,9 +736,18 @@ export default function CoursesManagement() {
       )}
       
       <div className="bg-white shadow-md rounded-lg overflow-hidden">
+        <div className="px-6 py-3 bg-gray-50 border-b border-gray-200 flex items-center justify-between">
+          <p className="text-sm text-gray-600">
+            Drag rows using the handle to reorder courses. Homepage order updates automatically.
+          </p>
+          {savingOrder && <span className="text-sm text-indigo-600 font-medium">Saving order...</span>}
+        </div>
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
+              <th className="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-10">
+                Order
+              </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Course
               </th>
@@ -706,13 +765,38 @@ export default function CoursesManagement() {
           <tbody className="bg-white divide-y divide-gray-200">
             {courses.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-6 py-4 text-center text-gray-500">
+                <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
                   No courses found
                 </td>
               </tr>
             ) : (
-              courses.map((course) => (
-                <tr key={course.id}>
+              courses.map((course, index) => (
+                <tr
+                  key={course.id}
+                  draggable
+                  onDragStart={() => handleDragStart(course.id)}
+                  onDragOver={handleDragOver}
+                  onDrop={() => handleDrop(course.id)}
+                  onDragEnd={() => setDraggingId(null)}
+                  className={`transition-colors ${
+                    draggingId === course.id
+                      ? "bg-indigo-50 opacity-60"
+                      : "hover:bg-gray-50"
+                  }`}
+                >
+                  <td className="px-3 py-4 whitespace-nowrap">
+                    <button
+                      type="button"
+                      aria-label={`Drag to reorder ${course.title}`}
+                      className="cursor-grab active:cursor-grabbing text-gray-400 hover:text-gray-600 p-1"
+                      onMouseDown={(e) => e.stopPropagation()}
+                    >
+                      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M7 2a2 2 0 11-4 0 2 2 0 014 0zM7 8a2 2 0 11-4 0 2 2 0 014 0zM7 14a2 2 0 11-4 0 2 2 0 014 0zM17 2a2 2 0 11-4 0 2 2 0 014 0zM17 8a2 2 0 11-4 0 2 2 0 014 0zM17 14a2 2 0 11-4 0 2 2 0 014 0z" />
+                      </svg>
+                    </button>
+                    <span className="sr-only">{index + 1}</span>
+                  </td>
                   <td className="px-6 py-4">
                     <div className="flex items-center">
                       {course.image && (

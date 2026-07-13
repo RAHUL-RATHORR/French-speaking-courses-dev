@@ -2,6 +2,7 @@ type CourseSortInput = {
   title?: string | null;
   slug?: string | null;
   level?: string | null;
+  sortOrder?: number | null;
 };
 
 /** A1 → A2 → B1 → B2 → TCF → TEF → others */
@@ -24,6 +25,18 @@ export function getCourseSortOrder(course: CourseSortInput): number {
 export function sortCoursesByLevel<T extends CourseSortInput>(courses: T[]): T[] {
   return [...courses].sort((a, b) => {
     const orderDiff = getCourseSortOrder(a) - getCourseSortOrder(b);
+    if (orderDiff !== 0) return orderDiff;
+    return (a.title ?? "").localeCompare(b.title ?? "", undefined, { sensitivity: "base" });
+  });
+}
+
+/** Uses admin drag order when set; otherwise falls back to DELF level order. */
+export function sortCoursesForDisplay<T extends CourseSortInput>(courses: T[]): T[] {
+  const hasCustomOrder = courses.some((c) => (c.sortOrder ?? 0) > 0);
+  if (!hasCustomOrder) return sortCoursesByLevel(courses);
+
+  return [...courses].sort((a, b) => {
+    const orderDiff = (a.sortOrder ?? 0) - (b.sortOrder ?? 0);
     if (orderDiff !== 0) return orderDiff;
     return (a.title ?? "").localeCompare(b.title ?? "", undefined, { sensitivity: "base" });
   });

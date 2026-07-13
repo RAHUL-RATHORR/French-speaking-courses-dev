@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
-import { sortCoursesByLevel } from "@/lib/course-sort";
+import { sortCoursesForDisplay } from "@/lib/course-sort";
 export const dynamic = "force-dynamic";
 import { getCurrentUser } from "@/lib/auth/session";
 import { revalidatePath } from "next/cache";
@@ -33,7 +33,7 @@ export async function GET() {
     }
     
     const courses = await prisma.course.findMany({
-      orderBy: { createdAt: "desc" },
+      orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
       select: {
         id: true,
         title: true,
@@ -43,11 +43,12 @@ export async function GET() {
         image: true,
         slug: true,
         description: true,
+        sortOrder: true,
         createdAt: true,
       },
     });
 
-    return NextResponse.json(sortCoursesByLevel(courses));
+    return NextResponse.json(sortCoursesForDisplay(courses));
   } catch (error) {
     console.error("Error fetching courses:", error);
     return NextResponse.json({ error: "Failed to fetch courses" }, { status: 500 });
@@ -88,6 +89,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Course with this slug already exists" }, { status: 409 });
     }
     
+    // Set sort order for new course (append to end)
+    const maxSort = await prisma.course.aggregate({ _max: { sortOrder: true } });
+    const nextSortOrder = (maxSort._max.sortOrder ?? 0) + 1;
+
     const course = await prisma.course.create({
       data: {
         title: data.title,
@@ -99,6 +104,7 @@ export async function POST(request: NextRequest) {
         originalPrice: data.originalPrice || null,
         rating: data.rating ? parseFloat(data.rating) : null,
         students: data.students ? parseInt(data.students) : 0,
+        sortOrder: nextSortOrder,
         image: normalizeSameOriginAssetUrl(data.image, origin),
         instructor: data.instructor || null,
         instructorImage: normalizeSameOriginAssetUrl(data.instructorImage, origin),
