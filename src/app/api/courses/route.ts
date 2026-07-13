@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
+import { sortCoursesByLevel } from "@/lib/course-sort";
 
 export const revalidate = 60;
 // GET all courses for public consumption
@@ -25,9 +26,11 @@ export async function GET(request: NextRequest) {
         createdAt: true,
         updatedAt: true,
       },
-      orderBy: { createdAt: 'desc' }
+      orderBy: { createdAt: "desc" },
     });
     console.log(`Found ${courses.length} courses`);
+
+    const sorted = sortCoursesByLevel(courses);
 
     const normalize = (value: unknown) => {
       if (typeof value !== "string") return value;
@@ -36,7 +39,7 @@ export async function GET(request: NextRequest) {
       return trimmed;
     };
 
-    const normalized = courses.map((course) => ({
+    const normalized = sorted.map((course) => ({
       ...course,
       image: normalize(course.image),
       instructorImage: normalize(course.instructorImage),

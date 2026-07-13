@@ -391,7 +391,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-10 text-center md:text-left">
             <div>
               <h3 className="text-xl md:text-3xl font-black tracking-tighter text-french-blue whitespace-nowrap">
-                Self-Paced <span className="text-black">SESSION</span>
+                SELF-PACED <span className="text-black">SESSION</span>
               </h3>
             </div>
 

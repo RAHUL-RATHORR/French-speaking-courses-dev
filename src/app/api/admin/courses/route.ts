@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
+import { sortCoursesByLevel } from "@/lib/course-sort";
 export const dynamic = "force-dynamic";
 import { getCurrentUser } from "@/lib/auth/session";
 import { revalidatePath } from "next/cache";
@@ -32,7 +33,7 @@ export async function GET() {
     }
     
     const courses = await prisma.course.findMany({
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       select: {
         id: true,
         title: true,
@@ -42,11 +43,11 @@ export async function GET() {
         image: true,
         slug: true,
         description: true,
-        createdAt: true
-      }
+        createdAt: true,
+      },
     });
-    
-    return NextResponse.json(courses);
+
+    return NextResponse.json(sortCoursesByLevel(courses));
   } catch (error) {
     console.error("Error fetching courses:", error);
     return NextResponse.json({ error: "Failed to fetch courses" }, { status: 500 });

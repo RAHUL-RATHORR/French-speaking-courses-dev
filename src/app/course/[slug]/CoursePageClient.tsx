@@ -5,11 +5,11 @@ import Footer from "@/components/Footer";
 import RegistrationModal from "@/components/RegistrationModal";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import {
-  HeroBanner,
   Overview,
   WhyEnroll,
   Benefits,
   Curriculum,
+  DEFAULT_CURRICULUM_MODULES,
   Fees,
   SkillsTools,
   Reviews,
@@ -23,12 +23,13 @@ import * as React from "react";
 import { useState } from "react";
 import {
   CourseWithSections,
-  CourseModule,
   CourseFeature,
+  CurriculumModule,
 } from "@/types/course";
 import { downloadBrochure } from "@/lib/brochure-utils";
-import { formatRupee } from "@/lib/utils";
 import StickyNavigation from "@/components/courses/StickyNavigation";
+import CourseBuyBox from "@/components/courses/CourseBuyBox";
+import CoursePageHeader from "@/components/courses/CoursePageHeader";
 
 interface CoursePageClientProps {
   course: CourseWithSections;
@@ -126,16 +127,29 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
         </div>
       </div>
 
-      {/* Dynamic Sections */}
+      {/* Hero — full-width blue background like before */}
+      <section className="bg-[#E8F4FA] border-b border-slate-200/60">
+        <div className="container mx-auto px-4 py-8 md:py-10">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-x-8">
+            <CoursePageHeader course={course} />
+            {/* Spacer keeps buy box column aligned on desktop */}
+            <div className="hidden lg:block" aria-hidden="true" />
+          </div>
+        </div>
+      </section>
 
-      {/* Hero Banner Section */}
-      {course.heroBannerSection && (
-        <HeroBanner
-          section={course.heroBannerSection}
-          onCTAClick={handleCTAClick}
+      {/* Mobile buy box */}
+      <aside className="lg:hidden container mx-auto px-4 mt-6 mb-2">
+        <CourseBuyBox
+          course={course}
+          onEnroll={() => setIsRegistrationModalOpen(true)}
         />
-      )}
+      </aside>
 
+      {/* Main content + desktop buy box overlap */}
+      <div className="container mx-auto px-4 pb-10">
+        <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-x-8 items-start">
+          <div className="min-w-0">
       {/* Overview Section */}
       {course.overviewSection ? (
         <div id="overview">
@@ -145,383 +159,66 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
           />
         </div>
       ) : (
-        // Fallback Overview Section
-        <section id="overview" className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-12">
-                <h2 className="text-4xl font-bold text-slate-800 mb-6">
-                  Course Overview
-                </h2>
-                <p className="text-xl text-slate-600 leading-relaxed max-w-4xl mx-auto">
-                  {course.description ||
-                    `Master the French language with our comprehensive ${course.title} program. 
-                  Designed for learners of all levels, this course combines interactive lessons, 
-                  practical exercises, and cultural insights to help you achieve fluency in French.`}
-                </p>
-              </div>
+        // Fallback Overview — stat cards only (title/description in header)
+        <section id="overview" className="py-10 bg-white rounded-xl">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200">
+              <div className="text-blue-600 text-2xl mb-3">🎯</div>
+              <h3 className="text-lg font-bold text-slate-800 mb-2">
+                Course Duration
+              </h3>
+              <p className="text-slate-600 text-sm">
+                {course.duration ? course.duration.replace(/months?|weeks?/gi, 'hours') : "40 hours of intensive learning"}
+              </p>
+            </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-xl border border-blue-200">
-                  <div className="text-blue-600 text-3xl mb-4">🎯</div>
-                  <h3 className="text-xl font-bold text-slate-800 mb-3">
-                    Course Duration
-                  </h3>
-                  <p className="text-slate-600">
-                    {course.duration ? course.duration.replace(/months?|weeks?/gi, 'hours') : "40 hours of intensive learning"}
-                  </p>
-                </div>
+            <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border border-green-200">
+              <div className="text-green-600 text-2xl mb-3">👥</div>
+              <h3 className="text-lg font-bold text-slate-800 mb-2">
+                Class Type
+              </h3>
+              <p className="text-slate-600 text-sm">
+                Interactive live sessions with expert instructors
+              </p>
+            </div>
 
-                <div className="bg-gradient-to-br from-grey-50 to-green-100 p-8 rounded-xl border border-green-200">
-                  <div className="text-grey-600 text-3xl mb-4">👥</div>
-                  <h3 className="text-xl font-bold text-slate-800 mb-3">
-                    Class Type
-                  </h3>
-                  <p className="text-slate-600">
-                    Interactive live sessions with expert instructors
-                  </p>
-                </div>
-
-                <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-8 rounded-xl border border-purple-200">
-                  <div className="text-purple-600 text-3xl mb-4">🏆</div>
-                  <h3 className="text-xl font-bold text-slate-800 mb-3">
-                    Certification
-                  </h3>
-                  <p className="text-slate-600">
-                    Official certificate upon course completion
-                  </p>
-                </div>
-              </div>
-
-              <div className="text-center mt-12">
-                <button
-                  onClick={() => setIsRegistrationModalOpen(true)}
-                  disabled={course.registrationOpen === false}
-                  className={`bg-gradient-to-r ${
-                    course.registrationOpen !== false
-                      ? "from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg transform hover:scale-105 cursor-pointer"
-                      : "from-gray-400 to-gray-500 cursor-not-allowed opacity-80"
-                  } text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300`}
-                >
-                  {course.registrationOpen !== false ? "Enroll Now" : "Registration Closed"}
-                </button>
-              </div>
+            <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl border border-purple-200">
+              <div className="text-purple-600 text-2xl mb-3">🏆</div>
+              <h3 className="text-lg font-bold text-slate-800 mb-2">
+                Certification
+              </h3>
+              <p className="text-slate-600 text-sm">
+                Official certificate upon course completion
+              </p>
             </div>
           </div>
         </section>
       )}
 
       {/* Curriculum Section */}
-      {course.curriculumSection ? (
-        <div id="curriculum">
-          <Curriculum
-            section={course.curriculumSection}
-            onDownloadBrochure={() => handleCTAClick("download_brochure")}
-          />
-        </div>
-      ) : Array.isArray(course.modules) && course.modules.length > 0 ? (
-        // Legacy modules section
-        <section id="curriculum" className="py-12 bg-white">
-          <div className="container mx-auto px-4">
-            <h2 className="text-3xl font-bold text-center mb-8">
-              Course Curriculum
-            </h2>
-            <div className="max-w-4xl mx-auto text-center mb-8">
-              <p className="text-lg text-gray-700 leading-relaxed">
-                Elevate your French language skills with our modules and unlock
-                new communication opportunities.
-              </p>
-              <button
-                onClick={() => handleCTAClick("download_brochure")}
-                className="mt-6 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-lg font-semibold inline-flex items-center shadow-lg transition-all duration-300 transform hover:scale-105"
-              >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                  />
-                </svg>
-                DOWNLOAD BROCHURE
-              </button>
-            </div>
-            <div className="space-y-6 max-w-4xl mx-auto">
-              {Array.isArray(course.modules) && course.modules.map((module: CourseModule, index: number) => (
-                <div
-                  key={index}
-                  className="border border-gray-200 rounded-lg shadow-sm overflow-hidden mb-6"
-                >
-                  <div className="bg-slate-800 text-white p-4 rounded-t-xl">
-                    <h3 className="text-xl font-semibold flex items-center">
-                      <span className="w-8 h-8 bg-blue-400 text-slate-900 rounded-full flex items-center justify-center text-sm font-bold mr-3">
-                        {index + 1}
-                      </span>
-                      Module {index + 1}: {module.title}
-                    </h3>
-                  </div>
-                  <div className="p-4 bg-white">
-                    <div className="mb-4">
-                      <h4 className="font-semibold text-blue-700 mb-2">
-                        Learning Outcomes
-                      </h4>
-                      <p className="text-slate-700 mb-2">
-                        {module.description}
-                      </p>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-blue-700 mb-2">
-                        Topics Covered
-                      </h4>
-                      <ul className="space-y-2">
-                        {Array.isArray(module.lessons) && module.lessons.map(
-                          (lesson: string, lessonIndex: number) => (
-                            <li
-                              key={lessonIndex}
-                              className="flex items-center text-slate-700"
-                            >
-                              <svg
-                                className="w-4 h-4 text-blue-500 mr-2 flex-shrink-0"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                              >
-                                <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                  d="M5 13l4 4L19 7"
-                                />
-                              </svg>
-                              <span>{lesson}</span>
-                            </li>
-                          )
-                        )}
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      ) : (
-        // Fallback Curriculum Section - continues with same pattern...
-        <section id="curriculum" className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <h2 className="text-4xl font-bold text-center mb-12 text-slate-800">
-              Course Curriculum
-            </h2>
-            <div className="max-w-4xl mx-auto text-center mb-12">
-              <p className="text-lg text-slate-600 leading-relaxed">
-                Our comprehensive French curriculum is designed to take you from
-                beginner to advanced level through structured modules and
-                interactive learning experiences.
-              </p>
-              <button
-                onClick={() => handleCTAClick("download_brochure")}
-                className="mt-6 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-lg font-semibold inline-flex items-center shadow-lg transition-all duration-300 transform hover:scale-105"
-              >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                  />
-                </svg>
-                DOWNLOAD BROCHURE
-              </button>
-            </div>
-
-            <div className="space-y-6 max-w-5xl mx-auto">
-              {/* Module 1 */}
-              <div className="border border-slate-200 rounded-xl shadow-lg overflow-hidden">
-                <div className="bg-gradient-to-r from-slate-800 to-slate-700 text-white p-6">
-                  <h3 className="text-2xl font-semibold flex items-center">
-                    <span className="w-10 h-10 bg-blue-400 text-slate-900 rounded-full flex items-center justify-center text-lg font-bold mr-4">
-                      1
-                    </span>
-                    Introduction to French
-                  </h3>
-                </div>
-                <div className="p-6 bg-white">
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-blue-700 mb-3 text-lg">
-                      Learning Outcomes
-                    </h4>
-                    <p className="text-slate-700 mb-4">
-                      Master basic French pronunciation, essential vocabulary,
-                      and fundamental grammar structures.
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-blue-700 mb-3 text-lg">
-                      Topics Covered
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {[
-                        "French alphabet and pronunciation",
-                        "Basic greetings and introductions",
-                        "Numbers, dates, and time",
-                        "Common verbs and present tense",
-                        "Essential vocabulary (family, colors, food)",
-                        "Simple sentence structures",
-                      ].map((lesson, i) => (
-                        <div
-                          key={i}
-                          className="flex items-center text-slate-700"
-                        >
-                          <svg
-                            className="w-4 h-4 text-green-500 mr-3 flex-shrink-0"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                          <span>{lesson}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Module 2 */}
-              <div className="border border-slate-200 rounded-xl shadow-lg overflow-hidden">
-                <div className="bg-gradient-to-r from-slate-800 to-slate-700 text-white p-6">
-                  <h3 className="text-2xl font-semibold flex items-center">
-                    <span className="w-10 h-10 bg-blue-400 text-slate-900 rounded-full flex items-center justify-center text-lg font-bold mr-4">
-                      2
-                    </span>
-                    Building Conversations
-                  </h3>
-                </div>
-                <div className="p-6 bg-white">
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-blue-700 mb-3 text-lg">
-                      Learning Outcomes
-                    </h4>
-                    <p className="text-slate-700 mb-4">
-                      Develop conversational skills and expand vocabulary for
-                      everyday situations.
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-blue-700 mb-3 text-lg">
-                      Topics Covered
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {[
-                        "Asking questions and giving directions",
-                        "Shopping and restaurant conversations",
-                        "Past and future tenses",
-                        "Describing people and places",
-                        "Express opinions and preferences",
-                        "Cultural customs and etiquette",
-                      ].map((lesson, i) => (
-                        <div
-                          key={i}
-                          className="flex items-center text-slate-700"
-                        >
-                          <svg
-                            className="w-4 h-4 text-green-500 mr-3 flex-shrink-0"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                          <span>{lesson}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Module 3 */}
-              <div className="border border-slate-200 rounded-xl shadow-lg overflow-hidden">
-                <div className="bg-gradient-to-r from-slate-800 to-slate-700 text-white p-6">
-                  <h3 className="text-2xl font-semibold flex items-center">
-                    <span className="w-10 h-10 bg-blue-400 text-slate-900 rounded-full flex items-center justify-center text-lg font-bold mr-4">
-                      3
-                    </span>
-                    Advanced Communication
-                  </h3>
-                </div>
-                <div className="p-6 bg-white">
-                  <div className="mb-4">
-                    <h4 className="font-semibold text-blue-700 mb-3 text-lg">
-                      Learning Outcomes
-                    </h4>
-                    <p className="text-slate-700 mb-4">
-                      Master complex grammar structures and engage in
-                      sophisticated conversations.
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-blue-700 mb-3 text-lg">
-                      Topics Covered
-                    </h4>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                      {[
-                        "Complex grammar and verb conjugations",
-                        "Business and professional French",
-                        "Reading comprehension and literature",
-                        "Writing skills and composition",
-                        "Advanced vocabulary and idioms",
-                        "French culture and history",
-                      ].map((lesson, i) => (
-                        <div
-                          key={i}
-                          className="flex items-center text-slate-700"
-                        >
-                          <svg
-                            className="w-4 h-4 text-green-500 mr-3 flex-shrink-0"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M5 13l4 4L19 7"
-                            />
-                          </svg>
-                          <span>{lesson}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+      <div id="curriculum">
+        <Curriculum
+          section={
+            course.curriculumSection ?? {
+              headline: "Course Content",
+              description:
+                Array.isArray(course.modules) && course.modules.length > 0
+                  ? "Elevate your French language skills with our structured modules and unlock new communication opportunities."
+                  : "Our comprehensive French curriculum is designed to take you from beginner to advanced level through structured modules and interactive learning experiences.",
+              modules:
+                Array.isArray(course.modules) && course.modules.length > 0
+                  ? (course.modules as CurriculumModule[])
+                  : DEFAULT_CURRICULUM_MODULES,
+              downloadBrochure: {
+                enabled: true,
+                text: "Download Brochure",
+              },
+            }
+          }
+          totalChapters={course.lessons}
+          onDownloadBrochure={() => handleCTAClick("download_brochure")}
+        />
+      </div>
 
       {/* Why Enroll Section */}
       {course.whyEnrollSection ? (
@@ -730,7 +427,10 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
 
       {/* Continue with other sections... */}
       {/* Fees Section */}
-      {course.feesSection ? (
+      {/* Fees Section — payment options only; Buy Box owns price/CTA */}
+      {course.feesSection &&
+        ((course.feesSection.paymentOptions?.length ?? 0) > 0 ||
+          (course.feesSection.discounts?.length ?? 0) > 0) && (
         <div id="fees">
           <Fees
             section={course.feesSection}
@@ -751,96 +451,6 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
             }}
           />
         </div>
-      ) : (
-        // Fallback Fees Section
-        <section id="fees" className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
-              <h2 className="text-4xl font-bold text-slate-800 mb-6">
-                Course Fees & Pricing
-              </h2>
-              <p className="text-xl text-slate-600 mb-12">
-                Invest in your future with our affordable and flexible pricing
-                options
-              </p>
-
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-8 rounded-2xl border border-blue-200 max-w-md mx-auto">
-                <div className="text-center">
-                  <h3 className="text-2xl font-bold text-slate-800 mb-4">
-                    Course Fee
-                  </h3>
-                  <div className="mb-6">
-                    {course.price ? (
-                      <div>
-                        <span className="text-4xl font-bold text-blue-600">
-                          {formatRupee(course.price)}
-                        </span>
-                        {course.originalPrice && (
-                          <span className="text-lg text-slate-500 line-through ml-2">
-                            {formatRupee(course.originalPrice)}
-                          </span>
-                        )}
-                      </div>
-                    ) : (
-                      <div className="text-4xl font-bold text-blue-600">
-                        {formatRupee(299)}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="space-y-3 mb-8 text-left">
-                    <div className="flex items-center">
-                      <svg
-                        className="w-5 h-5 text-green-500 mr-3"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      <span className="text-slate-700">
-                        {course.duration ? course.duration.replace(/months?|weeks?/gi, 'hours') + ' of live classes' : '40 hours of live classes'}
-                      </span>
-                    </div>
-                    <div className="flex items-center">
-                      <span className="w-5 h-5 flex items-center justify-center mr-3">
-                        <span className={`w-2.5 h-2.5 rounded-full ${course.registrationOpen !== false ? "bg-green-500 animate-pulse" : "bg-red-500"}`}></span>
-                      </span>
-                      <span className={`${course.registrationOpen !== false ? "text-green-700" : "text-red-700"} font-bold uppercase tracking-wide text-xs`}>
-                        Registration {course.registrationOpen !== false ? "Open" : "Closed"}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <button
-                      onClick={() => setIsRegistrationModalOpen(true)}
-                      disabled={course.registrationOpen === false}
-                      className={`w-full bg-gradient-to-r ${
-                        course.registrationOpen !== false
-                          ? "from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 shadow-lg transform hover:scale-105 cursor-pointer"
-                          : "from-gray-400 to-gray-500 cursor-not-allowed opacity-80"
-                      } text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300`}
-                    >
-                      {course.registrationOpen !== false ? "Enroll Now" : "Registration Closed"}
-                    </button>
-
-                  </div>
-
-                  <div className="mt-6 text-sm text-slate-600">
-                    <p>💳 EMI options available</p>
-                    <p>🔄 30-day money-back guarantee</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
       )}
 
       {/* Skills & Tools Section */}
@@ -1124,6 +734,18 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
           </div>
         </section>
       )}
+
+          </div>
+
+          {/* Desktop buy box — overlaps blue hero, sticky on scroll */}
+          <aside className="hidden lg:block lg:sticky lg:top-28 lg:self-start z-30 lg:-mt-[280px]">
+            <CourseBuyBox
+              course={course}
+              onEnroll={() => setIsRegistrationModalOpen(true)}
+            />
+          </aside>
+        </div>
+      </div>
 
       <Footer />
 

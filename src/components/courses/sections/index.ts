@@ -2,7 +2,7 @@ export { default as HeroBanner } from './HeroBanner';
 export { default as Overview } from './Overview';
 export { default as WhyEnroll } from './WhyEnroll';
 export { default as Benefits } from './Benefits';
-export { default as Curriculum } from './Curriculum';
+export { default as Curriculum, DEFAULT_CURRICULUM_MODULES } from './Curriculum';
 export { default as Fees } from './Fees';
 export { default as SkillsTools } from './SkillsTools';
 export { default as Projects } from './Projects';
