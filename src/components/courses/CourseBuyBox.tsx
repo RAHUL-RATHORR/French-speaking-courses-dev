@@ -150,10 +150,6 @@ export default function CourseBuyBox({ course, onEnroll }: CourseBuyBoxProps) {
 
   const registrationOpen = course.registrationOpen !== false;
 
-  const shareUrl = `https://www.frenchskill.com/course/${course.slug}`;
-  const encodedUrl = encodeURIComponent(shareUrl);
-  const encodedTitle = encodeURIComponent(course.title);
-
   return (
     <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-lg lg:shadow-xl">
       <div className="relative w-full bg-slate-50">
@@ -235,10 +231,10 @@ export default function CourseBuyBox({ course, onEnroll }: CourseBuyBoxProps) {
           </p>
           <div className="flex items-center justify-center gap-3">
             <a
-              href={`https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`}
+              href="https://www.facebook.com/frenchskill"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Share on Facebook"
+              aria-label="Facebook"
               className="w-10 h-10 rounded-full border border-slate-300 flex items-center justify-center text-slate-600 hover:border-[#1A3260] hover:text-[#1A3260] transition-colors"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
@@ -246,36 +242,14 @@ export default function CourseBuyBox({ course, onEnroll }: CourseBuyBoxProps) {
               </svg>
             </a>
             <a
-              href={`https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}`}
+              href="https://www.instagram.com/frenchskill_official"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="Share on X"
+              aria-label="Instagram"
               className="w-10 h-10 rounded-full border border-slate-300 flex items-center justify-center text-slate-600 hover:border-[#1A3260] hover:text-[#1A3260] transition-colors"
             >
               <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M18.244 2H21.5l-7.5 8.57L22.5 22h-6.56l-5.14-6.71L5.2 22H1.94l8.03-9.17L1.5 2h6.72l4.64 6.14L18.244 2zm-1.15 18h1.82L7.02 3.95H5.07L17.094 20z" />
-              </svg>
-            </a>
-            <a
-              href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Share on LinkedIn"
-              className="w-10 h-10 rounded-full border border-slate-300 flex items-center justify-center text-slate-600 hover:border-[#1A3260] hover:text-[#1A3260] transition-colors"
-            >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M4.98 3.5C4.98 4.88 3.86 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.5 8.5h4V23h-4V8.5zM8.5 8.5h3.8v2h.05c.53-1 1.82-2.05 3.75-2.05 4 0 4.75 2.64 4.75 6.07V23h-4v-7.4c0-1.77-.03-4.04-2.46-4.04-2.46 0-2.84 1.92-2.84 3.9V23h-4V8.5z" />
-              </svg>
-            </a>
-            <a
-              href={`https://wa.me/?text=${encodedTitle}%20${encodedUrl}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Share on WhatsApp"
-              className="w-10 h-10 rounded-full border border-slate-300 flex items-center justify-center text-slate-600 hover:border-[#1A3260] hover:text-[#1A3260] transition-colors"
-            >
-              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M20.5 3.5A11 11 0 004.1 18.3L3 21.5l3.3-1a11 11 0 0014.2-17zM12 20.2a8.2 8.2 0 01-4.2-1.1l-.3-.2-2.5.7.7-2.4-.2-.3A8.2 8.2 0 1112 20.2zm4.5-6.1c-.2-.1-1.4-.7-1.6-.8-.2-.1-.4-.1-.5.1-.2.2-.6.8-.7.9-.1.2-.3.2-.5.1-.2-.1-.9-.3-1.7-1.1-.6-.6-1.1-1.3-1.2-1.5-.1-.2 0-.4.1-.5l.4-.4c.1-.1.2-.3.2-.4 0-.1 0-.3-.1-.4-.1-.1-.5-1.3-.7-1.8-.2-.5-.4-.4-.5-.4h-.5c-.2 0-.4.1-.6.3-.2.2-.8.8-.8 1.9s.8 2.2.9 2.3c.1.2 1.6 2.4 3.8 3.4.5.2.9.4 1.2.5.5.2 1 .2 1.3.1.4-.1 1.4-.6 1.6-1.1.2-.5.2-1 .1-1.1-.1-.1-.2-.2-.4-.3z" />
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
               </svg>
             </a>
           </div>
