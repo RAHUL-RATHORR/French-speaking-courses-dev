@@ -96,7 +96,8 @@ export async function PUT(
         metaKeywords: data.metaKeywords,
         metaDescription: data.metaDescription,
         categories: data.categories || [],
-        tags: data.tags || []
+        tags: data.tags || [],
+        featured: Boolean(data.featured)
       }
     });
 

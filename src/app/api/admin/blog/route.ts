@@ -44,7 +44,8 @@ export async function GET() {
         tags: true,
         metaTitle: true,
         metaKeywords: true,
-        metaDescription: true
+        metaDescription: true,
+        featured: true
       }
     });
     
@@ -101,7 +102,8 @@ export async function POST(request: NextRequest) {
         metaKeywords: data.metaKeywords,
         metaDescription: data.metaDescription,
         categories: data.categories || [],
-        tags: data.tags || []
+        tags: data.tags || [],
+        featured: Boolean(data.featured)
       }
     });
 

@@ -371,7 +371,7 @@ export default async function BlogPostPage({
           </header>
 
           {/* HTML Content from API */}
-          <article className="prose prose-lg prose-slate max-w-none">
+          <article className="prose prose-lg prose-slate max-w-none overflow-x-auto">
             <div dangerouslySetInnerHTML={{ __html: openLinksInNewTab(post.content) }} />
           </article>
         </div>

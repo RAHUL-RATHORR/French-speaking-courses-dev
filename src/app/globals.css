@@ -190,6 +190,51 @@ body {
   color: #4b5563;
 }
 
+/* Blog / rich-text tables (Tailwind preflight removes border="1" from HTML) */
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  display: table;
+  overflow-x: auto;
+}
+
+.prose thead {
+  display: table-header-group;
+}
+
+.prose tbody {
+  display: table-row-group;
+}
+
+.prose tr {
+  display: table-row;
+}
+
+.prose th,
+.prose td {
+  display: table-cell;
+  border: 1px solid #d1d5db;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.prose th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: var(--french-blue);
+}
+
+.prose tbody tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.prose table a {
+  color: var(--accent-blue);
+  text-decoration: underline;
+}
+
 /* Marquee Animation */
 @keyframes marquee {
   0% {

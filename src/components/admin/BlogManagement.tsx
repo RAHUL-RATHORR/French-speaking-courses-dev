@@ -2,9 +2,10 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Editor } from '@tinymce/tinymce-react';
-import { tinymceEditorProps, tinymceSelfHostedInit } from "./tinymceConfig";
+import { tinymceEditorProps, blogEditorInit, uploadEditorImage } from "./tinymceConfig";
 import Image from 'next/image';
 import ImageUpload from "../ui/ImageUpload";
+import { StarIcon } from "./icons/StarIcon";
 import { openLinksInNewTab } from "@/lib/utils";
 
 interface BlogPost {
@@ -20,6 +21,7 @@ interface BlogPost {
   metaDescription?: string | null;
   categories?: string[];
   tags?: string[];
+  featured?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -52,6 +54,7 @@ export default function BlogManagement() {
   const [error, setError] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
+  const [fetchingPostId, setFetchingPostId] = useState<string | null>(null);
   const [showPreview, setShowPreview] = useState(false);
   const editorRef = useRef<{ getContent: () => string } | null>(null);
   const [formData, setFormData] = useState({
@@ -66,6 +69,7 @@ export default function BlogManagement() {
     metaDescription: "",
     categories: [] as string[],
     tags: [] as string[],
+    featured: false,
   });
   
   useEffect(() => {
@@ -92,7 +96,13 @@ export default function BlogManagement() {
   };
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
+    const checked = (e.target as HTMLInputElement).checked;
+    
+    if (type === "checkbox") {
+      setFormData((prev) => ({ ...prev, [name]: checked }));
+      return;
+    }
     
     // Auto-generate slug when title changes
     if (name === 'title') {
@@ -184,22 +194,40 @@ export default function BlogManagement() {
     }
   };
   
-  const startEdit = (post: BlogPost) => {
-    setEditingPost(post);
-    setFormData({
-      title: post.title,
-      content: post.content,
-      slug: post.slug,
-      image: post?.image || "",
-      author: post.author,
-      excerpt: post.excerpt || "",
-      metaTitle: post.metaTitle || "",
-      metaKeywords: post.metaKeywords || "",
-      metaDescription: post.metaDescription || "",
-      categories: post.categories || [],
-      tags: post.tags || [],
-    });
-    setShowForm(true);
+  const startEdit = async (post: BlogPost) => {
+    try {
+      setFetchingPostId(post.id);
+      setError("");
+      const res = await fetch(`/api/admin/blog/${post.id}`);
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch blog post details");
+      }
+
+      const fullPost = await res.json();
+
+      setEditingPost(fullPost);
+      setFormData({
+        title: fullPost.title,
+        content: fullPost.content || "",
+        slug: fullPost.slug,
+        image: fullPost?.image || "",
+        author: fullPost.author,
+        excerpt: fullPost.excerpt || "",
+        metaTitle: fullPost.metaTitle || "",
+        metaKeywords: fullPost.metaKeywords || "",
+        metaDescription: fullPost.metaDescription || "",
+        categories: fullPost.categories || [],
+        tags: fullPost.tags || [],
+        featured: fullPost.featured ?? false,
+      });
+      setShowForm(true);
+    } catch (err) {
+      console.error("Error loading blog post:", err);
+      setError("Failed to load blog post for editing");
+    } finally {
+      setFetchingPostId(null);
+    }
   };
   
   const handleDelete = async (id: string) => {
@@ -236,6 +264,7 @@ export default function BlogManagement() {
       metaDescription: "",
       categories: [],
       tags: [],
+      featured: false,
     });
     setEditingPost(null);
     setShowForm(false);
@@ -331,6 +360,26 @@ export default function BlogManagement() {
                   className="w-full"
                 />
               </div>
+
+              <div className="flex items-center pt-6">
+                <input
+                  type="checkbox"
+                  id="featured"
+                  name="featured"
+                  checked={formData.featured}
+                  onChange={handleInputChange}
+                  className="sr-only"
+                />
+                <label htmlFor="featured" className="flex items-center gap-2 cursor-pointer">
+                  <StarIcon
+                    filled={formData.featured}
+                    className={formData.featured ? "text-yellow-400" : "text-gray-300 hover:text-yellow-300"}
+                  />
+                  <span className="text-sm font-medium text-gray-700">
+                    Featured (show on homepage)
+                  </span>
+                </label>
+              </div>
             </div>
             
             <div className="mb-4">
@@ -353,59 +402,14 @@ export default function BlogManagement() {
               </label>
               <div className="border border-gray-300 rounded-md">
                 <Editor
+                  key={editingPost?.id ?? "new-post"}
                   {...tinymceEditorProps}
                   onInit={(evt, editor) => editorRef.current = editor}
                   value={formData.content}
                   onEditorChange={handleContentChange}
                   init={{
-                    ...tinymceSelfHostedInit,
-                    height: 400,
-                    menubar: false,
-                    plugins: [
-                      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-                      'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-                      'insertdatetime', 'media', 'table', 'emoticons', 'template', 'paste',
-                      'help', 'wordcount', 'autosave'
-                    ],
-                    toolbar: 'undo redo | blocks fontfamily fontsize | ' +
-                      'bold italic underline strikethrough | forecolor backcolor | ' +
-                      'alignleft aligncenter alignright alignjustify | ' +
-                      'bullist numlist outdent indent | ' +
-                      'table link image media emoticons | ' +
-                      'code preview fullscreen | help',
-                    table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
-                    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px; line-height: 1.6; }',
-                    default_link_target: '_blank',
-                    link_default_target: '_blank',
-                    link_default_rel: 'noopener noreferrer',
-                    link_assume_external_targets: 'https',
-                    paste_data_images: true,
-                    file_picker_types: 'image',
-                    automatic_uploads: true,
-                    images_upload_handler: async (blobInfo: { blob: () => Blob; filename: () => string }) => {
-                      const formData = new FormData();
-                      formData.append('file', blobInfo.blob(), blobInfo.filename());
-                      
-                      try {
-                        console.log('Starting blog image upload...');
-                        const response = await fetch('/api/upload', {
-                          method: 'POST',
-                          body: formData,
-                        });
-                        
-                        if (!response.ok) {
-                          const errorText = await response.text();
-                          console.error('Upload failed with status:', response.status, errorText);
-                          throw new Error(`Upload failed: ${response.status}`);
-                        }
-                        
-                        const data = await response.json();
-                        return data.url;
-                      } catch (error) {
-                        console.error('Image upload failed:', error);
-                        throw error;
-                      }
-                    },
+                    ...blogEditorInit,
+                    images_upload_handler: uploadEditorImage,
                     setup: (editor: { on: (event: string, callback: () => void) => void; getContent: () => string }) => {
                       editor.on('change', () => {
                         handleContentChange(editor.getContent());
@@ -612,6 +616,9 @@ export default function BlogManagement() {
                 Date
               </th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Featured
+              </th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
             </tr>
@@ -619,7 +626,7 @@ export default function BlogManagement() {
           <tbody className="bg-white divide-y divide-gray-200">
             {blogPosts.length === 0 ? (
               <tr>
-                <td colSpan={4} className="px-6 py-4 text-center text-gray-500">
+                <td colSpan={5} className="px-6 py-4 text-center text-gray-500">
                   No blog posts found
                 </td>
               </tr>
@@ -646,12 +653,19 @@ export default function BlogManagement() {
                   <td className="px-6 py-4">
                     {new Date(post.createdAt).toLocaleDateString()}
                   </td>
+                  <td className="px-6 py-4">
+                    <StarIcon
+                      filled={Boolean(post.featured)}
+                      className={post.featured ? "text-yellow-400" : "text-gray-300"}
+                    />
+                  </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <button
                       onClick={() => startEdit(post)}
-                      className="text-indigo-600 hover:text-indigo-900 mr-4"
+                      disabled={fetchingPostId === post.id}
+                      className="text-indigo-600 hover:text-indigo-900 mr-4 disabled:opacity-50"
                     >
-                      Edit
+                      {fetchingPostId === post.id ? "Loading..." : "Edit"}
                     </button>
                     <button
                       onClick={() => handleDelete(post.id)}

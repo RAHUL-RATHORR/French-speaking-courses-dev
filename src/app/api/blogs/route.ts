@@ -14,6 +14,7 @@ export async function GET(request: NextRequest) {
         image: true,
         author: true,
         category: true,
+        featured: true,
         createdAt: true,
         updatedAt: true,
       },

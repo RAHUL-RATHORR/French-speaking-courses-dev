@@ -106,6 +106,7 @@ interface BlogPost {
   excerpt?: string;
   image?: string;
   author: string;
+  featured?: boolean;
   createdAt: string;
   updatedAt: string;
 }
@@ -886,7 +887,9 @@ export default function Home() {
                 <p>No blog posts found</p>
               </div>
             ) : (
-              blogPosts
+              (blogPosts.filter((post) => post.featured).length > 0
+                ? blogPosts.filter((post) => post.featured)
+                : blogPosts)
                 .slice(0, 3)
                 .map((post) => (
                   <BlogCard
