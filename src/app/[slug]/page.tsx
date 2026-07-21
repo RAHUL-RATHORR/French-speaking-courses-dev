@@ -2,6 +2,7 @@ import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db/prisma";
 import CityPageRedesign from "@/components/CityPageRedesign";
+import { sortCoursesForDisplay } from "@/lib/course-sort";
 
 export const revalidate = 0; // Always fetch fresh data from DB
 
@@ -69,7 +70,25 @@ export default async function PublicCityPage({ params }: PageProps) {
 
   if (!cityPage) notFound();
 
-  const courses = await prisma.course.findMany({ take: 3, orderBy: { createdAt: 'desc' } });
+  const allCourses = await prisma.course.findMany({
+    select: {
+      id: true,
+      slug: true,
+      title: true,
+      description: true,
+      level: true,
+      duration: true,
+      price: true,
+      originalPrice: true,
+      rating: true,
+      students: true,
+      image: true,
+      registrationOpen: true,
+      sortOrder: true,
+    },
+    orderBy: [{ sortOrder: "asc" }, { createdAt: "desc" }],
+  });
+  const courses = sortCoursesForDisplay(allCourses);
   
   const rawTestimonials = cityPage.testimonials;
   const testimonialsData = Array.isArray(rawTestimonials) ? (rawTestimonials as unknown as TestimonialData[]) : [];

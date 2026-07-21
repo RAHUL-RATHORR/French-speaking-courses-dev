@@ -279,17 +279,12 @@ export default function CityPageRedesign({
       {/* --- POPULAR COURSES --- */}
       <section className="py-24f bg-white px-4">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-            <div>
-              <h2 className="text-4xl md:text-5xl font-black text-[#1A3260] tracking-tighter mb-4">Elite Programs</h2>
-              <p className="text-gray-500 font-bold text-lg">Choose the path that fits your goals.</p>
-            </div>
-            <Link href="/courses" className="text-red-600 font-black flex items-center gap-2 hover:gap-3 transition-all">
-              View All Courses <ArrowRight className="w-5 h-5" />
-            </Link>
+          <div className="mb-16">
+            <h2 className="text-4xl md:text-5xl font-black text-[#1A3260] tracking-tighter mb-4">Elite Programs</h2>
+            <p className="text-gray-500 font-bold text-lg">Choose the path that fits your goals.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {courses.map((course, i) => (
               <motion.div
                 key={String(course.id || i)}
