@@ -91,6 +91,7 @@ model BlogPost {
   metaKeywords    String?
   metaDescription String?
   featured        Boolean      @default(false)
+  faqs            Json?
   createdAt       DateTime     @default(now())
   updatedAt       DateTime     @updatedAt
 }

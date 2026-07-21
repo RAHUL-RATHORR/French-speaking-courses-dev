@@ -113,4 +113,27 @@ export async function uploadEditorImage(
 
   const data = await response.json();
   return data.url;
+}
+
+export const faqEditorInit = {
+  ...tinymceSelfHostedInit,
+  ...linkTargetOptions,
+  height: 220,
+  menubar: "edit insert format tools",
+  plugins: [
+    "advlist",
+    "autolink",
+    "lists",
+    "link",
+    "charmap",
+    "searchreplace",
+    "code",
+    "table",
+    "wordcount",
+  ],
+  toolbar:
+    "undo redo | blocks | bold italic underline | bullist numlist | link table | removeformat",
+  content_style: contentStyle,
+  paste_data_images: true,
+  automatic_uploads: true,
 };

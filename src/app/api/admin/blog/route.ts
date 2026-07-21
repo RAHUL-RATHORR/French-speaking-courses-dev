@@ -2,7 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 export const dynamic = "force-dynamic";
 import { getCurrentUser } from "@/lib/auth/session";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { normalizeBlogFaqs } from "@/lib/blog-faq";
 
 function normalizeSameOriginAssetUrl(input: unknown, origin: string): string | null {
   if (typeof input !== "string") return null;
@@ -103,7 +104,8 @@ export async function POST(request: NextRequest) {
         metaDescription: data.metaDescription,
         categories: data.categories || [],
         tags: data.tags || [],
-        featured: Boolean(data.featured)
+        featured: Boolean(data.featured),
+        faqs: normalizeBlogFaqs(data.faqs)
       }
     });
 
@@ -113,6 +115,7 @@ export async function POST(request: NextRequest) {
     revalidatePath(`/blog/${blogPost.slug}`);
     revalidatePath("/sitemap.xml");
     revalidatePath("/sitemap-blogs.xml");
+    revalidateTag("blogs");
     
     return NextResponse.json(blogPost, { status: 201 });
   } catch (error) {

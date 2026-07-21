@@ -9,8 +9,9 @@ export async function GET(
 ) {
   try {
     const { slug } = await context.params;
+    const normalizedSlug = decodeURIComponent(slug).trim();
     const blogPost = await prisma.blogPost.findFirst({
-      where: { slug }
+      where: { slug: normalizedSlug },
     });
     
     if (!blogPost) {

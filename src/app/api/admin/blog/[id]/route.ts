@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
 import { getCurrentUser } from "@/lib/auth/session";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { normalizeBlogFaqs } from "@/lib/blog-faq";
 
 export const dynamic = "force-dynamic";
 
@@ -97,7 +98,8 @@ export async function PUT(
         metaDescription: data.metaDescription,
         categories: data.categories || [],
         tags: data.tags || [],
-        featured: Boolean(data.featured)
+        featured: Boolean(data.featured),
+        faqs: normalizeBlogFaqs(data.faqs)
       }
     });
 
@@ -108,6 +110,7 @@ export async function PUT(
     if (existingPost.slug !== updatedPost.slug) {
       revalidatePath(`/blog/${existingPost.slug}`);
     }
+    revalidateTag("blogs");
 
     return NextResponse.json(updatedPost);
   } catch (error) {
@@ -146,6 +149,7 @@ export async function DELETE(
     revalidatePath("/");
     revalidatePath("/blog");
     revalidatePath(`/blog/${post.slug}`);
+    revalidateTag("blogs");
 
     return NextResponse.json({ message: "Blog post deleted successfully" });
   } catch (error) {

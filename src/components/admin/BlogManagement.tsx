@@ -2,11 +2,12 @@
 
 import { useState, useEffect, useRef } from "react";
 import { Editor } from '@tinymce/tinymce-react';
-import { tinymceEditorProps, blogEditorInit, uploadEditorImage } from "./tinymceConfig";
+import { tinymceEditorProps, blogEditorInit, faqEditorInit, uploadEditorImage } from "./tinymceConfig";
 import Image from 'next/image';
 import ImageUpload from "../ui/ImageUpload";
 import { StarIcon } from "./icons/StarIcon";
 import { openLinksInNewTab } from "@/lib/utils";
+import { BlogFAQItem, normalizeBlogFaqs } from "@/lib/blog-faq";
 
 interface BlogPost {
   id: string;
@@ -21,6 +22,7 @@ interface BlogPost {
   metaDescription?: string | null;
   categories?: string[];
   tags?: string[];
+  faqs?: BlogFAQItem[];
   featured?: boolean;
   createdAt: string;
   updatedAt: string;
@@ -69,6 +71,7 @@ export default function BlogManagement() {
     metaDescription: "",
     categories: [] as string[],
     tags: [] as string[],
+    faqs: [] as BlogFAQItem[],
     featured: false,
   });
   
@@ -160,6 +163,28 @@ export default function BlogManagement() {
       }
     });
   };
+
+  const addFaq = () => {
+    setFormData((prev) => ({
+      ...prev,
+      faqs: [...(prev.faqs || []), { question: "", answer: "" }],
+    }));
+  };
+
+  const removeFaq = (index: number) => {
+    setFormData((prev) => ({
+      ...prev,
+      faqs: (prev.faqs || []).filter((_, i) => i !== index),
+    }));
+  };
+
+  const updateFaq = (index: number, field: keyof BlogFAQItem, value: string) => {
+    setFormData((prev) => {
+      const faqs = [...(prev.faqs || [])];
+      faqs[index] = { ...faqs[index], [field]: value };
+      return { ...prev, faqs };
+    });
+  };
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -181,6 +206,12 @@ export default function BlogManagement() {
       
       if (!res.ok) {
         const errorData = await res.json();
+        if (res.status === 404 && editingPost) {
+          setEditingPost(null);
+          setShowForm(false);
+          await fetchBlogPosts();
+          throw new Error("This blog post was deleted or no longer exists. Please refresh and try again.");
+        }
         throw new Error(errorData.error || "Failed to save blog post");
       }
       
@@ -219,6 +250,7 @@ export default function BlogManagement() {
         metaDescription: fullPost.metaDescription || "",
         categories: fullPost.categories || [],
         tags: fullPost.tags || [],
+        faqs: normalizeBlogFaqs(fullPost.faqs),
         featured: fullPost.featured ?? false,
       });
       setShowForm(true);
@@ -243,7 +275,11 @@ export default function BlogManagement() {
       if (!res.ok) {
         throw new Error("Failed to delete blog post");
       }
-      
+
+      if (editingPost?.id === id) {
+        resetForm();
+      }
+
       await fetchBlogPosts();
     } catch (err) {
       console.error("Error deleting blog post:", err);
@@ -264,6 +300,7 @@ export default function BlogManagement() {
       metaDescription: "",
       categories: [],
       tags: [],
+      faqs: [],
       featured: false,
     });
     setEditingPost(null);
@@ -469,6 +506,68 @@ export default function BlogManagement() {
                 />
                 <span className="text-xs text-gray-500">Max length 250 characters</span>
               </div>
+            </div>
+
+            {/* FAQ Section */}
+            <div className="mb-6 p-4 border border-gray-200 rounded-md bg-gray-50">
+              <div className="flex justify-between items-center mb-4">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800">FAQ&apos;s</h3>
+                  <p className="text-sm text-gray-500 mt-1">
+                    Add questions and answers — they will appear at the bottom of the live blog post.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={addFaq}
+                  className="px-3 py-2 bg-french-blue text-white text-sm rounded-md hover:bg-blue-900 transition-colors"
+                >
+                  + Add FAQ
+                </button>
+              </div>
+
+              {(formData.faqs || []).length === 0 ? (
+                <p className="text-sm text-gray-500 italic">No FAQs added yet.</p>
+              ) : (
+                <div className="space-y-6">
+                  {formData.faqs.map((faq, idx) => (
+                    <div key={`faq-${idx}-${editingPost?.id ?? "new"}`} className="bg-white p-4 rounded-md border border-gray-200">
+                      <div className="flex justify-between items-start gap-4 mb-3">
+                        <label className="block text-sm font-medium text-gray-700">
+                          Question {idx + 1}
+                        </label>
+                        <button
+                          type="button"
+                          onClick={() => removeFaq(idx)}
+                          className="text-red-500 hover:text-red-700 text-sm"
+                        >
+                          Remove
+                        </button>
+                      </div>
+                      <input
+                        type="text"
+                        value={faq.question}
+                        onChange={(e) => updateFaq(idx, "question", e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md mb-3"
+                        placeholder="Enter FAQ question"
+                      />
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Answer
+                      </label>
+                      <Editor
+                        key={`blog-faq-${idx}-${editingPost?.id ?? "new"}`}
+                        {...tinymceEditorProps}
+                        value={faq.answer}
+                        onEditorChange={(content) => updateFaq(idx, "answer", content)}
+                        init={{
+                          ...faqEditorInit,
+                          images_upload_handler: uploadEditorImage,
+                        }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
             
             {/* Categories & Tags Grid */}
@@ -683,3 +782,4 @@ export default function BlogManagement() {
     </div>
   );
 }
+

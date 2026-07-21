@@ -8,7 +8,10 @@ import { formatDate, openLinksInNewTab } from "@/lib/utils";
 import { generateBreadcrumbStructuredData } from "@/lib/structured-data";
 import { blogPosts as staticBlogPosts } from "@/lib/blog-data";
 import { prisma } from "@/lib/db/prisma";
-export const revalidate = 60;
+import BlogFAQ from "@/components/blog/BlogFAQ";
+import { BlogFAQItem, parseBlogFaqs } from "@/lib/blog-faq";
+export const dynamic = "force-dynamic";
+export const dynamicParams = true;
 
 interface BlogPost {
   id: string;
@@ -18,6 +21,9 @@ interface BlogPost {
   content: string;
   image: string | null;
   author: string;
+  tags?: string[];
+  categories?: string[];
+  faqs?: BlogFAQItem[];
   createdAt: string;
   updatedAt: string;
 }
@@ -46,30 +52,15 @@ function createBlogPostStructuredData(post: BlogPost) {
   };
 }
 
-// Fetch a single blog post by slug
-async function getBlogPost(slug: string): Promise<BlogPost | null> {
+function normalizeSlug(slug: string): string {
   try {
-    const post = await prisma.blogPost.findUnique({
-      where: { slug }
-    });
-
-    if (post) {
-      return {
-        ...post,
-        createdAt: post.createdAt.toISOString(),
-        updatedAt: post.updatedAt.toISOString(),
-      };
-    }
-  } catch (error) {
-    console.warn("DB fetch failed, falling back to static data:", error);
+    return decodeURIComponent(slug).trim();
+  } catch {
+    return slug.trim();
   }
+}
 
-  // Fallback to static data
-  const staticPost = staticBlogPosts.find((post) => post.slug === slug);
-  if (!staticPost) {
-    return null;
-  }
-
+function mapStaticPost(staticPost: (typeof staticBlogPosts)[number]): BlogPost {
   return {
     id: staticPost.id,
     title: staticPost.title,
@@ -78,9 +69,44 @@ async function getBlogPost(slug: string): Promise<BlogPost | null> {
     content: staticPost.content,
     image: staticPost.image,
     author: staticPost.author.name,
+    tags: staticPost.tags,
     createdAt: staticPost.date,
     updatedAt: staticPost.date,
   };
+}
+
+// Fetch a single blog post by slug
+async function getBlogPost(slug: string): Promise<BlogPost | null> {
+  const normalizedSlug = normalizeSlug(slug);
+
+  try {
+    const post = await prisma.blogPost.findUnique({
+      where: { slug: normalizedSlug },
+    });
+
+    if (post) {
+      return {
+        ...post,
+        faqs: parseBlogFaqs(post.faqs),
+        createdAt: post.createdAt.toISOString(),
+        updatedAt: post.updatedAt.toISOString(),
+      };
+    }
+  } catch (error) {
+    console.error("DB fetch failed for blog slug:", normalizedSlug, error);
+    const staticPost = staticBlogPosts.find((item) => item.slug === normalizedSlug);
+    if (staticPost) {
+      return mapStaticPost(staticPost);
+    }
+    throw error;
+  }
+
+  const staticPost = staticBlogPosts.find((item) => item.slug === normalizedSlug);
+  if (staticPost) {
+    return mapStaticPost(staticPost);
+  }
+
+  return null;
 }
 
 // Fetch related blog posts (simplified version)
@@ -374,6 +400,26 @@ export default async function BlogPostPage({
           <article className="prose prose-lg prose-slate max-w-none overflow-x-auto">
             <div dangerouslySetInnerHTML={{ __html: openLinksInNewTab(post.content) }} />
           </article>
+
+          {post.faqs && post.faqs.length > 0 && <BlogFAQ faqs={post.faqs} />}
+
+          {post.tags && post.tags.length > 0 && (
+            <div className="mt-10 pt-8 border-t border-gray-200">
+              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
+                Tags
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {post.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-light-blue text-french-blue border border-blue-100"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Related Posts */}
