@@ -143,6 +143,7 @@ export async function PUT(
         feesSection: data.feesSection || null,
         skillsToolsSection: data.skillsToolsSection || null,
         projectsSection: data.projectsSection || null,
+        preReviewsSection: data.preReviewsSection || null,
         reviewsSection: data.reviewsSection || null,
         faqSection: data.faqSection || null,
         comparisonSection: data.comparisonSection || null,

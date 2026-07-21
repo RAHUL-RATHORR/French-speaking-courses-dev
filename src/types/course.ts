@@ -99,6 +99,10 @@ export interface ReviewItem {
   image?: string;
 }
 
+export interface PreReviewsSection {
+  content: string;
+}
+
 export interface ReviewsSection {
   headline: string;
   reviews: ReviewItem[];
@@ -229,6 +233,7 @@ export interface CourseWithSections {
   feesSection?: FeesSection;
   skillsToolsSection?: SkillsToolsSection;
   projectsSection?: ProjectsSection;
+  preReviewsSection?: PreReviewsSection;
   reviewsSection?: ReviewsSection;
   faqSection?: FAQSection;
   comparisonSection?: ComparisonSection;

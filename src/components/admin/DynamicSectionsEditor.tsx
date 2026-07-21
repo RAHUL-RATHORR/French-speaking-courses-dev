@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ImageUpload from "../ui/ImageUpload";
+import PreReviewsRichTextEditor from "./PreReviewsRichTextEditor";
 
 interface DynamicSectionsEditorProps {
   course: Record<string, unknown>;
@@ -20,6 +21,7 @@ export default function DynamicSectionsEditor({ course, onUpdate }: DynamicSecti
     feesSection: course.feesSection || null,
     skillsToolsSection: course.skillsToolsSection || null,
     projectsSection: course.projectsSection || null,
+    preReviewsSection: course.preReviewsSection || null,
     reviewsSection: course.reviewsSection || null,
     faqSection: course.faqSection || null,
     comparisonSection: course.comparisonSection || null,
@@ -42,6 +44,7 @@ export default function DynamicSectionsEditor({ course, onUpdate }: DynamicSecti
     { id: "fees", label: "Fees", icon: "💰" },
     { id: "skills", label: "Skills & Tools", icon: "🛠️" },
     { id: "projects", label: "Projects", icon: "🚀" },
+    { id: "prereviews", label: "Before Reviews", icon: "📝" },
     { id: "reviews", label: "Reviews", icon: "⭐" },
     { id: "faq", label: "FAQ", icon: "❔" },
     { id: "comparison", label: "Comparison", icon: "📊" },
@@ -75,7 +78,11 @@ export default function DynamicSectionsEditor({ course, onUpdate }: DynamicSecti
       </div>
 
       {/* Tab Content */}
-      <div className="p-6 max-h-96 overflow-y-auto">
+      <div
+        className={`p-6 overflow-y-auto ${
+          activeTab === "prereviews" ? "max-h-none" : "max-h-96"
+        }`}
+      >
         {activeTab === "hero" && (
           <HeroBannerEditor
             section={sections.heroBannerSection as Record<string, unknown> | null}
@@ -129,6 +136,13 @@ export default function DynamicSectionsEditor({ course, onUpdate }: DynamicSecti
           <ProjectsEditor
             section={sections.projectsSection as Record<string, unknown> | null}
             onUpdate={(data: Record<string, unknown>) => updateSection("projectsSection", data)}
+          />
+        )}
+
+        {activeTab === "prereviews" && (
+          <PreReviewsEditor
+            section={sections.preReviewsSection as Record<string, unknown> | null}
+            onUpdate={(data: Record<string, unknown>) => updateSection("preReviewsSection", data)}
           />
         )}
         
@@ -1414,6 +1428,40 @@ function ProjectsEditor({
           Add Project
         </button>
       </div>
+    </div>
+  );
+}
+
+// Pre-Reviews Content Editor (above Student Reviews)
+function PreReviewsEditor({
+  section,
+  onUpdate,
+}: {
+  section: Record<string, unknown> | null;
+  onUpdate: (data: Record<string, unknown>) => void;
+}) {
+  const [content, setContent] = useState((section?.content as string) || "");
+
+  useEffect(() => {
+    setContent((section?.content as string) || "");
+  }, [section]);
+
+  const handleChange = (value: string) => {
+    setContent(value);
+    onUpdate({ content: value });
+  };
+
+  return (
+    <div className="space-y-4">
+      <h4 className="text-lg font-semibold text-gray-800">📝 Content Above Student Reviews</h4>
+      <p className="text-sm text-gray-600">
+        This block appears directly above the Student Reviews section on the course page.
+      </p>
+      <PreReviewsRichTextEditor
+        editorKey="pre-reviews-dynamic-tab"
+        value={content}
+        onChange={handleChange}
+      />
     </div>
   );
 }

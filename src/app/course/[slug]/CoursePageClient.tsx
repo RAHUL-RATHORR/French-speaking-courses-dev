@@ -12,6 +12,7 @@ import {
   DEFAULT_CURRICULUM_MODULES,
   Fees,
   SkillsTools,
+  PreReviewsContent,
   Reviews,
   FAQ,
   Comparison,
@@ -26,6 +27,7 @@ import {
   CourseFeature,
   CurriculumModule,
 } from "@/types/course";
+import { parsePreReviewsSection } from "@/lib/pre-reviews-section";
 import { downloadBrochure } from "@/lib/brochure-utils";
 import StickyNavigation from "@/components/courses/StickyNavigation";
 import CourseBuyBox from "@/components/courses/CourseBuyBox";
@@ -37,6 +39,7 @@ interface CoursePageClientProps {
 
 export default function CoursePageClient({ course }: CoursePageClientProps) {
   const [isRegistrationModalOpen, setIsRegistrationModalOpen] = useState(false);
+  const preReviewsSection = parsePreReviewsSection(course.preReviewsSection);
   const handleDownloadBrochure = async () => {
     const success = await downloadBrochure(course?.slug);
     if (!success) {
@@ -539,6 +542,11 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
           </section>
         )
       )}
+
+      {/* Content above Student Reviews */}
+      {preReviewsSection ? (
+        <PreReviewsContent section={preReviewsSection} />
+      ) : null}
 
       {/* Reviews Section */}
       {course.reviewsSection ? (

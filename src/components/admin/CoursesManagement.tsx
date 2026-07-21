@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { formatRupee } from "@/lib/utils";
 import DynamicSectionsEditor from "./DynamicSectionsEditor";
+import PreReviewsRichTextEditor from "./PreReviewsRichTextEditor";
 import ImageUpload from "../ui/ImageUpload";
 import FileUpload from "../ui/FileUpload";
 
@@ -164,6 +165,20 @@ export default function CoursesManagement() {
   const handleBrochureUpload = (fileUrl: string) => {
     setFormData((prev) => ({ ...prev, brochureUrl: fileUrl }));
   };
+
+  const getPreReviewsContent = () => {
+    const section = dynamicSections.preReviewsSection;
+    if (!section || typeof section !== "object") return "";
+    const content = (section as { content?: unknown }).content;
+    return typeof content === "string" ? content : "";
+  };
+
+  const handlePreReviewsContentChange = (value: string) => {
+    setDynamicSections((prev) => ({
+      ...prev,
+      preReviewsSection: value.trim() ? { content: value } : null,
+    }));
+  };
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -286,6 +301,7 @@ export default function CoursesManagement() {
         feesSection: course.feesSection || null,
         skillsToolsSection: course.skillsToolsSection || null,
         projectsSection: course.projectsSection || null,
+        preReviewsSection: course.preReviewsSection || null,
         reviewsSection: course.reviewsSection || null,
         faqSection: course.faqSection || null,
         comparisonSection: course.comparisonSection || null,
@@ -552,6 +568,20 @@ export default function CoursesManagement() {
                 required
               ></textarea>
             </div>
+
+            <div className="mb-6 rounded-lg border-2 border-indigo-200 bg-indigo-50/50 p-4">
+              <label className="block text-sm font-semibold text-indigo-900 mb-1">
+                Content Above Student Reviews
+              </label>
+              <p className="text-xs text-indigo-700 mb-3">
+                Yeh content course page par Student Reviews se pehle dikhega. Full rich text editor — formatting, images, tables sab use kar sakte ho.
+              </p>
+              <PreReviewsRichTextEditor
+                editorKey={editingCourse?.id ?? "new-course-pre-reviews"}
+                value={getPreReviewsContent()}
+                onChange={handlePreReviewsContentChange}
+              />
+            </div>
             
             <h3 className="font-medium text-lg mb-4 mt-6 border-b pb-2">Dynamic Course Information</h3>
             
@@ -705,6 +735,18 @@ export default function CoursesManagement() {
                 <p className="text-xs text-gray-500 mt-1">Enter as JSON object with timing details</p>
               </div> */}
             </div>
+
+            <div className="mb-6">
+              <DynamicSectionsEditor
+                key={editingCourse?.id ?? "new-course"}
+                course={
+                  editingCourse
+                    ? ({ ...editingCourse, ...dynamicSections } as Record<string, unknown>)
+                    : (dynamicSections as Record<string, unknown>)
+                }
+                onUpdate={(sections) => setDynamicSections(sections)}
+              />
+            </div>
             
             <div className="flex justify-end space-x-2">
               <button
@@ -722,16 +764,6 @@ export default function CoursesManagement() {
               </button>
             </div>
           </form>
-        </div>
-      )}
-
-      {/* Dynamic Sections Editor - Only show when editing or adding a course */}
-      {showForm && (
-        <div className="mb-6">
-          <DynamicSectionsEditor 
-            course={editingCourse ? {...editingCourse} as Record<string, unknown> : {}}
-            onUpdate={(sections) => setDynamicSections(sections)}
-          />
         </div>
       )}
       

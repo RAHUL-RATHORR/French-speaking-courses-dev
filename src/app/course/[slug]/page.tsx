@@ -5,7 +5,8 @@ import { CourseWithSections } from "@/types/course";
 import CoursePageClient from "./CoursePageClient";
 import { generateCourseStructuredData, generateBreadcrumbStructuredData } from "@/lib/structured-data";
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 interface CourseParams {
   params: Promise<{

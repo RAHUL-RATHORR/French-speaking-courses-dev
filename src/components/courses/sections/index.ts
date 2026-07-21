@@ -6,6 +6,7 @@ export { default as Curriculum, DEFAULT_CURRICULUM_MODULES } from './Curriculum'
 export { default as Fees } from './Fees';
 export { default as SkillsTools } from './SkillsTools';
 export { default as Projects } from './Projects';
+export { default as PreReviewsContent } from './PreReviewsContent';
 export { default as Reviews } from './Reviews';
 export { default as FAQ } from './FAQ';
 export { default as Comparison } from './Comparison';
