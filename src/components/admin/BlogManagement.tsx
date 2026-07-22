@@ -58,6 +58,8 @@ export default function BlogManagement() {
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
   const [fetchingPostId, setFetchingPostId] = useState<string | null>(null);
   const [showPreview, setShowPreview] = useState(false);
+  const [availableCategories, setAvailableCategories] = useState(AVAILABLE_CATEGORIES);
+  const [availableTags, setAvailableTags] = useState(AVAILABLE_TAGS);
   const editorRef = useRef<{ getContent: () => string } | null>(null);
   const [formData, setFormData] = useState({
     title: "",
@@ -164,6 +166,31 @@ export default function BlogManagement() {
     });
   };
 
+  const mergeUnique = (base: string[], additions: string[]) =>
+    [...new Set([...base, ...additions.filter(Boolean)])];
+
+  const addNewCategory = () => {
+    const name = window.prompt("Enter new category name:");
+    if (!name?.trim()) return;
+    const trimmed = name.trim();
+    setAvailableCategories((prev) => mergeUnique(prev, [trimmed]));
+    setFormData((prev) => ({
+      ...prev,
+      categories: mergeUnique(prev.categories || [], [trimmed]),
+    }));
+  };
+
+  const addNewTag = () => {
+    const name = window.prompt("Enter new tag:");
+    if (!name?.trim()) return;
+    const trimmed = name.trim();
+    setAvailableTags((prev) => mergeUnique(prev, [trimmed]));
+    setFormData((prev) => ({
+      ...prev,
+      tags: mergeUnique(prev.tags || [], [trimmed]),
+    }));
+  };
+
   const addFaq = () => {
     setFormData((prev) => ({
       ...prev,
@@ -236,6 +263,11 @@ export default function BlogManagement() {
       }
 
       const fullPost = await res.json();
+
+      setAvailableCategories((prev) =>
+        mergeUnique(prev, fullPost.categories || [])
+      );
+      setAvailableTags((prev) => mergeUnique(prev, fullPost.tags || []));
 
       setEditingPost(fullPost);
       setFormData({
@@ -578,7 +610,7 @@ export default function BlogManagement() {
                   <h3 className="text-sm font-semibold text-gray-800">Categories *</h3>
                 </div>
                 <div className="p-4 space-y-2">
-                  {AVAILABLE_CATEGORIES.map(category => (
+                  {availableCategories.map(category => (
                     <div key={category} className="flex items-center">
                       <input
                         type="checkbox"
@@ -593,7 +625,11 @@ export default function BlogManagement() {
                     </div>
                   ))}
                   <div className="pt-2">
-                    <button type="button" className="text-sm text-blue-600 hover:text-blue-800 font-medium">
+                    <button
+                      type="button"
+                      onClick={addNewCategory}
+                      className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                    >
                       + Add New Category
                     </button>
                   </div>
@@ -606,7 +642,7 @@ export default function BlogManagement() {
                   <h3 className="text-sm font-semibold text-gray-800">Tags</h3>
                 </div>
                 <div className="p-4 space-y-2">
-                  {AVAILABLE_TAGS.map(tag => (
+                  {availableTags.map(tag => (
                     <div key={tag} className="flex items-center">
                       <input
                         type="checkbox"
@@ -620,6 +656,15 @@ export default function BlogManagement() {
                       </label>
                     </div>
                   ))}
+                  <div className="pt-2">
+                    <button
+                      type="button"
+                      onClick={addNewTag}
+                      className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                    >
+                      + Add New Tag
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
