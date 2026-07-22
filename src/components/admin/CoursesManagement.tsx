@@ -29,6 +29,7 @@ interface Course {
   promotionBannerText?: string | null;
   startDate?: string | null;
   metaTitle?: string | null;
+  metaKeywords?: string | null;
   metaDescription?: string | null;
   ctaText?: string | null;
   registrationOpen: boolean;
@@ -64,6 +65,7 @@ export default function CoursesManagement() {
     promotionBannerText: "",
     startDate: "",
     metaTitle: "",
+    metaKeywords: "",
     metaDescription: "",
     ctaText: "",
     registrationOpen: true,
@@ -283,6 +285,7 @@ export default function CoursesManagement() {
         promotionBannerText: course.promotionBannerText || "",
         startDate: course.startDate || "",
         metaTitle: course.metaTitle || "",
+        metaKeywords: course.metaKeywords || "",
         metaDescription: course.metaDescription || "",
         ctaText: course.ctaText || "",
         registrationOpen: course.registrationOpen !== false,
@@ -358,6 +361,7 @@ export default function CoursesManagement() {
       promotionBannerText: "",
       startDate: "",
       metaTitle: "",
+      metaKeywords: "",
       metaDescription: "",
       ctaText: "",
       registrationOpen: true,
@@ -655,12 +659,13 @@ export default function CoursesManagement() {
               </div>
             </div>
             
-            <h3 className="font-medium text-lg mb-4 mt-6 border-b pb-2">SEO Information</h3>
-            
-            <div className="grid grid-cols-1 gap-4 mb-6">
-              <div>
+            <div className="mb-6 p-4 border border-gray-200 rounded-md bg-gray-50">
+              <h3 className="text-lg font-semibold mb-4 text-gray-800">SEO - Meta Tags</h3>
+              <p className="text-sm text-gray-500 mb-4">Define page meta title, meta keywords and meta description to list your page in search engines</p>
+              
+              <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Meta Title
+                  Meta Title *
                 </label>
                 <input
                   type="text"
@@ -668,11 +673,27 @@ export default function CoursesManagement() {
                   value={formData.metaTitle}
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                  placeholder="SEO title for the course page"
+                  maxLength={70}
                 />
+                <span className="text-xs text-gray-500">Max length 70 characters</span>
               </div>
               
-              <div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Meta Keyword
+                </label>
+                <textarea
+                  name="metaKeywords"
+                  value={formData.metaKeywords}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md"
+                  rows={2}
+                  maxLength={160}
+                />
+                <span className="text-xs text-gray-500">Max length 160 characters</span>
+              </div>
+              
+              <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Meta Description
                 </label>
@@ -682,8 +703,9 @@ export default function CoursesManagement() {
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md"
                   rows={3}
-                  placeholder="SEO description for the course page"
-                ></textarea>
+                  maxLength={250}
+                />
+                <span className="text-xs text-gray-500">Max length 250 characters</span>
               </div>
             </div>
             

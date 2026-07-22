@@ -49,22 +49,23 @@ export async function generateMetadata({ params }: CourseParams): Promise<Metada
   const baseTitle = course.title || "French Language Course";
   const title = course.metaTitle || `${baseTitle} - French Speaking Courses`;
   const description = course.metaDescription || course.description || `Learn French with our comprehensive ${baseTitle} program. Expert instructors, interactive lessons, and flexible scheduling.`;
+  const keywords = course.metaKeywords || [
+    "French language course",
+    "Learn French online",
+    "French classes",
+    "French conversation",
+    "French grammar",
+    "French pronunciation",
+    course.title?.toLowerCase(),
+    "online French course",
+    "French certification"
+  ].filter(Boolean).join(", ");
   const price = course.price || "₹299";
 
   return {
     title: title,
     description: description.substring(0, 160), // SEO best practice for description length
-    keywords: [
-      "French language course",
-      "Learn French online",
-      "French classes",
-      "French conversation",
-      "French grammar",
-      "French pronunciation",
-      course.title?.toLowerCase(),
-      "online French course",
-      "French certification"
-    ].filter(Boolean).join(", "),
+    keywords,
     authors: [{ name: "French Speaking Courses" }],
     creator: "French Speaking Courses",
     publisher: "French Speaking Courses",

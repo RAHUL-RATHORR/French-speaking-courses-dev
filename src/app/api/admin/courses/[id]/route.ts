@@ -130,6 +130,7 @@ export async function PUT(
         batches: data.batches || null,
         requirements: data.requirements || null,
         metaTitle: data.metaTitle || null,
+        metaKeywords: data.metaKeywords || null,
         metaDescription: data.metaDescription || null,
         ctaText: data.ctaText || null,
         timings: data.timings || null,

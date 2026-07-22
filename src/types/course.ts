@@ -195,6 +195,7 @@ export interface CourseWithSections {
   promotionBannerText?: string | null;
   startDate?: string | null;
   metaTitle?: string | null;
+  metaKeywords?: string | null;
   metaDescription?: string | null;
   ctaText?: string | null;
   registrationOpen: boolean;
@@ -315,6 +316,7 @@ export interface Course {
   startDate?: string | null;
   batches?: BatchInfo[] | null;
   metaTitle?: string | null;
+  metaKeywords?: string | null;
   metaDescription?: string | null;
   ctaText?: string | null;
   registrationOpen: boolean;
