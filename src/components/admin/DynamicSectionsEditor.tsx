@@ -62,7 +62,7 @@ export default function DynamicSectionsEditor({ course, onUpdate }: DynamicSecti
       {/* Tab Navigation */}
       <div className="flex overflow-x-auto border-b border-gray-200 bg-gray-50">
         {tabs.map((tab) => (
-          <button
+          <button type="button"
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
             className={`flex items-center space-x-2 px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors ${
@@ -361,7 +361,7 @@ function OverviewEditor({
               className="flex-1 p-2 border border-gray-300 rounded-md"
               placeholder="Key benefit or feature"
             />
-            <button
+            <button type="button"
               onClick={() => removeBullet(index)}
               className="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
             >
@@ -369,7 +369,7 @@ function OverviewEditor({
             </button>
           </div>
         ))}
-        <button
+        <button type="button"
           onClick={addBullet}
           className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
         >
@@ -454,7 +454,7 @@ function BenefitsEditor({
           <div key={index} className="border border-gray-200 rounded-md p-4 mb-4">
             <div className="flex justify-between items-center mb-2">
               <h5 className="font-medium">Feature {index + 1}</h5>
-              <button
+              <button type="button"
                 onClick={() => removeFeature(index)}
                 className="px-2 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
               >
@@ -499,7 +499,7 @@ function BenefitsEditor({
           </div>
         ))}
         
-        <button
+        <button type="button"
           onClick={addFeature}
           className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
         >
@@ -659,7 +659,7 @@ function CurriculumEditor({
           <div key={moduleIndex} className="border border-gray-200 rounded-md p-4 mb-4">
             <div className="flex justify-between items-center mb-4">
               <h5 className="font-medium">Module {moduleIndex + 1}</h5>
-              <button
+              <button type="button"
                 onClick={() => removeModule(moduleIndex)}
                 className="px-2 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
               >
@@ -713,7 +713,7 @@ function CurriculumEditor({
                     className="flex-1 p-2 border border-gray-300 rounded-md"
                     placeholder="Lesson topic or title"
                   />
-                  <button
+                  <button type="button"
                     onClick={() => removeLesson(moduleIndex, lessonIndex)}
                     className="px-3 py-2 bg-red-500 text-white rounded-md hover:bg-red-600"
                   >
@@ -721,7 +721,7 @@ function CurriculumEditor({
                   </button>
                 </div>
               ))}
-              <button
+              <button type="button"
                 onClick={() => addLesson(moduleIndex)}
                 className="px-3 py-1 bg-green-500 text-white rounded-md hover:bg-green-600 text-sm"
               >
@@ -731,7 +731,7 @@ function CurriculumEditor({
           </div>
         ))}
         
-        <button
+        <button type="button"
           onClick={addModule}
           className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
         >
@@ -816,7 +816,7 @@ function WhyEnrollEditor({
           <div key={index} className="border border-gray-200 rounded-md p-4 mb-4">
             <div className="flex justify-between items-center mb-2">
               <h5 className="font-medium">Benefit {index + 1}</h5>
-              <button
+              <button type="button"
                 onClick={() => removeBenefit(index)}
                 className="px-2 py-1 bg-red-500 text-white rounded text-sm hover:bg-red-600"
               >
@@ -861,7 +861,7 @@ function WhyEnrollEditor({
           </div>
         ))}
         
-        <button
+        <button type="button"
           onClick={addBenefit}
           className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
         >
@@ -1021,7 +1021,7 @@ function FeesEditor({
                 className="flex-1 p-2 border border-gray-300 rounded-md"
                 placeholder="Payment option"
               />
-              <button
+              <button type="button"
                 onClick={() => removePaymentOption(index)}
                 className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
               >
@@ -1029,7 +1029,7 @@ function FeesEditor({
               </button>
             </div>
           ))}
-          <button
+          <button type="button"
             onClick={addPaymentOption}
             className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
           >
@@ -1048,7 +1048,7 @@ function FeesEditor({
                 className="flex-1 p-2 border border-gray-300 rounded-md"
                 placeholder="Discount option"
               />
-              <button
+              <button type="button"
                 onClick={() => removeDiscount(index)}
                 className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
               >
@@ -1056,7 +1056,7 @@ function FeesEditor({
               </button>
             </div>
           ))}
-          <button
+          <button type="button"
             onClick={addDiscount}
             className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
           >
@@ -1221,7 +1221,7 @@ function SkillsToolsEditor({
                   className="flex-1 p-2 border border-gray-300 rounded-md"
                   placeholder="Enter skill"
                 />
-                <button
+                <button type="button"
                   onClick={() => removeSkill(index)}
                   className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
                 >
@@ -1229,7 +1229,7 @@ function SkillsToolsEditor({
                 </button>
               </div>
             ))}
-            <button
+            <button type="button"
               onClick={addSkill}
               className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
             >
@@ -1277,7 +1277,7 @@ function SkillsToolsEditor({
                   className="flex-1 p-2 border border-gray-300 rounded-md"
                   placeholder="Enter tool"
                 />
-                <button
+                <button type="button"
                   onClick={() => removeTool(index)}
                   className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
                 >
@@ -1285,7 +1285,7 @@ function SkillsToolsEditor({
                 </button>
               </div>
             ))}
-            <button
+            <button type="button"
               onClick={addTool}
               className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
             >
@@ -1375,7 +1375,7 @@ function ProjectsEditor({
             <div key={index} className="border border-gray-200 p-4 rounded-md">
               <div className="flex justify-between items-center mb-4">
                 <h5 className="font-medium">Project {index + 1}</h5>
-                <button
+                <button type="button"
                   onClick={() => removeProject(index)}
                   className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
                 >
@@ -1421,7 +1421,7 @@ function ProjectsEditor({
           ))}
         </div>
         
-        <button
+        <button type="button"
           onClick={addProject}
           className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
         >
@@ -1529,7 +1529,7 @@ function ReviewsEditor({
             <div key={index} className="border border-gray-200 p-4 rounded-md">
               <div className="flex justify-between items-center mb-4">
                 <h5 className="font-medium">Review {index + 1}</h5>
-                <button
+                <button type="button"
                   onClick={() => removeReview(index)}
                   className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
                 >
@@ -1590,7 +1590,7 @@ function ReviewsEditor({
           ))}
         </div>
         
-        <button
+        <button type="button"
           onClick={addReview}
           className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
         >
@@ -1664,7 +1664,7 @@ function FAQEditor({
             <div key={index} className="border border-gray-200 p-4 rounded-md">
               <div className="flex justify-between items-center mb-4">
                 <h5 className="font-medium">FAQ {index + 1}</h5>
-                <button
+                <button type="button"
                   onClick={() => removeFAQ(index)}
                   className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
                 >
@@ -1699,7 +1699,7 @@ function FAQEditor({
           ))}
         </div>
         
-        <button
+        <button type="button"
           onClick={addFAQ}
           className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
         >
@@ -1773,7 +1773,7 @@ function ComparisonEditor({
             <div key={index} className="border border-gray-200 p-4 rounded-md">
               <div className="flex justify-between items-center mb-4">
                 <h5 className="font-medium">Row {index + 1}</h5>
-                <button
+                <button type="button"
                   onClick={() => removeRow(index)}
                   className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
                 >
@@ -1819,7 +1819,7 @@ function ComparisonEditor({
           ))}
         </div>
         
-        <button
+        <button type="button"
           onClick={addRow}
           className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
         >
@@ -1893,7 +1893,7 @@ function BatchScheduleEditor({
             <div key={index} className="border border-gray-200 p-4 rounded-md">
               <div className="flex justify-between items-center mb-4">
                 <h5 className="font-medium">Batch {index + 1}</h5>
-                <button
+                <button type="button"
                   onClick={() => removeBatch(index)}
                   className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
                 >
@@ -1950,7 +1950,7 @@ function BatchScheduleEditor({
           ))}
         </div>
         
-        <button
+        <button type="button"
           onClick={addBatch}
           className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
         >
@@ -2006,7 +2006,7 @@ function CTASectionsEditor({
             <div key={index} className="border border-gray-200 p-4 rounded-md">
               <div className="flex justify-between items-center mb-4">
                 <h5 className="font-medium">CTA {index + 1}</h5>
-                <button
+                <button type="button"
                   onClick={() => removeCTA(index)}
                   className="px-3 py-1 bg-red-500 text-white rounded-md hover:bg-red-600"
                 >
@@ -2068,7 +2068,7 @@ function CTASectionsEditor({
           ))}
         </div>
         
-        <button
+        <button type="button"
           onClick={addCTA}
           className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
         >
