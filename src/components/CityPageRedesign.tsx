@@ -53,6 +53,11 @@ interface CityPageRedesignProps {
   displayFaqs: FAQ[];
 }
 
+const cityPageLinkClass =
+  "[&_a]:!text-[#E4222A] [&_a]:font-semibold [&_a]:underline hover:[&_a]:!text-red-700 [&_a]:transition-colors";
+const cityPageLinkClassOnDark =
+  "[&_a]:!text-red-300 [&_a]:font-semibold [&_a]:underline hover:[&_a]:!text-white [&_a]:transition-colors";
+
 export default function CityPageRedesign({
   cityPage,
   courses,
@@ -373,7 +378,7 @@ export default function CityPageRedesign({
               whileInView={{ opacity: 1, x: 0 }}
             >
               <span
-                className="bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-6 inline-block"
+                className={`bg-red-50 text-red-600 px-4 py-1.5 rounded-full text-xs font-black uppercase tracking-widest mb-6 inline-block ${cityPageLinkClass}`}
                 dangerouslySetInnerHTML={{
                   __html: openLinksInNewTab(
                     cityPage.middleContent?.includes('|||')
@@ -385,7 +390,7 @@ export default function CityPageRedesign({
               <div className="mb-8">
                 {cityPage.middleContent?.includes('|||')
                   ? <div
-                    className="text-4xl md:text-5xl font-black text-[#1A3260] leading-[1.1] tracking-tighter"
+                    className={`text-4xl md:text-5xl font-black text-[#1A3260] leading-[1.1] tracking-tighter ${cityPageLinkClass}`}
                     dangerouslySetInnerHTML={{
                       __html: openLinksInNewTab(
                         cityPage.middleContent.split('|||')[1].replace(/French/gi, (match) => `<span class="text-red-600">${match}</span>`)
@@ -394,7 +399,7 @@ export default function CityPageRedesign({
                   />
                   : <h2 className="text-4xl md:text-5xl font-black text-[#1A3260] leading-[1.1] tracking-tighter">Unlock Fluency in <span className="text-red-600">French</span> Classes in {cityPage.cityName}</h2>}
               </div>
-              <div className="space-y-6 text-gray-600 font-medium leading-relaxed text-lg whitespace-pre-line">
+              <div className={`space-y-6 text-gray-600 font-medium leading-relaxed text-lg whitespace-pre-line ${cityPageLinkClass}`}>
                 {cityPage.middleContent ? (
                   <div dangerouslySetInnerHTML={{
                     __html: openLinksInNewTab(
@@ -515,7 +520,7 @@ export default function CityPageRedesign({
               <div className="mb-8">
                 {cityPage.afterCourseContent?.includes('|||')
                   ? <div
-                    className="text-4xl font-black text-[#1A3260] tracking-tighter leading-[1.1]"
+                    className={`text-4xl font-black text-[#1A3260] tracking-tighter leading-[1.1] ${cityPageLinkClass}`}
                     dangerouslySetInnerHTML={{
                       __html: openLinksInNewTab(
                         cityPage.afterCourseContent.split('|||')[0].replace(/classes/gi, (match) => `<span class="text-red-600">${match}</span>`)
@@ -524,7 +529,7 @@ export default function CityPageRedesign({
                   />
                   : <h2 className="text-4xl font-black text-[#1A3260] tracking-tighter leading-[1.1]">Self-Paced & Structured <span className="text-red-600">Classes</span> in {cityPage.cityName}</h2>}
               </div>
-              <div className="space-y-6 text-gray-600 font-medium leading-relaxed text-lg whitespace-pre-line">
+              <div className={`space-y-6 text-gray-600 font-medium leading-relaxed text-lg whitespace-pre-line ${cityPageLinkClass}`}>
                 {cityPage.afterCourseContent ? (
                   <div dangerouslySetInnerHTML={{
                     __html: openLinksInNewTab(
@@ -636,7 +641,7 @@ export default function CityPageRedesign({
 
               <div className="relative z-10">
                 <div
-                  className="text-white text-lg md:text-2xl font-medium leading-relaxed max-w-4xl mx-auto mb-10 italic whitespace-pre-line"
+                  className={`text-white text-lg md:text-2xl font-medium leading-relaxed max-w-4xl mx-auto mb-10 italic whitespace-pre-line ${cityPageLinkClassOnDark}`}
                   dangerouslySetInnerHTML={{ __html: openLinksInNewTab(cityPage.afterCourseContent.split('|||')[2]) }}
                 />
 
@@ -728,7 +733,7 @@ export default function CityPageRedesign({
                       transition={{ duration: 0.3 }}
                     >
                       <div
-                        className="px-8 pb-8 text-gray-600 font-medium leading-relaxed prose prose-sm max-w-none [&_a]:text-red-600 [&_a]:font-semibold [&_a]:underline hover:[&_a]:text-red-700 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
+                        className={`px-8 pb-8 text-gray-600 font-medium leading-relaxed prose prose-sm max-w-none ${cityPageLinkClass} [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5`}
                         dangerouslySetInnerHTML={{ __html: openLinksInNewTab(faq.answer) }}
                       />
                     </motion.div>
