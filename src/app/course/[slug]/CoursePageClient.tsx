@@ -298,7 +298,7 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
         </div>
       ) : Array.isArray(course.features) && course.features.length > 0 ? (
         // Legacy features section
-        <section id="benefits" className="py-16 bg-slate-50">
+        <section id="benefits" className="pt-16 pb-8 bg-slate-50">
           <div className="container mx-auto px-4">
             <h2 className="text-4xl font-bold text-center mb-12 text-slate-800">
               Key Features
@@ -330,7 +330,7 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
         </section>
       ) : (
         // Fallback Benefits Section
-        <section id="benefits" className="py-16 bg-slate-50">
+        <section id="benefits" className="pt-16 pb-8 bg-slate-50">
           <div className="container mx-auto px-4">
             <h2 className="text-4xl font-bold text-center mb-12 text-slate-800">
               Course Benefits
