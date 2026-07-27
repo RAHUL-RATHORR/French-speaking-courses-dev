@@ -298,12 +298,12 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
         </div>
       ) : Array.isArray(course.features) && course.features.length > 0 ? (
         // Legacy features section
-        <section id="benefits" className="pt-16 pb-8 bg-slate-50">
+        <section id="benefits" className="pt-16 pb-6 bg-slate-50">
           <div className="container mx-auto px-4">
             <h2 className="text-4xl font-bold text-center mb-12 text-slate-800">
               Key Features
             </h2>
-            <div className="max-w-5xl mx-auto mb-8">
+            <div className="max-w-5xl mx-auto">
               <p className="text-center text-lg mb-12 text-slate-600">
                 Learn French language skills from our &ldquo;{course.title}
                 &rdquo; program which features key methods with interactive
@@ -330,12 +330,12 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
         </section>
       ) : (
         // Fallback Benefits Section
-        <section id="benefits" className="pt-16 pb-8 bg-slate-50">
+        <section id="benefits" className="pt-16 pb-6 bg-slate-50">
           <div className="container mx-auto px-4">
             <h2 className="text-4xl font-bold text-center mb-12 text-slate-800">
               Course Benefits
             </h2>
-            <div className="max-w-5xl mx-auto mb-8">
+            <div className="max-w-5xl mx-auto">
               <p className="text-center text-lg mb-12 text-slate-600">
                 Discover the amazing benefits of learning French with our
                 comprehensive &ldquo;{course.title}&rdquo; program designed to
@@ -465,7 +465,7 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
         // Fallback to legacy tools section
         Array.isArray(course.tools) &&
         course.tools.length > 0 && (
-          <section id="skills" className="py-16 bg-white">
+          <section id="skills" className="pt-10 pb-6 bg-white">
             <div className="container mx-auto px-4">
               <h2 className="text-4xl font-bold text-center mb-12 text-slate-800">
                 Skills Covered

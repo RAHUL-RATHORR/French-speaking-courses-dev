@@ -37,7 +37,7 @@ export default function Fees({ section }: FeesProps) {
   }
 
   return (
-    <section id="fees" className="py-12 bg-white">
+    <section id="fees" className="pt-8 pb-6 bg-white">
       <div className="max-w-3xl mx-auto">
         <h2 className="text-3xl font-bold text-center mb-8 text-slate-800">
           {section.headline || "Payment & Offers"}

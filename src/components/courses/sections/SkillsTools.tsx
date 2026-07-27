@@ -8,10 +8,10 @@ interface SkillsToolsProps {
 
 export default function SkillsTools({ section }: SkillsToolsProps) {
   return (
-    <section id="skills" className="py-16 bg-slate-50">
+    <section id="skills" className="pt-10 pb-6 bg-slate-50">
       <div className="container mx-auto px-4">
         {/* Skills Section */}
-        <div className="max-w-6xl mx-auto mb-20">
+        <div className="max-w-6xl mx-auto mb-10">
           <h2 className="text-4xl font-bold text-center mb-6 text-slate-800">
             {section.skillsHeadline}
           </h2>

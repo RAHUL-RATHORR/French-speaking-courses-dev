@@ -235,6 +235,21 @@ body {
   text-decoration: underline;
 }
 
+/* Course rich-text blocks (pre-reviews content on all course pages) */
+.course-rich-text h1,
+.course-rich-text h2,
+.course-rich-text h3,
+.course-rich-text h4,
+.course-rich-text p,
+.course-rich-text .MsoNormal {
+  margin-top: 0;
+}
+
+.course-rich-text h2 + p,
+.course-rich-text h3 + p {
+  margin-top: 0.75rem;
+}
+
 /* Marquee Animation */
 @keyframes marquee {
   0% {
