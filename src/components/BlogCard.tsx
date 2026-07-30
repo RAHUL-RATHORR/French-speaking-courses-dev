@@ -42,7 +42,7 @@ export default function BlogCard({
   return (
     <Card variant="hover">
       <Link href={`/blog/${slug}`} variant="default" className="block">
-        <div className="relative h-48 md:h-56 w-full overflow-hidden">
+        <div className="relative aspect-[2/1] w-full overflow-hidden">
           <Image
             src={image}
             alt={title}

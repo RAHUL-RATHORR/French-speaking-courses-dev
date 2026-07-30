@@ -331,7 +331,7 @@ export default async function BlogPostPage({
         <div className="max-w-4xl mx-auto px-4 py-8">
           {/* Featured Image */}
           {post.image && (
-            <div className="relative w-full h-75 md:h-100 mb-8 rounded-xl overflow-hidden">
+            <div className="relative w-full aspect-[2/1] mb-8 rounded-xl overflow-hidden">
               <Image
                 src={post.image}
                 alt={post.title}
@@ -435,7 +435,7 @@ export default async function BlogPostPage({
                   className="bg-white rounded-lg overflow-hidden shadow-md transition-shadow hover:shadow-lg"
                 >
                   <Link href={`/blog/${relatedPost.slug}`} className="block">
-                    <div className="relative h-48 w-full">
+                    <div className="relative aspect-[2/1] w-full">
                       <Image
                         src={relatedPost?.image || "/french-skill.png"}
                         alt={relatedPost.title}
