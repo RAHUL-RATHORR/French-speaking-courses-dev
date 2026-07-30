@@ -1,3 +1,5 @@
+import cleanWordHTML from "tinymce-word-paste-filter";
+
 export const TINYMCE_SCRIPT_SRC = "/tinymce/tinymce.min.js";
 export const TINYMCE_LICENSE_KEY = "gpl";
 
@@ -31,6 +33,85 @@ const contentStyle = [
   "th, td { border: 1px solid #d1d5db; padding: 8px 12px; text-align: left; vertical-align: top; }",
   "th { background-color: #f9fafb; font-weight: 600; }",
 ].join(" ");
+
+/** Cleans MS Word / Google Docs HTML on paste (tables, lists, formatting) */
+function convertTabSeparatedTextToTable(content: string): string {
+  if (
+    /<table[\s>]/i.test(content) ||
+    !/(?:\t|&nbsp;\s*&nbsp;|\u00a0\s*\u00a0)/i.test(content)
+  ) {
+    return content;
+  }
+
+  const lineBreak = "__TINYMCE_TABLE_LINE_BREAK__";
+  const lines = content
+    .replace(/<br\s*\/?>/gi, lineBreak)
+    .replace(/(<\/(?:p|div|h[1-6])>)/gi, `$1${lineBreak}`)
+    .split(lineBreak);
+  const output: string[] = [];
+  let tableRows: string[][] = [];
+  const textSeparator = /\t+|\u00a0(?:\s|\u00a0)+/;
+  const htmlSeparator = /\t+|(?:&nbsp;|\u00a0)(?:\s|&nbsp;|\u00a0)+/i;
+
+  const flushTable = () => {
+    if (tableRows.length < 2) {
+      output.push(...tableRows.map((row) => `<p>${row.join(" ")}</p>`));
+    } else {
+      const [header, ...body] = tableRows;
+      output.push(
+        `<table><thead><tr>${header.map((cell) => `<th>${cell}</th>`).join("")}</tr></thead>` +
+        `<tbody>${body.map((row) => `<tr>${row.map((cell) => `<td>${cell}</td>`).join("")}</tr>`).join("")}</tbody></table>`
+      );
+    }
+    tableRows = [];
+  };
+
+  lines.forEach((lineHtml) => {
+    const fragment = document.createElement("div");
+    fragment.innerHTML = lineHtml;
+    const lineText = fragment.textContent || "";
+
+    if (textSeparator.test(lineText)) {
+      const onlyElement = fragment.childElementCount === 1 && fragment.firstElementChild;
+      const rowHtml = onlyElement ? onlyElement.innerHTML : fragment.innerHTML;
+      tableRows.push(
+        rowHtml
+          .split(htmlSeparator)
+          .map((cell) => cell.trim())
+          .filter(Boolean)
+      );
+      return;
+    }
+
+    flushTable();
+    if (lineText.trim()) {
+      output.push(fragment.innerHTML);
+    }
+  });
+  flushTable();
+
+  return output.join("");
+}
+
+export function pastePreProcess(
+  _editor: unknown,
+  args: { content: string }
+): void {
+  args.content = convertTabSeparatedTextToTable(cleanWordHTML(args.content));
+}
+
+/** Preserve table structure and inline styles when pasting from Word */
+export const pasteFromWordOptions = {
+  paste_webkit_styles: "all" as const,
+  paste_remove_styles_if_webkit: false,
+  paste_convert_word_fake_lists: true,
+  paste_enable_default_filters: true,
+  paste_preprocess: pastePreProcess,
+  extended_valid_elements:
+    "table[style|border|cellpadding|cellspacing|width|class]," +
+    "tr[style|class],td[style|colspan|rowspan|width|height|class]," +
+    "th[style|colspan|rowspan|width|height|class],thead,tfoot,tbody,caption,col,colgroup",
+};
 
 /** Full multi-row toolbar — similar to CKEditor Full on Fluent AUF */
 export const blogEditorPlugins = [
@@ -72,6 +153,7 @@ export const blogEditorToolbar = [
 export const blogEditorInit = {
   ...tinymceSelfHostedInit,
   ...linkTargetOptions,
+  ...pasteFromWordOptions,
   height: 550,
   min_height: 400,
   resize: true,
@@ -118,6 +200,7 @@ export async function uploadEditorImage(
 export const faqEditorInit = {
   ...tinymceSelfHostedInit,
   ...linkTargetOptions,
+  ...pasteFromWordOptions,
   height: 220,
   menubar: "edit insert format tools",
   plugins: [
