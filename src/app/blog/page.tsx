@@ -171,13 +171,12 @@ export default async function BlogPage() {
                 {blogPosts.map((post) => (
                   <Link href={`/blog/${post.slug}`} key={post.id}>
                     <div className="bg-white rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
-                      <div className="relative aspect-video bg-white">
+                      <div className="relative h-48">
                         <Image
                           src={post.image || '/french-skill.png'}
                           alt={post.title}
                           fill
-                          className="object-contain"
-                          sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+                          style={{ objectFit: 'cover' }}
                         />
                       </div>
                       <div className="p-6">
