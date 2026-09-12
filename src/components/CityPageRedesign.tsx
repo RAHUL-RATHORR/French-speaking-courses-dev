@@ -434,7 +434,8 @@ export default function CityPageRedesign({
         </div>
       </section>
 
-      {/* --- CERTIFICATION SHOWCASE --- */}
+      {/* --- CERTIFICATION SHOWCASE (HIDDEN) --- */}
+      {/*
       <section className="py-16 px-4 relative overflow-hidden bg-[#1A3260]"
         style={{
           clipPath: "polygon(0 2%, 100% 0, 100% 98%, 0 100%)",
@@ -508,6 +509,7 @@ export default function CityPageRedesign({
           </motion.div>
         </div>
       </section>
+      */}
 
       {/* --- SELF-PACED & STRUCTURED LESSONS --- */}
       <section className="py-24 bg-white px-4">
@@ -745,9 +747,9 @@ export default function CityPageRedesign({
         </div>
       </section>
 
-      {/* --- TESTIMONIALS (REFERENCE IMAGE STYLE) --- */}
+      {/* --- TESTIMONIALS (HIDDEN) --- */}
+      {/*
       <section className="py-24 bg-white px-4 relative overflow-hidden">
-        {/* Decorative Background Image (Faded) */}
         <div className="absolute top-0 left-0 w-1/2 h-[90%] opacity-100 pointer-events-none select-none hidden lg:block">
           <Image
             src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=1200"
@@ -759,10 +761,8 @@ export default function CityPageRedesign({
         </div>
 
         <div className="max-w-7xl mx-auto relative z-10 flex flex-col md:flex-row gap-12">
-          {/* Left Side: Empty space for background image visibility */}
           <div className="hidden lg:block w-1/4" />
 
-          {/* Right Side: Carousel Area */}
           <div className="flex-1 pt-0 md:-mt-10 relative">
 
             <div className="py-8 overflow-hidden">
@@ -778,7 +778,6 @@ export default function CityPageRedesign({
                     key={i}
                     className="min-w-full md:min-w-[calc(50%-0.25rem)] lg:min-w-[calc(33.333%-0.25rem)] group relative h-95 rounded-4xl overflow-hidden shadow-[0_20px_60px_rgba(0,0,0,0.1)] cursor-pointer"
                   >
-                    {/* Full Card Image Background */}
                     <div className="absolute inset-0 z-0 rounded-[5%] overflow-hidden">
                       <Image
                         src={testimonial.image || `https://i.pravatar.cc/150?u=${testimonial.name}`}
@@ -788,10 +787,8 @@ export default function CityPageRedesign({
                       />
                     </div>
 
-                    {/* Dark Bottom Gradient (Always Visible for readability) */}
                     <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/20 to-transparent z-10" />
 
-                    {/* Content Area */}
                     <div className="absolute inset-0 p-8 flex flex-col justify-end z-20 text-left">
                       <div className="mb-0">
                         <div className="flex flex-col gap-1 mb-2">
@@ -827,14 +824,12 @@ export default function CityPageRedesign({
                         </div>
                       </div>
 
-                      {/* Hover Reveal: Testimonial Content */}
                       <div className="overflow-hidden max-h-0 group-hover:max-h-50 opacity-0 group-hover:opacity-100 transition-all duration-500 ease-in-out">
                         <p className="text-white text-[13px] leading-relaxed mt-4 font-medium border-t border-white/20 pt-4">
                           {testimonial.content}
                         </p>
                       </div>
 
-                      {/* Arrow Icon (Bottom Right) */}
                       <div className="absolute bottom-8 right-8 text-white/70 group-hover:opacity-0 transition-all duration-300">
                         <ArrowRight className="w-6 h-6 transform -rotate-45" />
                       </div>
@@ -846,6 +841,7 @@ export default function CityPageRedesign({
           </div>
         </div>
       </section>
+      */}
 
       {/* --- CTA SECTION (INSPIRED BY SCREENSHOT) --- */}
       <section className="py-16 md:py-0 bg-gray-50 px-4 relative overflow-hidden">
