@@ -106,19 +106,22 @@ export async function POST(request: NextRequest) {
     if (isSupabaseConfigured()) {
       const result = await uploadToSupabase(buffer, filename, file.type);
 
-      if (result.ok) {
+      if ("message" in result) {
+        const errorMsg = result.message;
+        if (process.env.NODE_ENV === 'development') {
+          console.warn('Supabase upload failed, saving locally:', errorMsg);
+          url = await uploadToLocal(buffer, filename);
+          storage = 'local';
+        } else {
+          console.error('Supabase upload error:', errorMsg);
+          return NextResponse.json({
+            error: 'Failed to upload to cloud storage',
+            details: errorMsg,
+          }, { status: 500 });
+        }
+      } else {
         url = result.url;
         storage = 'supabase';
-      } else if (process.env.NODE_ENV === 'development') {
-        console.warn('Supabase upload failed, saving locally:', result.message);
-        url = await uploadToLocal(buffer, filename);
-        storage = 'local';
-      } else {
-        console.error('Supabase upload error:', result.message);
-        return NextResponse.json({
-          error: 'Failed to upload to cloud storage',
-          details: result.message,
-        }, { status: 500 });
       }
     } else if (process.env.NODE_ENV === 'development') {
       url = await uploadToLocal(buffer, filename);

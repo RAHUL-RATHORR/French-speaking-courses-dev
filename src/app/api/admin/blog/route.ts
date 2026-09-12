@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db/prisma";
+import { Prisma } from "@prisma/client";
 export const dynamic = "force-dynamic";
 import { getCurrentUser } from "@/lib/auth/session";
 import { revalidatePath, revalidateTag } from "next/cache";
@@ -105,7 +106,7 @@ export async function POST(request: NextRequest) {
         categories: data.categories || [],
         tags: data.tags || [],
         featured: Boolean(data.featured),
-        faqs: normalizeBlogFaqs(data.faqs)
+        faqs: normalizeBlogFaqs(data.faqs) as unknown as Prisma.InputJsonValue
       }
     });
 

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Editor } from '@tinymce/tinymce-react';
-import { tinymceEditorProps, tinymceSelfHostedInit } from "./tinymceConfig";
+import { tinymceEditorProps, cityPageEditorInit, faqEditorInit as cityFaqEditorInit } from "./tinymceConfig";
 import Button from "@/components/ui/Button";
 import ImageUpload from "../ui/ImageUpload";
 
@@ -177,39 +177,9 @@ export default function CityPageManagement() {
     setFormData({ ...formData, testimonials: newTestimonials });
   };
 
-  const editorConfig = {
-    ...tinymceSelfHostedInit,
-    height: 400,
-    menubar: true,
-    plugins: [
-      'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
-      'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
-      'insertdatetime', 'media', 'table', 'help', 'wordcount', 'emoticons',
-      'visualchars', 'directionality'
-    ],
-    toolbar: 'undo redo | blocks fontfamily fontsize | ' +
-      'bold italic underline strikethrough | forecolor backcolor removeformat | ' +
-      'alignleft aligncenter alignright alignjustify | ' +
-      'bullist numlist outdent indent | ' +
-      'table link image media emoticons | ' +
-      'code preview fullscreen | ltr rtl help',
-    table_toolbar: 'tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol',
-    content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:14px; line-height: 1.6; }',
-    default_link_target: '_blank',
-    link_default_target: '_blank',
-    link_default_rel: 'noopener noreferrer',
-    link_assume_external_targets: 'https',
-    target_list: [
-      { title: 'New window', value: '_blank' },
-      { title: 'Same window', value: '_self' },
-    ],
-  };
+  const editorConfig = cityPageEditorInit;
 
-  const faqEditorConfig = {
-    ...editorConfig,
-    height: 220,
-    menubar: "edit insert format tools",
-  };
+  const faqEditorConfig = cityFaqEditorInit;
 
   if (isEditing) {
     return (

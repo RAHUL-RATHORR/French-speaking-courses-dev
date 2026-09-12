@@ -221,16 +221,16 @@ export default function Home() {
   const formattedTestimonials = testimonials.map((testimonial) => {
     // Determine if the avatar is a valid external or internal path
     const hasValidAvatar = !!(testimonial.avatar && (
-      testimonial.avatar.startsWith('http') || 
+      testimonial.avatar.startsWith('http') ||
       testimonial.avatar.startsWith('/')
     ));
-    
+
     return {
       name: testimonial.name || "Student",
       role: testimonial.role || "Student",
       content: testimonial.message || "",
       image: hasValidAvatar && testimonial.avatar
-        ? testimonial.avatar 
+        ? testimonial.avatar
         : `https://ui-avatars.com/api/?name=${encodeURIComponent(testimonial.name || "S")}&background=random&color=fff&size=150`,
     };
   });
@@ -619,7 +619,7 @@ export default function Home() {
                   where its people come from and where they are going.&rdquo;
                 </p>
                 <p className="text-right text-french-blue font-medium mt-2">
-                  - Mr. Pradeep
+                  - Mrs. Nisha
                 </p>
               </div>
             </div>

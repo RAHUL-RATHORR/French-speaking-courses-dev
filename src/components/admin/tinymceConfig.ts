@@ -220,3 +220,46 @@ export const faqEditorInit = {
   paste_data_images: true,
   automatic_uploads: true,
 };
+
+/** Shared config for city page rich-text fields */
+export const cityPageEditorInit = {
+  ...tinymceSelfHostedInit,
+  ...linkTargetOptions,
+  ...pasteFromWordOptions,
+  height: 400,
+  menubar: true,
+  plugins: [
+    "advlist",
+    "autolink",
+    "lists",
+    "link",
+    "image",
+    "charmap",
+    "preview",
+    "anchor",
+    "searchreplace",
+    "visualblocks",
+    "code",
+    "fullscreen",
+    "insertdatetime",
+    "media",
+    "table",
+    "help",
+    "wordcount",
+    "emoticons",
+    "visualchars",
+    "directionality",
+  ],
+  toolbar:
+    "undo redo | blocks fontfamily fontsize | " +
+    "bold italic underline strikethrough | forecolor backcolor removeformat | " +
+    "alignleft aligncenter alignright alignjustify | " +
+    "bullist numlist outdent indent | " +
+    "table link image media emoticons | " +
+    "code preview fullscreen | ltr rtl help",
+  table_toolbar:
+    "tableprops tabledelete | tableinsertrowbefore tableinsertrowafter tabledeleterow | tableinsertcolbefore tableinsertcolafter tabledeletecol",
+  content_style: contentStyle,
+  paste_data_images: true,
+  automatic_uploads: true,
+};
