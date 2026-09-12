@@ -15,7 +15,7 @@ type IncludeItem = {
 };
 
 function IncludeIcon({ type }: { type: IncludeItem["icon"] }) {
-  const className = "w-5 h-5 text-slate-500 flex-shrink-0";
+  const className = "w-5 h-5 text-slate-500 shrink-0";
   switch (type) {
     case "clock":
       return (
@@ -143,11 +143,10 @@ export default function CourseBuyBox({ course, onEnroll }: CourseBuyBoxProps) {
       : `/uploads/${course.image}`
     : "/french-skill.png";
 
-  const moneyBackText = (
+  const moneyBackText =
     course.feesSection?.refundPolicy?.enabled && course.feesSection.refundPolicy.text
-      ? course.feesSection.refundPolicy.text
-      : "Money-Back Guarantee"
-  ).replace(/\*+/g, "").trim();
+      ? course.feesSection.refundPolicy.text.replace(/\*+/g, "").trim()
+      : null;
 
   const registrationOpen = course.registrationOpen !== false;
 
@@ -202,9 +201,11 @@ export default function CourseBuyBox({ course, onEnroll }: CourseBuyBoxProps) {
           )}
         </button>
 
-        <p className="text-center mt-3 text-sm font-semibold text-[#1A3260]">
-          {moneyBackText}
-        </p>
+        {moneyBackText && (
+          <p className="text-center mt-3 text-sm font-semibold text-[#1A3260]">
+            {moneyBackText}
+          </p>
+        )}
 
         <div className="mt-6">
           <h4 className="text-base font-semibold text-[#1A3260] mb-4">

@@ -892,8 +892,8 @@ function FeesEditor({
       text: ((section?.emiOptions as Record<string, unknown>)?.text as string) || "EMI options available"
     },
     refundPolicy: {
-      enabled: ((section?.refundPolicy as Record<string, unknown>)?.enabled as boolean) || true,
-      text: ((section?.refundPolicy as Record<string, unknown>)?.text as string) || "30-day money-back guarantee"
+      enabled: ((section?.refundPolicy as Record<string, unknown>)?.enabled as boolean) || false,
+      text: ((section?.refundPolicy as Record<string, unknown>)?.text as string) || ""
     }
   });
 
