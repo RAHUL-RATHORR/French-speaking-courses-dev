@@ -109,7 +109,7 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
             </div>
             <button
               onClick={() => handleCTAClick("download_brochure")}
-              className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 py-2 rounded-lg font-medium text-sm shadow-lg transition-all duration-300 transform hover:scale-105 ml-4 flex items-center gap-2"
+              className="bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-4 py-2 rounded-lg font-medium text-sm shadow-lg transition-all duration-300 transform hover:scale-105 ml-4 flex items-center gap-2"
             >
               <svg
                 className="w-4 h-4"
@@ -165,7 +165,7 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
         // Fallback Overview — stat cards only (title/description in header)
         <section id="overview" className="py-10 bg-white rounded-xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200">
+            <div className="bg-linear-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200">
               <div className="text-blue-600 text-2xl mb-3">💻</div>
               <h3 className="text-lg font-bold text-slate-800 mb-2">
                 Live Online Classes
@@ -175,7 +175,7 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl border border-green-200">
+            <div className="bg-linear-to-br from-green-50 to-green-100 p-6 rounded-xl border border-green-200">
               <div className="text-green-600 text-2xl mb-3">👥</div>
               <h3 className="text-lg font-bold text-slate-800 mb-2">
                 Class Type
@@ -185,7 +185,7 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
               </p>
             </div>
 
-            <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl border border-purple-200">
+            <div className="bg-linear-to-br from-purple-50 to-purple-100 p-6 rounded-xl border border-purple-200">
               <div className="text-purple-600 text-2xl mb-3">🏆</div>
               <h3 className="text-lg font-bold text-slate-800 mb-2">
                 Certification
@@ -495,7 +495,7 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
                 ].map((skill, index) => (
                   <div
                     key={index}
-                    className="bg-gradient-to-r from-blue-50 to-blue-100 border border-blue-200 py-3 px-6 rounded-full text-sm font-medium text-blue-700 shadow-sm hover:shadow-md transition-shadow duration-200"
+                    className="bg-linear-to-r from-blue-50 to-blue-100 border border-blue-200 py-3 px-6 rounded-full text-sm font-medium text-blue-700 shadow-sm hover:shadow-md transition-shadow duration-200"
                   >
                     {skill}
                   </div>
@@ -613,7 +613,7 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
                     key={index}
                     className="border border-slate-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
                   >
-                    <div className="bg-gradient-to-r from-slate-800 to-slate-700 text-white p-6 text-center">
+                    <div className="bg-linear-to-r from-slate-800 to-slate-700 text-white p-6 text-center">
                       <h3 className="text-xl font-bold">{batch.date}</h3>
                       <p className="font-medium opacity-90">{batch.title}</p>
                     </div>
@@ -622,7 +622,7 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
                       <p className="mb-4 text-slate-600">{batch.time}</p>
                       <button
                         onClick={() => setIsRegistrationModalOpen(true)}
-                        className="mt-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-lg font-medium shadow-lg transition-all duration-300 transform hover:scale-105"
+                        className="mt-4 bg-linear-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-8 py-3 rounded-lg font-medium shadow-lg transition-all duration-300 transform hover:scale-105"
                       >
                         ENROLL NOW
                       </button>
@@ -662,7 +662,7 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
             {course.companies.map((company, index) => (
               <div
                 key={index}
-                className="flex items-center justify-center min-w-[120px] min-h-[60px]"
+                className="flex items-center justify-center min-w-30 min-h-15"
               >
                 {/* Replace with logo if available in /public, else fallback to name */}
                 {company === "Alliance Française" && (
@@ -746,7 +746,7 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
           </div>
 
           {/* Desktop buy box — overlaps blue hero, sticky on scroll */}
-          <aside className="hidden lg:block lg:sticky lg:top-28 lg:self-start z-30 lg:-mt-[280px]">
+          <aside className="hidden lg:block lg:sticky lg:top-28 lg:self-start z-30 lg:-mt-70">
             <CourseBuyBox
               course={course}
               onEnroll={() => setIsRegistrationModalOpen(true)}
