@@ -2,7 +2,6 @@
 
 import NextLink from "next/link";
 
-import { formatRupee } from "@/lib/utils";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 // import { theme } from '@/lib/theme';
@@ -29,8 +28,11 @@ export default function CourseCard({
   description,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   level,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   duration,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   price,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   originalPrice,
   rating,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -38,20 +40,13 @@ export default function CourseCard({
   image,
   registrationOpen,
 }: CourseCardProps & { registrationOpen?: boolean }) {
-  const formattedPrice = formatRupee(price);
-  const formattedOriginalPrice = originalPrice
-    ? formatRupee(originalPrice)
-    : "";
-
   const imageSrc = image
     ? image.startsWith("http") || image.startsWith("/")
       ? image
       : `/uploads/${image}`
     : "/french-skill.png";
 
-  const displayDuration = duration
-    ? duration.replace(/months?|weeks?/gi, "hours")
-    : "Flexible hours";
+  const displayRating = rating && rating > 0 ? rating : 4.8;
 
   return (
     <Card variant="hover" className="relative">
@@ -62,7 +57,7 @@ export default function CourseCard({
       >
         <span className="sr-only">{title}</span>
       </NextLink>
-      <div className="relative w-full overflow-hidden bg-white">
+      <div className="relative w-full overflow-hidden rounded-t-xl bg-white">
         <NextLink href={`/course/${slug}`} className="block w-full relative z-20">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
@@ -75,33 +70,29 @@ export default function CourseCard({
             }}
           />
 
-          {/* Rating */}
-          {rating ? (
-            <div className="absolute bottom-3 left-3 rounded-md shadow-lg flex items-center bg-white/90 backdrop-blur-sm px-2 py-1 z-20">
-              <div className="text-yellow-400 text-sm flex">★★★★★</div>
-              <span className="text-sm font-bold text-gray-800 ml-1">
-                {rating}
-              </span>
-            </div>
-          ) : null}
+          {/* Rating Badge Top Right (exact fluentauf style) */}
+          <div className="absolute top-3 right-3 bg-white/95 backdrop-blur-sm px-2.5 py-1 rounded-full text-xs font-bold text-gray-800 flex items-center gap-1 shadow-sm z-20">
+            <span className="text-amber-500">★</span>
+            <span>{displayRating}</span>
+          </div>
+
+          {/* Online Badge Bottom Left (exact fluentauf style: bottom-0 left-4 rounded-t-lg) */}
+          <div className="absolute bottom-0 left-4 bg-white px-4 py-1.5 rounded-t-lg text-xs sm:text-sm font-bold text-gray-900 shadow-[0_-2px_8px_rgba(0,0,0,0.05)] z-20">
+            Online
+          </div>
         </NextLink>
       </div>
 
-      <div className="p-5">
+      <div className="p-5 pt-5">
         <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-french-blue transition-colors duration-300">
           {title}
         </h3>
-        <p className="text-sm text-gray-600 mb-3 line-clamp-2 leading-relaxed">
+        <p className="text-sm text-gray-600 mb-4 line-clamp-2 leading-relaxed">
           {description}
         </p>
 
-        {/* Course Stats & Registration Status */}
-        <div className="flex flex-wrap items-center gap-4 mb-4">
-          <div className="flex items-center text-xs text-gray-500">
-            <span className="mr-1">⏱️</span>
-            <span>{displayDuration}</span>
-          </div>
-
+        {/* Registration Status and CTA */}
+        <div className="flex items-center justify-between">
           <div className="flex items-center">
             {registrationOpen !== false ? (
               <span className="bg-green-100 text-green-700 px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-bold flex items-center shadow-sm">
@@ -112,20 +103,6 @@ export default function CourseCard({
               <span className="bg-red-100 text-red-700 px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-bold flex items-center shadow-sm">
                 <span className="w-2 h-2 bg-red-500 rounded-full mr-1.5"></span>
                 REGISTRATION CLOSED
-              </span>
-            )}
-          </div>
-        </div>
-
-        {/* Price and CTA */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <span className="text-2xl font-bold text-french-blue">
-              {formattedPrice}
-            </span>
-            {originalPrice && (
-              <span className="text-sm text-gray-400 line-through">
-                {formattedOriginalPrice}
               </span>
             )}
           </div>

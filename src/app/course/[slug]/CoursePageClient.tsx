@@ -166,12 +166,12 @@ export default function CoursePageClient({ course }: CoursePageClientProps) {
         <section id="overview" className="py-10 bg-white rounded-xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-gradient-to-br from-blue-50 to-blue-100 p-6 rounded-xl border border-blue-200">
-              <div className="text-blue-600 text-2xl mb-3">🎯</div>
+              <div className="text-blue-600 text-2xl mb-3">💻</div>
               <h3 className="text-lg font-bold text-slate-800 mb-2">
-                Course Duration
+                Live Online Classes
               </h3>
               <p className="text-slate-600 text-sm">
-                {course.duration ? course.duration.replace(/months?|weeks?/gi, 'hours') : "40 hours of intensive learning"}
+                100% Live & Interactive classes with expert tutors
               </p>
             </div>
 

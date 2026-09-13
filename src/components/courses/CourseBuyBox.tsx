@@ -2,7 +2,6 @@
 
 import { useMemo } from "react";
 import { CourseWithSections } from "@/types/course";
-import { formatRupee, parsePriceNumber } from "@/lib/utils";
 
 interface CourseBuyBoxProps {
   course: CourseWithSections;
@@ -77,12 +76,10 @@ function IncludeIcon({ type }: { type: IncludeItem["icon"] }) {
 function buildIncludes(course: CourseWithSections): IncludeItem[] {
   const items: IncludeItem[] = [];
 
-  if (course.duration) {
-    items.push({
-      icon: "clock",
-      label: `Course Duration : ${course.duration.replace(/months?/gi, "hrs").replace(/weeks?/gi, "hrs")}`,
-    });
-  }
+  items.push({
+    icon: "screen",
+    label: "Mode : Live Online Classes",
+  });
 
   if (course.lessons) {
     items.push({
@@ -107,7 +104,6 @@ function buildIncludes(course: CourseWithSections): IncludeItem[] {
   }
 
   items.push({ icon: "headset", label: "Free Expert Support" });
-  items.push({ icon: "screen", label: "Get Live Doubt-Solving Sessions*" });
 
   const featureTitles = (course.features || [])
     .map((f) => f.title)
@@ -124,17 +120,6 @@ function buildIncludes(course: CourseWithSections): IncludeItem[] {
 }
 
 export default function CourseBuyBox({ course, onEnroll }: CourseBuyBoxProps) {
-  const price = course.feesSection?.price || course.price || "";
-  const originalPrice =
-    course.feesSection?.originalPrice || course.originalPrice || "";
-
-  const originalPriceValue = parsePriceNumber(originalPrice);
-  const currentPriceValue = parsePriceNumber(price);
-  const discountPercentage =
-    originalPriceValue > 0 && currentPriceValue > 0 && originalPriceValue > currentPriceValue
-      ? Math.round(((originalPriceValue - currentPriceValue) / originalPriceValue) * 100)
-      : 0;
-
   const includes = useMemo(() => buildIncludes(course), [course]);
 
   const imageSrc = course.image
@@ -165,24 +150,6 @@ export default function CourseBuyBox({ course, onEnroll }: CourseBuyBoxProps) {
       </div>
 
       <div className="p-5">
-        <div className="flex items-center justify-between gap-3 mb-5">
-          <div className="flex items-baseline gap-2 flex-wrap">
-            <div className="text-3xl font-bold text-[#E4222A] leading-none">
-              {formatRupee(price || "0")}
-            </div>
-            {originalPrice && (
-              <div className="text-base font-semibold text-[#1A3260] line-through">
-                {formatRupee(originalPrice)}
-              </div>
-            )}
-          </div>
-          {discountPercentage > 0 && (
-            <div className="shrink-0 border border-[#E4222A] text-[#E4222A] text-xs font-bold px-2.5 py-1.5 rounded">
-              {discountPercentage}% OFF
-            </div>
-          )}
-        </div>
-
         <button
           type="button"
           onClick={onEnroll}
