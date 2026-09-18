@@ -72,6 +72,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -136,7 +137,7 @@ export default function RootLayout({
                 Site Under Maintenance
               </h2>
               <p className="mt-2 text-sm text-gray-600">
-                We're currently making some improvements to our website. We'll be back shortly!
+                We&apos;re currently making some improvements to our website. We&apos;ll be back shortly!
               </p>
             </div>
             <div className="mt-8">
