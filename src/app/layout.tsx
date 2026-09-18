@@ -134,7 +134,7 @@ export default function RootLayout({
           <div className="max-w-md w-full space-y-8 text-center">
             <div>
               <h2 className="mt-6 text-3xl font-extrabold text-gray-900">
-                Site Under Maintenance
+                Something Big Is Coming for French Learners
               </h2>
               <p className="mt-2 text-sm text-gray-600">
                 We&apos;re currently making some improvements to our website. We&apos;ll be back shortly!
@@ -148,7 +148,7 @@ export default function RootLayout({
                 </svg>
               </div>
               <p className="text-base text-gray-500">
-                Thank you for your patience.
+                Site Under Maintenance
               </p>
             </div>
           </div>
